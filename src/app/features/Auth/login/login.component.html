@@ -1,0 +1,85 @@
+<section class="h-screen">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    class="grid h-screen md:grid-cols-2"
+  >
+    <img
+      src="https://cdn.pixabay.com/photo/2015/06/25/14/13/fern-821293_960_720.jpg"
+      loading="lazy"
+      class="hidden h-full w-full object-cover md:block"
+    />
+    <div
+      class="flex h-full w-full flex-col justify-center gap-5 px-8 py-12 md:px-12"
+    >
+      <h1 class="w-full text-center text-3xl font-bold">Login page</h1>
+      <label hlmLabel class="w-full"
+        >Email
+        <input
+          hlmInput
+          id="email"
+          formControlName="email"
+          type="email"
+          placeholder="Enter your email"
+          class="w-full"
+        />
+        <div
+          class="flex flex-col font-normal text-red-500"
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+        >
+          <small *ngIf="loginForm.get('email')?.errors"
+            >Email is required</small
+          >
+        </div>
+      </label>
+
+      <label hlmLabel class="w-full"
+        >Password
+        <input
+          hlmInput
+          formControlName="password"
+          type="password"
+          placeholder="Enter your password"
+          class="w-full"
+        />
+
+        <div
+          class="flex flex-col font-normal text-red-500"
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        >
+          <small *ngIf="loginForm.get('password')?.errors"
+            >password is required</small
+          >
+        </div>
+      </label>
+
+      <label class="flex items-center" hlmLabel>
+        <hlm-checkbox class="mr-2" />
+        Accept terms and conditions
+      </label>
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid === true"
+        [ngClass]="{
+          'cursor-not-allowed': loginForm.invalid,
+          'w-full rounded-md bg-green-500 px-5 py-3 text-lg font-medium text-white shadow-lg hover:bg-green-600 disabled:bg-slate-500': true,
+        }"
+      >
+        Login
+      </button>
+
+      <hr hlmSeparator class="my-3" />
+
+      <a routerLink="/register" class="text-center"
+        >if you don't have account
+        <span class="font-bold text-green-500 underline">Register</span></a
+      >
+    </div>
+  </form>
+</section>
