@@ -35,11 +35,11 @@ export class RegisterComponent {
   constructor() {
     this.registerForm = new FormGroup({
       username: new FormControl<string>('', [
-        Validators.min(3),
-        Validators.max(15),
+        Validators.minLength(3),
+        Validators.maxLength(15),
         Validators.required,
       ]),
-      email: new FormControl<string>('dcdcdcdc', [
+      email: new FormControl<string>('', [
         Validators.email,
         Validators.required,
       ]),
@@ -55,6 +55,7 @@ export class RegisterComponent {
   }
 
   onSubmit() {
+    console.log(this.registerForm.value);
     if (this.registerForm.invalid) {
       console.log('Form submitted', this.registerForm.value);
     } else {
