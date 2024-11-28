@@ -1,0 +1,43 @@
+<!-- card -->
+<a
+  [routerLink]="'/books/' + book().id"
+  target="_blank"
+  class="group relative overflow-hidden rounded-xl shadow-lg"
+  [title]="book().title"
+>
+  <!-- card image -->
+  <img
+    [src]="'https://placehold.co/400x520'"
+    [alt]="book().title"
+    class="h-full w-full object-cover"
+  />
+  <p target="_blank" class="text-md truncate text-wrap font-semibold md:hidden">
+    {{ book().title | titlecase }}
+  </p>
+
+  <!-- card detail -->
+  <div
+    class="absolute inset-0 bg-black/70 p-4 text-white opacity-0 backdrop-blur-md transition-opacity duration-300 group-hover:opacity-100"
+  >
+    <div class="flex h-full w-full flex-col items-start justify-between">
+      <div class="flex flex-col items-start gap-3">
+        <!-- title -->
+        <p
+          hlmP
+          target="_blank"
+          class="truncate text-wrap text-xl font-semibold"
+        >
+          {{ book().title | titlecase }}
+        </p>
+
+        <p class="hidden w-full text-ellipsis text-sm text-white md:block">
+          {{ book().description }}
+        </p>
+      </div>
+      <div>
+        <p class="text-md font-medium">Publication year</p>
+        <p class="text-sm">{{ book().publishedYear }}</p>
+      </div>
+    </div>
+  </div>
+</a>

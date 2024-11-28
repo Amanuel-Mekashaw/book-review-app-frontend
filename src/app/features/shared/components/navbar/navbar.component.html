@@ -1,0 +1,25 @@
+<!-- Navbar -->
+<header
+  class="fixed isolate z-10 flex w-full items-center justify-between bg-transparent px-5 py-3 shadow-sm backdrop-blur-md"
+>
+  <img src="assets/logo.png" alt="logo" class="" />
+  <ul class="flex items-center gap-5">
+    <li><a routerLink="/books" class="h-full p-3">Books</a></li>
+    <li><a routerLink="/genres" class="h-full p-3">Genre</a></li>
+    <li>
+      <a routerLink="/collections" class="h-full p-3">Collections</a>
+    </li>
+  </ul>
+  <div class="flex items-center gap-3">
+    <a
+      routerLink="/login"
+      class="rounded-full border-2 border-transparent bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+      >sign in</a
+    >
+    <a
+      routerLink="/register"
+      class="rounded-full border-2 border-transparent bg-slate-800 px-4 py-2 text-white transition-all delay-75 hover:border-2 hover:border-green-500 hover:bg-transparent hover:text-green-500"
+      >Register</a
+    >
+  </div>
+</header>

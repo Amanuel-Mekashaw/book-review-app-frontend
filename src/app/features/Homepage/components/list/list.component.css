@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.text-success {
+  color: green;
+}
+
+.text-rebeccapurple {
+  color: rebeccapurple;
+}
+
+.text-danger {
+  color: red;
+}
