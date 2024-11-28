@@ -1,0 +1,84 @@
+<!-- Main page -->
+<main class="mx-[2rem] my-[6rem] md:mx-[7rem] xl:mx-[10rem]">
+  <!-- hero section text -->
+  <div class="my-5 flex flex-col gap-2">
+    <h2 class="text-4xl font-bold text-green-400">Am Book Center</h2>
+    <p HlmPDirective class="text-balance text-lg">
+      is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+      has been the industry's standard dummy text ever since the 1500s
+    </p>
+  </div>
+
+  <!-- search section -->
+  <div class="mb-8">
+    <div class="mb-4 flex gap-2">
+      <!-- search input -->
+      <input
+        class="w-full"
+        hlmInput
+        placeholder="enter book name"
+        type="text"
+      />
+
+      <!-- search button -->
+      <button hlmBtn variant="default" class="rounded-full">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- select elements -->
+    <div class="grid w-full grid-cols-3 gap-2 md:gap-5 lg:gap-5">
+      <brn-select class="inline-block" placeholder="Select publisher">
+        <hlm-select-trigger class="w-full">
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content class="w-full">
+          <hlm-option value="Publisher">Publisher</hlm-option>
+          <hlm-option value="Settings">Settings</hlm-option>
+          <hlm-option value="Help">Help</hlm-option>
+        </hlm-select-content>
+      </brn-select>
+
+      <brn-select class="inline-block" placeholder="Select published date">
+        <hlm-select-trigger class="w-full">
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content class="w-full">
+          <hlm-option value="Publisher">Publisher</hlm-option>
+          <hlm-option value="Settings">Settings</hlm-option>
+          <hlm-option value="Help">Help</hlm-option>
+        </hlm-select-content>
+      </brn-select>
+
+      <brn-select class="inline-block" placeholder="Select published date">
+        <hlm-select-trigger class="w-full">
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content class="w-full">
+          <hlm-option value="Publisher">Publisher</hlm-option>
+          <hlm-option value="Settings">Settings</hlm-option>
+          <hlm-option value="Help">Help</hlm-option>
+        </hlm-select-content>
+      </brn-select>
+    </div>
+  </div>
+
+  <!-- list of books -->
+  <app-lists></app-lists>
+</main>
+
+<!-- footer -->
+<app-footer></app-footer>
