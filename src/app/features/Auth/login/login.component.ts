@@ -1,10 +1,18 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { HlmCheckboxComponent } from '@spartan-ng/ui-checkbox-helm';
 
 import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
-import { RouterLink } from '@angular/router';
+import { toast } from 'ngx-sonner';
+import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
+
+import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -13,6 +21,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthError, AuthResponse } from '../user_interface';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth.service';
+import { URL } from '../../shared/constants';
 
 @Component({
   selector: 'app-login',
@@ -26,12 +38,19 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
+    HlmToasterComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  http = inject(HttpClient);
+  authService = inject(AuthService);
+  router = inject(Router);
+
   loginForm: FormGroup;
+  message = signal('');
+  error = signal('');
 
   constructor() {
     this.loginForm = new FormGroup({
@@ -47,10 +66,43 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      console.log('Form submitted', this.loginForm.value);
-    } else {
-      console.log('Form is invalid!', this.loginForm.errors);
-    }
+    console.log(this.loginForm.value);
+    this.http
+      .post<AuthResponse>(
+        `${URL}/auth/authenticate`,
+        this.loginForm.getRawValue(),
+      )
+      .subscribe({
+        next: (response: AuthResponse) => {
+          console.log('response', response);
+          this.message.set(response.message);
+          localStorage.setItem('token', response.data.token);
+          this.authService.currentUserSignal.set(response);
+          localStorage.setItem(
+            'user',
+            btoa(JSON.stringify(this.authService.currentUserSignal())),
+          );
+          this.showToastSuccess();
+
+          this.router.navigateByUrl('/books');
+        },
+        error: (error: AuthError) => {
+          console.log('error', error);
+          this.error.set(error.message);
+          this.showToastDanger();
+        },
+      });
+  }
+
+  showToastSuccess() {
+    toast.success('Success', {
+      description: this.message(),
+    });
+  }
+
+  showToastDanger() {
+    toast.error('Unsuccessfull', {
+      description: this.error(),
+    });
   }
 }

@@ -1,4 +1,5 @@
 <section class="h-screen">
+  <hlm-toaster richColors closeButton position="top-right" />
   <form
     [formGroup]="loginForm"
     (ngSubmit)="onSubmit()"
@@ -76,10 +77,12 @@
 
       <hr hlmSeparator class="my-3" />
 
-      <a routerLink="/register" class="text-center"
-        >if you don't have account
-        <span class="font-bold text-green-500 underline">Register</span></a
-      >
+      <p class="text-center">
+        if you don't have account
+        <a routerLink="/register" c class="font-bold text-green-500 underline">
+          Register?</a
+        >
+      </p>
     </div>
   </form>
 </section>

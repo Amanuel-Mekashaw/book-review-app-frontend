@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { AuthResponse } from './user_interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(http: HttpClient) {}
+  currentUserSignal = signal<AuthResponse | undefined | null>(undefined);
 
   login() {}
 
