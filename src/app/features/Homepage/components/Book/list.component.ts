@@ -17,6 +17,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListComponent {
+export class BookComponent {
   book = input<Book>();
 }
