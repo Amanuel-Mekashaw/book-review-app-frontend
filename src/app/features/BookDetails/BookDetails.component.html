@@ -1,0 +1,78 @@
+<!-- loading state -->
+<div class="flex w-full flex-col items-center gap-5" *ngIf="loading()">
+  <app-loading-spinner></app-loading-spinner>
+  <p class="text-2xl font-bold text-green-500">Loading books...</p>
+</div>
+
+<!-- error state -->
+<div
+  class="flex w-full flex-col items-center justify-center"
+  *ngIf="error() !== undefined"
+>
+  <p class="text-2xl font-bold text-red-500">{{ error() }}</p>
+</div>
+
+<!-- Book Detail render -->
+<section
+  *ngIf="!loading() && !error()"
+  class="mx-[1rem] my-[6rem] flex flex-col gap-5 md:mx-[5rem] xl:mx-[10rem]"
+>
+  <section *ngIf="book(); else noBooks">
+    <section class="flex flex-col gap-5 md:flex-row">
+      <img
+        class="max-h-96 w-full"
+        [src]="'https://placehold.co/600x400' ?? book()?.coverImage"
+        [alt]="book()?.title + 'cover image'"
+      />
+      <section class="flex flex-col gap-5">
+        <div class="flex flex-col gap-5">
+          <h1 class="text-3xl font-bold tracking-wider text-green-500">
+            {{ book()?.title }}
+          </h1>
+          <p class="text-lg">{{ book()?.description }}</p>
+        </div>
+
+        <hr />
+        <div class="flex flex-col gap-5">
+          <p class="flex flex-col">
+            <span class="text-green-500">ISBN</span
+            ><span class="text-lg">{{ book()?.isbn }}</span>
+          </p>
+          <p class="flex flex-col">
+            <span class="text-green-500">Publisher</span
+            ><span class="text-lg">{{ book()?.publisher }}</span>
+          </p>
+          <p class="flex flex-col">
+            <span class="text-green-500">Published Year</span
+            ><span class="text-lg">{{ book()?.publishedYear }}</span>
+          </p>
+        </div>
+      </section>
+    </section>
+
+    <!-- About the Author -->
+    <section>
+      <section class="flex flex-col gap-5">
+        <h2 class="text-2xl font-bold">About the Author</h2>
+        <div
+          class="flex flex-col gap-5 rounded-xl border-2 bg-slate-50 p-5 shadow-xl"
+        >
+          <div class="flex items-center gap-3">
+            <div class="size-16 rounded-full bg-slate-300"></div>
+            <div>
+              <h1 class="text-xl font-bold">
+                {{ book()?.title }}
+              </h1>
+              <p>34 Books</p>
+            </div>
+          </div>
+          <p class="text-lg">{{ book()?.description }}</p>
+        </div>
+      </section>
+    </section>
+  </section>
+  <!-- No book info section -->
+  <ng-template #noBooks>
+    <p>No books information with id {{ bookId() }}.</p>
+  </ng-template>
+</section>
