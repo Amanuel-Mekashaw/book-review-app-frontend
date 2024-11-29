@@ -5,7 +5,7 @@ import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { ListsComponent } from '../Homepage/components/lists/lists.component';
+import { BooksListsComponent } from '../Homepage/components/BooksList/lists.component';
 import { HlmSelectModule } from '../../../lib/ui-select-helm/src/index';
 import { HlmSelectTriggerComponent } from '../../../lib/ui-select-helm/src/lib/hlm-select-trigger.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
@@ -14,7 +14,7 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
   imports: [
     HlmSelectImports,
     HlmButtonDirective,
-    ListsComponent,
+    BooksListsComponent,
     HlmSelectModule,
     HlmSelectTriggerComponent,
     BrnSelectImports,
