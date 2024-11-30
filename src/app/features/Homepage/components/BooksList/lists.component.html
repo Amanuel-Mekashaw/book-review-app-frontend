@@ -1,5 +1,8 @@
 <!-- loading state -->
-<div class="flex w-full flex-col items-center gap-5" *ngIf="loading()">
+<div
+  class="flex w-full flex-col items-center justify-center gap-5"
+  *ngIf="loading()"
+>
   <app-loading-spinner></app-loading-spinner>
   <p class="text-2xl font-bold text-green-500">Loading books...</p>
 </div>
@@ -19,7 +22,7 @@
       class="grid max-h-screen grid-cols-1 gap-8 md:grid-cols-3"
       *ngIf="books().length > 0; else noBooks"
     >
-      <app-list *ngFor="let book of books()" [book]="book"></app-list>
+      <app-book *ngFor="let book of books()" [book]="book"></app-book>
     </div>
 
     <ng-template #noBooks>

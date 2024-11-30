@@ -20,7 +20,7 @@ export type ItemProps = {
 };
 
 @Component({
-  selector: 'app-lists',
+  selector: 'app-books',
   standalone: true,
   imports: [BookComponent, CommonModule, LoadingSpinnerComponent],
   templateUrl: './lists.component.html',
