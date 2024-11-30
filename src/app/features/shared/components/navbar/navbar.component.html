@@ -96,46 +96,10 @@
       *ngIf="authService.currentUserSignal()"
       class="flex items-center gap-3"
     >
-      {{ authService.currentUserSignal()?.data.user.username }}
-      <button
-        class="rounded-md border-2 border-gray-400 p-1 ring-green-500 ring-offset-1 focus:ring-2 md:hidden"
-        (click)="navbarOpen()"
-      >
-        <svg
-          width="30px"
-          height="30px"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></g>
-          <g id="SVGRepo_iconCarrier">
-            <path
-              d="M5 12H20"
-              stroke="#000000"
-              stroke-width="2"
-              stroke-linecap="round"
-            ></path>
-            <path
-              d="M5 17H20"
-              stroke="#000000"
-              stroke-width="2"
-              stroke-linecap="round"
-            ></path>
-            <path
-              d="M5 7H20"
-              stroke="#000000"
-              stroke-width="2"
-              stroke-linecap="round"
-            ></path>
-          </g>
-        </svg>
-      </button>
+      <p>{{ authService.currentUserSignal()?.data.user.username }}</p>
+      <!-- nav open burger menu -->
+
+      <app-navmobile></app-navmobile>
       <button
         (click)="logout()"
         class="hidden rounded-full border-2 border-transparent bg-slate-800 px-4 py-2 text-white transition-all delay-75 hover:border-2 hover:border-green-500 hover:bg-transparent hover:text-green-500 md:block"
@@ -144,40 +108,4 @@
       </button>
     </div>
   </header>
-
-  <!-- Mobile drop down nav -->
-  <div
-    [ngClass]="{
-      'absolute top-24 z-10 flex w-full flex-col gap-3 py-5 shadow-lg backdrop-blur-sm':
-        isOpen(),
-      hidden: !isOpen(),
-      'md:hidden': true,
-      'bg-white shadow-md': true,
-    }"
-  >
-    <a
-      routerLink="/books"
-      routerLinkActive="bg-green-500"
-      class="h-full w-full px-4 py-3 hover:bg-slate-200"
-      >Books</a
-    >
-    <a
-      routerLink="/genres"
-      routerLinkActive="bg-green-500"
-      class="h-full w-full px-4 py-3 hover:bg-slate-200"
-      >Genre</a
-    >
-    <a
-      routerLink="/collections"
-      routerLinkActive="bg-green-500"
-      class="h-full w-full px-4 py-3 hover:bg-slate-200"
-      >Collections</a
-    >
-    <button
-      (click)="logout()"
-      class="mx-4 rounded-full border-2 border-transparent bg-slate-800 px-4 py-2 text-white transition-all delay-75 hover:border-2 hover:border-green-500 hover:bg-transparent hover:text-green-500 md:block"
-    >
-      logout
-    </button>
-  </div>
 </nav>

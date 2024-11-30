@@ -8,10 +8,34 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../Auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { HlmSheetComponent } from '../../../../../lib/ui-sheet-helm/src/lib/hlm-sheet.component';
+import {
+  HlmSheetContentComponent,
+  HlmSheetDescriptionDirective,
+  HlmSheetFooterComponent,
+  HlmSheetHeaderComponent,
+  HlmSheetTitleDirective,
+} from '../../../../../lib/ui-sheet-helm/src/index';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { BrnSheetTriggerDirective } from '@spartan-ng/ui-sheet-brain';
+import { NavmobileComponent } from '../Navmobile/Navmobile.component';
+
 @Component({
   selector: 'app-navbar',
+  imports: [
+    RouterModule,
+    CommonModule,
+    HlmSheetComponent,
+    HlmSheetContentComponent,
+    HlmSheetDescriptionDirective,
+    HlmSheetFooterComponent,
+    HlmSheetHeaderComponent,
+    HlmSheetTitleDirective,
+    HlmButtonDirective,
+    BrnSheetTriggerDirective,
+    NavmobileComponent,
+  ],
   standalone: true,
-  imports: [RouterModule, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
