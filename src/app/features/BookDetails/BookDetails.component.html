@@ -1,12 +1,15 @@
 <!-- loading state -->
-<div class="flex w-full flex-col items-center gap-5" *ngIf="loading()">
+<div
+  class="flex h-screen w-full flex-col items-center justify-center gap-5"
+  *ngIf="loading()"
+>
   <app-loading-spinner></app-loading-spinner>
   <p class="text-2xl font-bold text-green-500">Loading books...</p>
 </div>
 
 <!-- error state -->
 <div
-  class="my-[7rem] flex w-full flex-col items-center justify-center"
+  class="flex h-screen w-full flex-col items-center justify-center"
   *ngIf="error() !== ''"
 >
   <p class="text-2xl font-bold text-red-500">{{ error() }}</p>
@@ -19,20 +22,63 @@
 >
   <section *ngIf="book(); else noBooks" class="flex flex-col gap-8">
     <section class="flex flex-col gap-5 md:flex-row">
+      <!-- don't forget to add images -->
       <img
-        class="max-h-fit w-full overflow-hidden rounded-lg object-cover shadow-lg"
-        [src]="'https://placehold.co/400x500' ?? book()?.coverImage"
+        class="aspect-[9/16] max-h-dvh w-full overflow-hidden rounded-lg object-cover shadow-lg"
+        [src]="'https://placehold.co/400x500'"
         [alt]="book()?.title + 'cover image'"
       />
+      <!-- Text block  -->
       <section class="flex flex-col gap-5">
+        <!-- title and description  -->
         <div class="flex flex-col gap-5">
-          <h1 class="text-3xl font-bold tracking-wider text-green-500">
+          <h1
+            class="text-center text-3xl font-bold text-green-500 md:text-left"
+          >
             {{ book()?.title }}
           </h1>
-          <p class="text-lg">{{ book()?.description }}</p>
+
+          <!-- Description section with read more -->
+          <div class="relative">
+            <!-- description -->
+            <p
+              [ngClass]="{
+                'line-clamp-5 max-w-[80ch] text-lg': true,
+                'line-clamp-none': isReadMe(),
+              }"
+            >
+              {{ book()?.description }}
+            </p>
+            <!-- gradient overlay -->
+            <div
+              [ngClass]="{
+                'absolute inset-0 h-full w-full bg-gradient-to-b from-transparent to-white': true,
+                'bg-gradient-to-b from-transparent to-transparent': !isReadMe(),
+              }"
+            ></div>
+          </div>
+          <button
+            class="flex items-center gap-2 rounded-md border-4 border-green-500/10 p-2 tracking-wide text-green-500"
+            (click)="openReadMe()"
+          >
+            Read more...
+            <span [ngClass]="{ 'text-sm': true, 'rotate-180': !isReadMe() }">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="14"
+                width="14"
+                viewBox="0 0 512 512"
+              >
+                <path
+                  d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"
+                />
+              </svg>
+            </span>
+          </button>
         </div>
 
         <hr />
+        <!-- Publisher information -->
         <div class="flex flex-col gap-5">
           <p class="flex flex-col">
             <span class="text-green-500">ISBN</span
@@ -46,6 +92,35 @@
             <span class="text-green-500">Published Year</span
             ><span class="text-lg">{{ book()?.publishedYear }}</span>
           </p>
+        </div>
+
+        <!-- Genre section -->
+        <div class="flex flex-col gap-5">
+          <!-- title -->
+          <h2 class="text-2xl font-bold text-green-500">Genre</h2>
+          <!-- genre list -->
+          <div class="flex flex-wrap items-start gap-3">
+            <!-- add genre button with text -->
+            @if (book().genres.length == 0) {
+              <div class="flex items-center gap-5">
+                <button
+                  class="flex gap-1 rounded-xl border-4 border-dashed border-green-500 bg-green-200 px-8 py-3 transition-all delay-100 hover:bg-white"
+                >
+                  <span class="text-xl font-bold">+</span>
+                  <span class="text-lg font-bold">{{ "add" | titlecase }}</span>
+                </button>
+                <p>add new genre to the book no genres associated with book</p>
+              </div>
+            }
+
+            @if (book().genres.length > 0) {
+              @for (genre of book().genres; track $index) {
+                <a class="border-b-2 border-green-500 px-8 py-3"
+                  >{{ $index }} {{ genre.name }}</a
+                >
+              }
+            }
+          </div>
         </div>
       </section>
     </section>
