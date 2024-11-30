@@ -1,0 +1,50 @@
+<!-- loading state -->
+<div
+  class="flex h-screen w-full flex-col items-center justify-center gap-5"
+  *ngIf="loading()"
+>
+  <app-loading-spinner></app-loading-spinner>
+  <p class="text-2xl font-bold text-green-500">Loading Genres...</p>
+</div>
+
+<!-- error state -->
+<div
+  class="flex h-screen w-full flex-col items-center justify-center"
+  *ngIf="error() !== ''"
+>
+  <p class="text-center text-2xl font-bold text-red-500">
+    {{ error() }}
+  </p>
+</div>
+
+<!-- Genre Detail render -->
+<section
+  *ngIf="!loading() && !error()"
+  class="mx-[1rem] my-[7rem] flex flex-col gap-5 md:mx-[5rem] xl:mx-[10rem]"
+>
+  <section *ngIf="genres(); else noBooks" class="flex flex-col gap-8">
+    <h1 class="text-3xl font-bold text-green-500">Genres List</h1>
+    <a
+      href="/genres/id"
+      target="_blank"
+      class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3"
+    >
+      @if (genres().length > 0) {
+        @for (genre of genres(); track $index) {
+          <div
+            class="cursor-pointer rounded-md border-4 border-green-200 bg-green-100 p-5 hover:bg-green-300"
+          >
+            <h2 class="text-lg font-bold">{{ genre.name }}</h2>
+            <p class="line-clamp-3">{{ genre.description }}</p>
+          </div>
+        }
+      } @else {
+        <p>no genre found</p>
+      }
+    </a>
+  </section>
+  <!-- No book info section -->
+  <ng-template #noBooks>
+    <p>No Genre found</p>
+  </ng-template>
+</section>
