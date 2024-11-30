@@ -7,12 +7,20 @@ export interface Book {
   publisher: string;
   pages: number;
   language: string;
-  genres: string[]; // Assuming genres is an array of strings
+  genres: Genre[]; // Assuming genres is an array of strings
   coverImage: string;
   averageRating: number;
   ratingCount: number;
   createdAt: string; // ISO date format
   updatedAt: string; // ISO date format
+}
+
+export interface Genre {
+  id: number;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Sort {

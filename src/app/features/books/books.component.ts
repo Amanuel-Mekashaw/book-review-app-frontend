@@ -8,7 +8,6 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { BooksListsComponent } from '../Homepage/components/BooksList/lists.component';
 import { HlmSelectModule } from '../../../lib/ui-select-helm/src/index';
 import { HlmSelectTriggerComponent } from '../../../lib/ui-select-helm/src/lib/hlm-select-trigger.component';
-import { FooterComponent } from '../shared/components/footer/footer.component';
 
 @Component({
   imports: [
@@ -19,7 +18,6 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
     HlmSelectTriggerComponent,
     BrnSelectImports,
     HlmInputDirective,
-    FooterComponent,
   ],
   providers: [BooksComponent],
   standalone: true,

@@ -23,7 +23,7 @@ export interface Book {
   updatedAt: string; // ISO 8601 date-time string
 }
 
-export interface SingleBookApiError {
+export interface ApiError {
   message: string;
   code: number;
   data: {

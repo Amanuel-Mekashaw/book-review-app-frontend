@@ -10,7 +10,7 @@ import { Book } from '../../../../book_interface';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-book',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './list.component.html',
