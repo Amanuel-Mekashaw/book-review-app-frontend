@@ -4,10 +4,10 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Genre } from '../../book_interface';
+import { Genre } from '../../book.interface';
 import { HttpClient } from '@angular/common/http';
-import { GenreApiResponse } from './genre_interface';
-import { ApiError } from '../shared/book_interface';
+import { GenreApiResponse } from './genre.interface';
+import { ApiError } from '../../book.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
 import { URL } from '../shared/constants';

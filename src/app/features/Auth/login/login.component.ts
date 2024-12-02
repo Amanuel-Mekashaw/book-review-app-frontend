@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
@@ -21,7 +22,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthError, AuthResponse } from '../user_interface';
+import { AuthError, AuthResponse } from '../user.interface';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { URL } from '../../shared/constants';
@@ -43,7 +44,7 @@ import { URL } from '../../shared/constants';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   http = inject(HttpClient);
   authService = inject(AuthService);
   router = inject(Router);
@@ -63,6 +64,12 @@ export class LoginComponent {
         Validators.required,
       ]),
     });
+  }
+
+  ngOnInit(): void {
+    if (this.authService.currentUserSignal() !== null) {
+      this.router.navigateByUrl('/books');
+    }
   }
 
   onSubmit() {

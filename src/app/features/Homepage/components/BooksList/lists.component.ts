@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { BookComponent } from '../Book/list.component';
 import { BooksService } from '../../../../books.service';
-import { Book, BookResponse } from '../../../../book_interface';
+import { Book, BookResponse } from '../../../../book.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 

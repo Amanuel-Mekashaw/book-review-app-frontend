@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { Book } from '../../../../book_interface';
+import { Book } from '../../../../book.interface';
 import { RouterLink } from '@angular/router';
 
 @Component({

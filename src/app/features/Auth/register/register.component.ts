@@ -23,7 +23,7 @@ import { toast } from 'ngx-sonner';
 import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
 
 import { URL } from '../../shared/constants';
-import { AuthError, AuthResponse } from '../user_interface';
+import { AuthError, AuthResponse } from '../user.interface';
 import { AuthService } from '../auth.service';
 
 @Component({
