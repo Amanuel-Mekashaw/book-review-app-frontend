@@ -1,0 +1,36 @@
+<div
+  class="sidenav bg-green-500"
+  [ngClass]="isLeftSidebarCollapsed() ? 'sidenav-collapsed' : ''"
+>
+  <div class="logo-container">
+    <button class="logo" (click)="toggleCollapse()">
+      <i class="fal fa-solid fa-bars"></i>
+    </button>
+    <!-- the close button -->
+    @if (!isLeftSidebarCollapsed()) {
+      <div class="logo-text">AM Books</div>
+      <button class="btn-close text-white" (click)="closeSidenav()">
+        <i
+          class="fal fa-solid fa-times close-icon rounded-full p-3 hover:bg-white/80 hover:text-black"
+        ></i>
+      </button>
+    }
+  </div>
+  <div class="sidenav-nav">
+    @for (item of items; track $index) {
+      <li class="sidenav-nav-item">
+        <a
+          class="sidenav-nav-link font-bold"
+          [routerLink]="item.routeLink"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <i class="sidenav-link-icon" [class]="item.icon"></i>
+          @if (!isLeftSidebarCollapsed()) {
+            <span class="sidenav-link-text">{{ item.label }}</span>
+          }
+        </a>
+      </li>
+    }
+  </div>
+</div>

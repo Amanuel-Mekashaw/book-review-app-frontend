@@ -1,0 +1,8 @@
+<app-left-sidebar
+  [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+  (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"
+/>
+
+<div class="body" [ngClass]="sizeClass()">
+  <router-outlet />
+</div>

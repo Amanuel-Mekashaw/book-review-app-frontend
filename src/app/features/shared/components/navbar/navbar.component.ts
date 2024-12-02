@@ -8,32 +8,43 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../Auth/auth.service';
 import { CommonModule } from '@angular/common';
-import { HlmSheetComponent } from '../../../../../lib/ui-sheet-helm/src/lib/hlm-sheet.component';
+
 import {
-  HlmSheetContentComponent,
-  HlmSheetDescriptionDirective,
-  HlmSheetFooterComponent,
-  HlmSheetHeaderComponent,
-  HlmSheetTitleDirective,
-} from '../../../../../lib/ui-sheet-helm/src/index';
-import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { BrnSheetTriggerDirective } from '@spartan-ng/ui-sheet-brain';
+  HlmAvatarComponent,
+  HlmAvatarFallbackDirective,
+  HlmAvatarImageDirective,
+} from '@spartan-ng/ui-avatar-helm';
+
 import { NavmobileComponent } from '../Navmobile/Navmobile.component';
+
+import { BrnMenuTriggerDirective } from '@spartan-ng/ui-menu-brain';
+import {
+  HlmMenuComponent,
+  HlmMenuGroupComponent,
+  HlmMenuItemDirective,
+  HlmMenuItemIconDirective,
+  HlmMenuItemSubIndicatorComponent,
+  HlmMenuLabelComponent,
+  HlmMenuSeparatorComponent,
+  HlmMenuShortcutComponent,
+  HlmSubMenuComponent,
+} from '@spartan-ng/ui-menu-helm';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     RouterModule,
     CommonModule,
-    HlmSheetComponent,
-    HlmSheetContentComponent,
-    HlmSheetDescriptionDirective,
-    HlmSheetFooterComponent,
-    HlmSheetHeaderComponent,
-    HlmSheetTitleDirective,
-    HlmButtonDirective,
-    BrnSheetTriggerDirective,
     NavmobileComponent,
+    HlmAvatarComponent,
+    HlmAvatarFallbackDirective,
+    HlmAvatarImageDirective,
+    HlmMenuComponent,
+    HlmMenuGroupComponent,
+    HlmMenuItemDirective,
+    HlmMenuLabelComponent,
+    HlmMenuSeparatorComponent,
+    BrnMenuTriggerDirective,
   ],
   standalone: true,
   templateUrl: './navbar.component.html',
@@ -59,8 +70,9 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.router.navigateByUrl('/login');
     this.authService.currentUserSignal.set(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.router.navigateByUrl('/login');
   }
 }

@@ -91,21 +91,76 @@
       >
     </div>
 
-    <!-- Logout and user name -->
+    <!-- user name Avatar -->
     <div
       *ngIf="authService.currentUserSignal()"
-      class="flex items-center gap-3"
+      class="flex items-center gap-3 rounded-md hover:md:bg-green-200"
+      [brnMenuTriggerFor]="menu"
     >
-      <p>{{ authService.currentUserSignal()?.data.user.username }}</p>
+      <!-- Avatar Icon with image and name -->
+      <hlm-avatar
+        variant="medium"
+        class="cursor-pointer ring-2 ring-green-500 ring-offset-2"
+      >
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqWhCchAwn000tHQ0C7ccgfewAaqBik7v_w&s"
+          alt="spartan logo. Resembling a spartanic shield"
+          hlmAvatarImage
+        />
+        <span
+          class="bg-gradient-to-bl from-green-500 to-cyan-300 text-white"
+          hlmAvatarFallback
+          >{{
+            authService
+              .currentUserSignal()
+              ?.data.user.username.at(0)
+              .toUpperCase()
+          }}</span
+        >
+      </hlm-avatar>
+      <p class="hidden text-lg md:block">
+        {{ authService.currentUserSignal()?.data.user.username }}
+      </p>
+
+      <!-- Drop down menu for the avatar -->
+      <ng-template #menu>
+        <hlm-menu class="w-56">
+          <hlm-menu-label
+            ><p class="text-green-500">My Account</p>
+            <p class="text-lg">
+              {{ authService.currentUserSignal()?.data.user.username }}
+            </p></hlm-menu-label
+          >
+          <hlm-menu-separator />
+          <hlm-menu-group>
+            <a hlmMenuItem routerLink="/dashboard/profile">Profile</a>
+            @if (authService.currentUserSignal().data.user.role === "ADMIN") {
+              <button hlmMenuItem>Admin</button>
+            }
+            @if (
+              authService.currentUserSignal().data.user.role === "USER" ||
+              authService.currentUserSignal().data.user.role === "AUTHOR"
+            ) {
+              <button hlmMenuItem routerLink="/dashboard/books">
+                Dashboard
+              </button>
+            }
+
+            <hlm-menu-separator />
+            <button
+              hlmMenuItem
+              (click)="logout()"
+              class="cursor-pointer bg-red-800 text-center font-bold text-white"
+            >
+              logout
+            </button>
+          </hlm-menu-group>
+        </hlm-menu>
+      </ng-template>
+
       <!-- nav open burger menu -->
 
       <app-navmobile></app-navmobile>
-      <button
-        (click)="logout()"
-        class="hidden rounded-full border-2 border-transparent bg-slate-800 px-4 py-2 text-white transition-all delay-75 hover:border-2 hover:border-green-500 hover:bg-transparent hover:text-green-500 md:block"
-      >
-        logout
-      </button>
     </div>
   </header>
 </nav>
