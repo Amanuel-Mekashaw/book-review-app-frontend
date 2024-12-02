@@ -22,9 +22,6 @@
       "dom"
     ],
     "paths": {
-      "@spartan-ng/ui-avatar-helm": [
-        ".\\src/lib/ui-avatar-helm/src/index.ts"
-      ],
       "@spartan-ng/ui-button-helm": [
         ".\\src/lib/ui-button-helm/src/index.ts"
       ],
@@ -84,6 +81,12 @@
       ],
       "@spartan-ng/ui-typography-helm": [
         ".\\src/lib/ui-typography-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-avatar-helm": [
+        ".\\src/lib/ui-avatar-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-menu-helm": [
+        ".\\src/lib/ui-menu-helm/src/index.ts"
       ]
     }
   },

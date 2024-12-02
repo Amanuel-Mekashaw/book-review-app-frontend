@@ -3,13 +3,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
   OnInit,
   signal,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+// import { ActivatedRoute } from '@angular/router';
 import { URL } from '../shared/constants';
-import { Book } from '../../book_interface';
-import { ApiError } from '../shared/book_interface';
+import { Book } from '../../book.interface';
+import { ApiError } from '../../book.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
 
@@ -22,20 +23,25 @@ import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/lo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDetailsComponent implements OnInit {
-  activeRoute = inject(ActivatedRoute);
+  // activeRoute = inject(ActivatedRoute);
   http = inject(HttpClient);
 
   book = signal<Book | null | undefined>(null);
   error = signal('');
   loading = signal(true);
-  bookId = signal(this.activeRoute.snapshot.params['id']);
+
+  // bookId = signal(this.activeRoute.snapshot.params['id']);
+
+  // automatically bookId will be fetched from the url since i have enabled withComponentInputBinding()
+  // in angular route provider in app.config.ts
+  bookId = input.required<number>();
 
   isReadMe = signal(false);
 
   ngOnInit(): void {
-    console.log('book id', this.bookId);
+    console.log('book id', this.bookId());
 
-    this.http.get<Book>(`${URL}/books/${this.bookId()}`).subscribe({
+    this.http.get<Book>(`${URL}/books/${+this.bookId()}`).subscribe({
       next: (response: Book) => {
         console.log('response', response);
         this.book.set(response);
