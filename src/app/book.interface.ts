@@ -7,12 +7,12 @@ export interface Book {
   publisher: string;
   pages: number;
   language: string;
-  genres: Genre[]; // Assuming genres is an array of strings
+  genres: Genre[];
   coverImage: string;
   averageRating: number;
   ratingCount: number;
-  createdAt: string; // ISO date format
-  updatedAt: string; // ISO date format
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Genre {
@@ -50,4 +50,12 @@ export interface BookResponse {
   numberOfElements: number;
   first: boolean;
   empty: boolean;
+}
+
+export interface ApiError {
+  message: string;
+  code: number;
+  data: {
+    [key: string]: string;
+  };
 }

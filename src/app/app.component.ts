@@ -1,13 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { URL } from './features/shared/constants';
+import { AuthService } from './features/Auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -26,5 +25,14 @@ import { URL } from './features/shared/constants';
 export class AppComponent implements OnInit {
   title = 'bookreviewapp';
 
-  ngOnInit(): void {}
+  authService = inject(AuthService);
+  router = inject(Router);
+
+  ngOnInit(): void {
+    if (this.authService.currentUserSignal() !== null) {
+      this.router.navigateByUrl('/books');
+    } else {
+      this.router.navigateByUrl('/login');
+    }
+  }
 }
