@@ -78,6 +78,13 @@ export const routes: Routes = [
           ).then((c) => c.ProfileDashboardComponent),
       },
       {
+        path: 'profile/edit',
+        loadComponent: () =>
+          import(
+            '../app/features/UserDashboard/ProfileDashboard/ProfileEdit/ProfileEdit.component'
+          ).then((c) => c.ProfileEditComponent),
+      },
+      {
         path: 'books',
         loadComponent: () =>
           import(

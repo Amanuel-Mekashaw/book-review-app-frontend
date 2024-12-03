@@ -28,6 +28,7 @@
         [src]="'https://placehold.co/400x500'"
         [alt]="book()?.title + 'cover image'"
       />
+
       <!-- Text block  -->
       <section class="flex flex-col gap-5">
         <!-- title and description  -->
@@ -133,15 +134,30 @@
           class="flex flex-col gap-5 rounded-xl border-2 bg-slate-50 p-5 shadow-xl"
         >
           <div class="flex items-center gap-3">
-            <div class="size-16 rounded-full bg-slate-300"></div>
+            <hlm-avatar variant="large">
+              <img
+                src="/assets/avatar.png"
+                [alt]="book()?.title + 'cover image'"
+                hlmAvatarImage
+              />
+              <span class="bg-[#FD005B] text-white" hlmAvatarFallback>{{
+                book()?.author?.username.at(0).toUpperCase()
+              }}</span>
+            </hlm-avatar>
             <div>
               <h1 class="text-xl font-bold">
-                {{ book()?.title }}
+                {{ book()?.author?.authorDetails?.firstName || "Amanuel" }}
+                {{ book()?.author?.authorDetails?.lastName || "Mekashaw" }}
               </h1>
-              <p>34 Books</p>
+              <p>{{ book()?.author?.username }}</p>
             </div>
           </div>
-          <p class="text-lg">{{ book()?.description }}</p>
+          <p class="text-lg">
+            {{
+              book()?.author?.authorDetails?.biography ||
+                "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi vero eveniet magni vitae incidunt dolores quibusdam temporibus voluptatum eaque eos?"
+            }}
+          </p>
         </div>
       </section>
     </section>

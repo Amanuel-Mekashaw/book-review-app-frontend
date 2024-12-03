@@ -20,35 +20,53 @@ export type AuthResponse = {
   code: number;
   data: {
     token: string;
-    user: {
-      id: number;
-      email: string;
-      passwordHash: string;
-      role: 'USER' | 'ADMIN' | string;
-      status: 'ACTIVE' | 'INACTIVE' | string;
-      authorDetails: {
-        id: number;
-        firstName: string;
-        lastName: string;
-        user: string;
-        profilePicture: string;
-        biography: string;
-        socialLinks: string[];
-      };
-      createdAt: string; // ISO date string
-      updatedAt: string; // ISO date string
-      authorities: {
-        authority: string;
-      }[];
-      username: string;
-      password: string;
-      enabled: boolean;
-      accountNonExpired: boolean;
-      credentialsNonExpired: boolean;
-      accountNonLocked: boolean;
-    };
+    user: User;
   };
 };
+
+export interface User {
+  id: number;
+  email: string;
+  passwordHash: string;
+  role: 'USER' | 'ADMIN' | string;
+  status: 'ACTIVE' | 'INACTIVE' | string;
+  authorDetails: AuthorDetails;
+  createdAt: string;
+  updatedAt: string;
+  authorities: {
+    authority: string;
+  }[];
+  username: string;
+  password: string;
+  enabled: boolean;
+  accountNonExpired: boolean;
+  credentialsNonExpired: boolean;
+  accountNonLocked: boolean;
+}
+
+export interface AuthorDetails {
+  id: number;
+  firstName: string;
+  lastName: string;
+  user: string;
+  profilePicture: string;
+  biography: string;
+  socialLinks: string[];
+}
+
+export interface AuthorDetailsResponse {
+  message: string;
+  code: number;
+  data: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    user: User;
+    profilePicture: string;
+    biography: string;
+    socialLinks: string[];
+  };
+}
 
 export type AuthError = {
   message: string;

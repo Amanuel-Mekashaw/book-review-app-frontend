@@ -1,3 +1,5 @@
+import { User } from './features/Auth/user.interface';
+
 export interface Book {
   id: number;
   title: string;
@@ -7,6 +9,7 @@ export interface Book {
   publisher: string;
   pages: number;
   language: string;
+  author?: User;
   genres: Genre[];
   coverImage: string;
   averageRating: number;

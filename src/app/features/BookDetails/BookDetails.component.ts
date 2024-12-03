@@ -13,11 +13,22 @@ import { Book } from '../../book.interface';
 import { ApiError } from '../../book.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
+import {
+  HlmAvatarComponent,
+  HlmAvatarFallbackDirective,
+  HlmAvatarImageDirective,
+} from '@spartan-ng/ui-avatar-helm';
 
 @Component({
   selector: 'app-book-details',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent],
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    HlmAvatarComponent,
+    HlmAvatarFallbackDirective,
+    HlmAvatarImageDirective,
+  ],
   templateUrl: './BookDetails.component.html',
   styleUrl: './BookDetails.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,6 +40,7 @@ export class BookDetailsComponent implements OnInit {
   book = signal<Book | null | undefined>(null);
   error = signal('');
   loading = signal(true);
+  authorLoading = signal(true);
 
   // bookId = signal(this.activeRoute.snapshot.params['id']);
 
@@ -41,6 +53,7 @@ export class BookDetailsComponent implements OnInit {
   ngOnInit(): void {
     console.log('book id', this.bookId());
 
+    // fetch book detail
     this.http.get<Book>(`${URL}/books/${+this.bookId()}`).subscribe({
       next: (response: Book) => {
         console.log('response', response);

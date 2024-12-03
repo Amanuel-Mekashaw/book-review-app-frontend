@@ -60,6 +60,9 @@ export class NavbarComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    this.authService.currentUserDetail.set(
+      JSON.parse(atob(localStorage.getItem('userDetail'))),
+    );
     this.authService.currentUserSignal.set(
       JSON.parse(atob(localStorage.getItem('user'))),
     );
