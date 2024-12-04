@@ -17,9 +17,9 @@
 
 <!-- loading books -->
 <div class="">
-  <div *ngIf="!loading() && !error()">
+  <div class="h-screen" *ngIf="!loading() && !error()">
     <div
-      class="grid max-h-screen grid-cols-1 gap-8 md:grid-cols-3"
+      class="grid grid-cols-1 gap-8 md:grid-cols-3"
       *ngIf="books().length > 0; else noBooks"
     >
       <app-book *ngFor="let book of books()" [book]="book"></app-book>

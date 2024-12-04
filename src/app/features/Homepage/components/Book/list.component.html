@@ -6,7 +6,7 @@
 >
   <!-- card image -->
   <img
-    [src]="'https://placehold.co/400x520'"
+    [src]="book()?.coverImage || 'https://placehold.co/400x520'"
     [alt]="book()?.title"
     class="h-full w-full object-cover"
   />
