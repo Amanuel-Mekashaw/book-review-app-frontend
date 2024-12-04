@@ -92,6 +92,13 @@ export const routes: Routes = [
           ).then((c) => c.BooksDashboardComponent),
       },
       {
+        path: 'books/edit/:bookId',
+        loadComponent: () =>
+          import(
+            '../app/features/UserDashboard/BooksDashboard/BookEdit/BookEdit.component'
+          ).then((c) => c.BookEditComponent),
+      },
+      {
         path: 'genres',
         loadComponent: () =>
           import(
