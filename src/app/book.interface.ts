@@ -1,4 +1,5 @@
 import { User } from './features/Auth/user.interface';
+import { Genre } from './genre.interface';
 
 export interface Book {
   id: number;
@@ -18,10 +19,20 @@ export interface Book {
   updatedAt: string;
 }
 
-export interface Genre {
+export interface BookRequest {
   id: number;
-  name: string;
+  title: string;
+  isbn: string;
   description: string;
+  publishedYear: number;
+  publisher: string;
+  pages: number;
+  language: string;
+  author?: User;
+  genreIds: number[];
+  coverImage: string;
+  averageRating: number;
+  ratingCount: number;
   createdAt: string;
   updatedAt: string;
 }

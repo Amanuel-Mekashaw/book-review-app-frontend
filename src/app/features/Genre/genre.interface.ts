@@ -1,4 +1,4 @@
-import { Genre } from '../../book.interface';
+import { Genre } from '../../genre.interface';
 
 export interface GenreApiResponse {
   totalElements: number;

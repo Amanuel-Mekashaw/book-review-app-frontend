@@ -52,6 +52,8 @@ export class ProfileFormComponent {
   error = signal('');
 
   ngOnInit(): void {
+    console.log('userId', this.user?.data?.id);
+
     this.profileForm = this.formBuilder.group({
       id: new FormControl(this.user?.data?.id | 1, Validators.required),
       firstName: new FormControl(
@@ -113,6 +115,8 @@ export class ProfileFormComponent {
 
   onSubmit() {
     if (this.profileForm.valid && this.user) {
+      console.log(this.profileForm.getRawValue());
+
       this.http
         .put<AuthorDetailsResponse>(
           `${URL}/userdetail/${this.user?.data?.id}`,
