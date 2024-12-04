@@ -1,0 +1,243 @@
+<hlm-toaster richColors closeButton position="top-right" />
+<!-- user detail setting form -->
+<form
+  class="mt-8 flex flex-col gap-5"
+  [formGroup]="bookForm"
+  (ngSubmit)="onSubmit()"
+>
+  <input type="hidden" formControlName="id" />
+
+  <label hlmLabel class="w-full"
+    >Book title
+    <input
+      hlmInput
+      formControlName="title"
+      type="text"
+      placeholder="Enter the book name"
+      class="w-full"
+    />
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched"
+    >
+      <small *ngIf="bookForm.get('title')?.errors">title is required</small>
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >ISBN
+    <input
+      hlmInput
+      formControlName="isbn"
+      type="text"
+      placeholder="Enter book isbn"
+      class="w-full"
+    />
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="bookForm.get('isbn')?.invalid && bookForm.get('isbn')?.touched"
+    >
+      <small *ngIf="bookForm.get('isbn')?.errors">Isbn is required</small>
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Description
+    <textarea
+      hlmInput
+      formControlName="description"
+      type="text"
+      placeholder="Enter book description"
+      class="w-full"
+      row="20"
+    ></textarea>
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        bookForm.get('description')?.invalid &&
+        bookForm.get('description')?.touched
+      "
+    >
+      <small *ngIf="bookForm.get('description')?.errors"
+        >Description is required</small
+      >
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Book Cover Image
+    <input
+      hlmInput
+      formControlName="coverImage"
+      type="text"
+      placeholder="Enter cover image"
+      class="w-full"
+    />
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Published Year
+    <input
+      hlmInput
+      formControlName="publishedYear"
+      type="text"
+      placeholder="Enter book Published Year"
+      class="w-full"
+    />
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        bookForm.get('publishedYear')?.invalid &&
+        bookForm.get('publishedYear')?.touched
+      "
+    >
+      <small *ngIf="bookForm.get('publishedYear')?.errors"
+        >published year is required</small
+      >
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Publisher
+    <input
+      hlmInput
+      formControlName="publisher"
+      type="text"
+      placeholder="Enter book Publisher"
+      class="w-full"
+    />
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        bookForm.get('publisher')?.invalid && bookForm.get('publisher')?.touched
+      "
+    >
+      <small *ngIf="bookForm.get('publisher')?.errors"
+        >Publisher is required</small
+      >
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Pages
+    <input
+      hlmInput
+      formControlName="pages"
+      type="number"
+      placeholder="How many pages the book have"
+      class="w-full"
+    />
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="bookForm.get('pages')?.invalid && bookForm.get('pages')?.touched"
+    >
+      <small *ngIf="bookForm.get('pages')?.errors">Pages is required</small>
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Language
+    <input
+      hlmInput
+      formControlName="language"
+      type="text"
+      placeholder="in what language is the book written"
+      class="w-full"
+    />
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        bookForm.get('language')?.invalid && bookForm.get('language')?.touched
+      "
+    >
+      <small *ngIf="bookForm.get('language')?.errors"
+        >Language is required</small
+      >
+    </div>
+  </label>
+
+  <input hlmInput formControlName="createdAt" type="hidden" class="w-full" />
+
+  <input hlmInput formControlName="updatedAt" type="hidden" class="w-full" />
+
+  <input hlmInput formControlName="authorId" type="hidden" class="w-full" />
+
+  <div formArrayName="genreIds">
+    <div class="flex w-full items-center justify-between gap-3">
+      <label hlmLabel>Genres</label>
+      <button
+        hlmBtn
+        variant="outline"
+        type="button"
+        (click)="addGenreId()"
+        class="flex items-center gap-2"
+      >
+        <i class="fa-solid fa-hashtag"></i>
+        <span> Add Genre</span>
+      </button>
+    </div>
+
+    <!-- Add Socials -->
+    <div *ngFor="let link of genreIds.controls; let i = index">
+      <!-- loading state -->
+      <div class="w-full" *ngIf="loading()">
+        <app-loading-spinner></app-loading-spinner>
+        <p class="text-2xl font-bold text-green-500">Loading genres...</p>
+      </div>
+
+      <!-- genre form -->
+      <div class="flex w-full items-end gap-5">
+        <label class="w-full">
+          Genre
+          <!-- <input hlmInput [formControlName]="i" type="number" class="w-full" /> -->
+          <brn-select
+            class="w-full"
+            placeholder="Select a Genre"
+            [formControlName]="i"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value />
+            </hlm-select-trigger>
+            <hlm-select-content class="w-full">
+              @for (genre of genres(); track $index) {
+                <hlm-option class="w-full" [value]="genre.id">{{
+                  genre.name
+                }}</hlm-option>
+              }
+            </hlm-select-content>
+          </brn-select>
+          <pre *ngIf="bookForm.get('genreIds.at(i)')?.invalid">{{
+            bookForm.get("genreIds.at(i)")?.errors | json
+          }}</pre>
+          <div
+            class="flex flex-col font-normal text-red-500"
+            *ngIf="
+              bookForm.get('genreIds.at(i)')?.invalid &&
+              bookForm.get('genreIds.at(i)')?.touched &&
+              bookForm.get('genreIds.at(i)')?.hasError
+            "
+          >
+            <small *ngIf="bookForm.get('genreIds.at(i)')?.errors"
+              >invalid Genre</small
+            >
+          </div>
+        </label>
+        <button
+          hlmBtn
+          variant="secondary"
+          type="button"
+          (click)="removeGenreId(i)"
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button [disabled]="bookForm.invalid" type="submit" hlmBtn variant="default">
+    Submit
+  </button>
+</form>

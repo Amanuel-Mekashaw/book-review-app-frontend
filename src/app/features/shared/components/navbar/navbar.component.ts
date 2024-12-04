@@ -60,11 +60,15 @@ export class NavbarComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.authService.currentUserDetail.set(
-      JSON.parse(atob(localStorage.getItem('userDetail'))),
-    );
+    if (this.authService.currentUserDetail() !== null) {
+      this.authService.currentUserDetail.set(
+        JSON.parse(atob(localStorage.getItem('userDetail'))),
+      );
+    }
+
+    // TODO: encrypt this information
     this.authService.currentUserSignal.set(
-      JSON.parse(atob(localStorage.getItem('user'))),
+      JSON.parse(localStorage.getItem('user')),
     );
   }
 
@@ -76,6 +80,7 @@ export class NavbarComponent implements OnInit {
     this.authService.currentUserSignal.set(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('userDetail');
     this.router.navigateByUrl('/login');
   }
 }
