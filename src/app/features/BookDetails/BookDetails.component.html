@@ -45,6 +45,7 @@
               *ngIf="
                 authService.currentUserDetail()?.data.id === author()?.data?.id
               "
+              (click)="editBook(book()?.id)"
               class="flex gap-3"
               hlmBtn
               variant="default"

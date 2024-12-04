@@ -6,5 +6,7 @@
     quisquam at? Necessitatibus delectus cupiditate corrupti sunt ipsam a amet."
   ></app-hero-header>
 
-  <app-book-form [book]=""></app-book-form>
+  <pre>{{ book() | json }}</pre>
+
+  <app-book-form [book]="book()"></app-book-form>
 </div>

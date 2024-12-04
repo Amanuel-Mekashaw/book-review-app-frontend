@@ -21,6 +21,7 @@ import {
 import { AuthorDetails, AuthorDetailsResponse } from '../Auth/user.interface';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { AuthService } from '../Auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-details',
@@ -41,6 +42,7 @@ export class BookDetailsComponent implements OnInit {
   // activeRoute = inject(ActivatedRoute);
   http = inject(HttpClient);
   authService = inject(AuthService);
+  router = inject(Router);
 
   book = signal<Book | null | undefined>(null);
   author = signal<AuthorDetailsResponse>(null);
@@ -105,5 +107,9 @@ export class BookDetailsComponent implements OnInit {
 
   openReadMe() {
     this.isReadMe.update((current) => !current);
+  }
+
+  editBook(id: number) {
+    this.router.navigateByUrl(`/dashboard/books/edit/${id}`);
   }
 }
