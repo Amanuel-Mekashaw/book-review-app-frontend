@@ -24,8 +24,8 @@
     <section class="flex flex-col gap-5 md:flex-row">
       <!-- don't forget to add images -->
       <img
-        class="aspect-[9/16] max-h-dvh w-full overflow-hidden rounded-lg object-cover shadow-lg"
-        [src]="'https://placehold.co/400x500'"
+        class="h-[500px] max-h-min w-[400px] overflow-hidden rounded-lg object-cover shadow-lg"
+        [src]="book()?.coverImage || 'https://placehold.co/400x500'"
         [alt]="book()?.title + 'cover image'"
       />
 
@@ -33,11 +33,26 @@
       <section class="flex flex-col gap-5">
         <!-- title and description  -->
         <div class="flex flex-col gap-5">
-          <h1
-            class="text-center text-3xl font-bold text-green-500 md:text-left"
-          >
-            {{ book()?.title }}
-          </h1>
+          <div class="flex items-center justify-between">
+            <h1
+              class="text-center text-3xl font-bold text-green-500 md:text-left"
+            >
+              {{ book()?.title }}
+            </h1>
+
+            <!-- edit button -->
+            <button
+              *ngIf="
+                authService.currentUserDetail()?.data.id === author()?.data?.id
+              "
+              class="flex gap-3"
+              hlmBtn
+              variant="default"
+            >
+              <i class="fa-solid fa-pen"></i
+              ><span class="hidden md:block">Edit</span>
+            </button>
+          </div>
 
           <!-- Description section with read more -->
           <div class="relative">
@@ -62,7 +77,7 @@
             class="flex items-center gap-2 rounded-md border-4 border-green-500/10 p-2 tracking-wide text-green-500"
             (click)="openReadMe()"
           >
-            Read more...
+            {{ isReadMe() === true ? "Read less" : "Read More..." }}
             <span [ngClass]="{ 'text-sm': true, 'rotate-180': !isReadMe() }">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,8 +142,33 @@
     </section>
 
     <!-- About the Author -->
+    <!-- author loading state -->
+    <div
+      class="flex w-full flex-col items-center justify-center gap-5"
+      *ngIf="authorLoading()"
+    >
+      <app-loading-spinner></app-loading-spinner>
+      <p class="text-2xl font-bold text-green-500">
+        Loading author information...
+      </p>
+    </div>
+
+    <!-- author error state -->
+    <div
+      class="flex w-full flex-col items-center justify-center"
+      *ngIf="authorError() !== ''"
+    >
+      <p
+        class="rounded-lg bg-green-200 p-5 text-center text-2xl font-bold text-green-500"
+      >
+        Couldn't find author information
+      </p>
+    </div>
     <section>
-      <section class="flex flex-col gap-5">
+      <section
+        class="flex flex-col gap-5"
+        *ngIf="!authorLoading() && !authorError()"
+      >
         <h2 class="text-2xl font-bold">About the Author</h2>
         <div
           class="flex flex-col gap-5 rounded-xl border-2 bg-slate-50 p-5 shadow-xl"
@@ -136,7 +176,7 @@
           <div class="flex items-center gap-3">
             <hlm-avatar variant="large">
               <img
-                src="/assets/avatar.png"
+                [src]="author()?.data?.profilePicture || '/assets/avatar.png'"
                 [alt]="book()?.title + 'cover image'"
                 hlmAvatarImage
               />
@@ -146,15 +186,15 @@
             </hlm-avatar>
             <div>
               <h1 class="text-xl font-bold">
-                {{ book()?.author?.authorDetails?.firstName || "Amanuel" }}
-                {{ book()?.author?.authorDetails?.lastName || "Mekashaw" }}
+                {{ author()?.data?.firstName || "Amanuel" }}
+                {{ author()?.data?.lastName || "Mekashaw" }}
               </h1>
               <p>{{ book()?.author?.username }}</p>
             </div>
           </div>
           <p class="text-lg">
             {{
-              book()?.author?.authorDetails?.biography ||
+              author()?.data?.biography ||
                 "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi vero eveniet magni vitae incidunt dolores quibusdam temporibus voluptatum eaque eos?"
             }}
           </p>

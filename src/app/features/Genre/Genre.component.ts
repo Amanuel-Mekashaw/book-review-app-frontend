@@ -4,13 +4,14 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Genre } from '../../book.interface';
+
 import { HttpClient } from '@angular/common/http';
 import { GenreApiResponse } from './genre.interface';
 import { ApiError } from '../../book.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
 import { URL } from '../shared/constants';
+import { Genre } from '../../genre.interface';
 
 @Component({
   selector: 'app-genre',

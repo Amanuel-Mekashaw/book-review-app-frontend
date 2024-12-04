@@ -18,6 +18,9 @@ import {
   HlmAvatarFallbackDirective,
   HlmAvatarImageDirective,
 } from '@spartan-ng/ui-avatar-helm';
+import { AuthorDetails, AuthorDetailsResponse } from '../Auth/user.interface';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { AuthService } from '../Auth/auth.service';
 
 @Component({
   selector: 'app-book-details',
@@ -28,6 +31,7 @@ import {
     HlmAvatarComponent,
     HlmAvatarFallbackDirective,
     HlmAvatarImageDirective,
+    HlmButtonDirective,
   ],
   templateUrl: './BookDetails.component.html',
   styleUrl: './BookDetails.component.css',
@@ -36,9 +40,12 @@ import {
 export class BookDetailsComponent implements OnInit {
   // activeRoute = inject(ActivatedRoute);
   http = inject(HttpClient);
+  authService = inject(AuthService);
 
   book = signal<Book | null | undefined>(null);
+  author = signal<AuthorDetailsResponse>(null);
   error = signal('');
+  authorError = signal('');
   loading = signal(true);
   authorLoading = signal(true);
 
@@ -52,13 +59,18 @@ export class BookDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('book id', this.bookId());
-
+    console.log(
+      'authorId from LS',
+      this.authService.currentUserDetail()?.data?.user?.id,
+    );
     // fetch book detail
     this.http.get<Book>(`${URL}/books/${+this.bookId()}`).subscribe({
       next: (response: Book) => {
         console.log('response', response);
         this.book.set(response);
         this.loading.set(false);
+
+        this.fetchAuthorDetail();
       },
       error: (error: ApiError) => {
         console.log('error', error);
@@ -66,6 +78,29 @@ export class BookDetailsComponent implements OnInit {
         this.loading.set(false);
       },
     });
+
+    console.log('id', this.book()?.author?.id);
+  }
+
+  fetchAuthorDetail() {
+    // fetch book author
+    this.http
+      .get<AuthorDetailsResponse>(
+        `${URL}/userdetail/by-authordetail/${this.book()?.author?.id}`,
+      )
+      .subscribe({
+        next: (response: AuthorDetailsResponse) => {
+          this.authorLoading.set(true);
+          console.log('authordetail', response);
+          this.author.set(response);
+          this.authorLoading.set(false);
+        },
+        error: (error: ApiError) => {
+          console.log('error', error);
+          this.authorError.set(error.message);
+          this.authorLoading.set(false);
+        },
+      });
   }
 
   openReadMe() {
