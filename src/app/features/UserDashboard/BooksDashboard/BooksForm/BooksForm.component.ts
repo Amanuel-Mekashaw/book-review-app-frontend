@@ -5,7 +5,10 @@ import {
   inject,
   input,
   Input,
+  OnChanges,
+  OnInit,
   signal,
+  SimpleChanges,
 } from '@angular/core';
 import {
   FormArray,
@@ -49,8 +52,8 @@ import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
   styleUrl: './BooksForm.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BooksFormComponent {
-  @Input() book!: BookRequest;
+export class BooksFormComponent implements OnInit, OnChanges {
+  @Input() bookRecieved!: Book;
 
   bookId = input<number | null>();
 
@@ -59,6 +62,7 @@ export class BooksFormComponent {
   http = inject(HttpClient);
 
   genres = signal<Genre[] | null>([]);
+  book = signal<Book | null>(null);
 
   bookForm: FormGroup;
   message = signal('');
@@ -66,49 +70,84 @@ export class BooksFormComponent {
   error = signal('');
 
   ngOnInit(): void {
-    console.log('bookId', this.bookId());
+    console.log('First Start-------------------------');
 
-    // form initializing
-    this.bookForm = this.formBuilder.group({
-      id: new FormControl(this.book?.id | 1, Validators.required),
-      title: new FormControl(this.book?.title || '', Validators.required),
-      isbn: new FormControl(this.book?.isbn || '', Validators.required),
-      description: new FormControl(this.book?.description || ''),
-      coverImage: new FormControl(this.book?.coverImage),
-      authorId: [
-        this.authService.currentUserSignal().data.user.id,
-        Validators.required,
-      ],
-      publishedYear: new FormControl(
-        this.book?.publishedYear || '',
-        Validators.required,
-      ),
-      publisher: new FormControl(
-        this.book?.publisher || '',
-        Validators.required,
-      ),
-      pages: new FormControl(this.book?.pages || '', Validators.required),
-      language: new FormControl(this.book?.language || '', Validators.required),
-      createdAt: new FormControl(
-        this.book?.createdAt || new Date().toISOString(),
-        Validators.required,
-      ),
-      updatedAt: new FormControl(new Date().toISOString(), Validators.required),
-      genreIds: this.formBuilder.array(this.book?.genreIds || []),
-    });
+    console.log('Second Form Init -------------------------');
 
     // retrieve genre
-
     this.http.get<GenreApiResponse>(`${URL}/genre`).subscribe({
       next: (response: GenreApiResponse) => {
+        console.log('Third Genre -------------------------');
         this.loading.set(true);
-        console.log('response', response);
+        // console.log('Genre', response);
         this.genres.set(response.content);
+        this.book.set(this.bookRecieved);
         this.loading.set(false);
+        // this.logShit();
+        console.log('Forth Genre finished -------------------------');
       },
       error: (error: AuthError) => {
         this.errorResponse(error);
+        console.log('Five Error -------------------------');
       },
+    });
+  }
+
+  ngOnChanges(): void {
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
+    if (!this.bookRecieved) {
+      // If bookRecieved is not available, wait for it
+      return;
+    }
+
+    // form initializing
+    this.bookForm = this.formBuilder.group({
+      id: new FormControl(this.bookRecieved?.id | 1, [Validators.required]),
+      title: new FormControl(this.bookRecieved?.title || '', [
+        Validators.required,
+      ]),
+      isbn: new FormControl(this.bookRecieved?.isbn || '', [
+        Validators.required,
+      ]),
+      description: new FormControl(this.bookRecieved?.description || ''),
+      coverImage: new FormControl(this.bookRecieved?.coverImage),
+      authorId: [
+        this.authService.currentUserSignal().data.user.id,
+        [Validators.required],
+      ],
+      publishedYear: new FormControl(this.bookRecieved?.publishedYear || '', [
+        Validators.required,
+      ]),
+      publisher: new FormControl(this.bookRecieved?.publisher || '', [
+        Validators.required,
+      ]),
+      pages: new FormControl(this.bookRecieved?.pages || '', [
+        Validators.required,
+      ]),
+      language: new FormControl(this.bookRecieved?.language || '', [
+        Validators.required,
+      ]),
+      createdAt: new FormControl(
+        this.bookRecieved?.createdAt || new Date().toISOString(),
+        [Validators.required],
+      ),
+      updatedAt: new FormControl(new Date().toISOString(), [
+        Validators.required,
+      ]),
+      genreIds: this.formBuilder.array(this.bookRecieved?.genres || []),
+    });
+  }
+
+  logShit() {
+    console.log({
+      'book id': this.bookId(),
+      'Book revieved id': this.bookRecieved?.id,
+      'Main book': this.book(),
+      'error state': this.error(),
+      'loading state': this.loading(),
     });
   }
 
@@ -142,37 +181,37 @@ export class BooksFormComponent {
 
   onSubmit() {
     console.log(this.bookForm.value);
-    if (this.bookForm.valid && this.book) {
-      this.http
-        .put<AuthorDetailsResponse>(
-          `${URL}/books/${this.book?.id}`,
-          this.bookForm.getRawValue(),
-        )
-        .subscribe({
-          next: (response: AuthorDetailsResponse) => {
-            this.nextResponse(response);
-          },
-          error: (error: AuthError) => {
-            this.errorResponse(error);
-          },
-        });
-    }
+    // if (this.bookForm.valid && this.book) {
+    //   this.http
+    //     .put<AuthorDetailsResponse>(
+    //       `${URL}/books/${this.book()?.id}`,
+    //       this.bookForm.getRawValue(),
+    //     )
+    //     .subscribe({
+    //       next: (response: AuthorDetailsResponse) => {
+    //         this.nextResponse(response);
+    //       },
+    //       error: (error: AuthError) => {
+    //         this.errorResponse(error);
+    //       },
+    //     });
+    // }
 
-    if (this.bookForm.valid && !this.book) {
-      this.http
-        .post<AuthorDetailsResponse>(
-          `${URL}/books`,
-          this.bookForm.getRawValue(),
-        )
-        .subscribe({
-          next: (response: AuthorDetailsResponse) => {
-            this.nextResponse(response);
-          },
-          error: (error: AuthError) => {
-            this.errorResponse(error);
-          },
-        });
-    }
+    // if (this.bookForm.valid && !this.book) {
+    //   this.http
+    //     .post<AuthorDetailsResponse>(
+    //       `${URL}/books`,
+    //       this.bookForm.getRawValue(),
+    //     )
+    //     .subscribe({
+    //       next: (response: AuthorDetailsResponse) => {
+    //         this.nextResponse(response);
+    //       },
+    //       error: (error: AuthError) => {
+    //         this.errorResponse(error);
+    //       },
+    //     });
+    // }
   }
 
   showToastSuccess() {

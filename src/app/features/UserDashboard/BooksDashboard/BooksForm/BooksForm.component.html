@@ -2,6 +2,7 @@
 <!-- user detail setting form -->
 <form
   class="mt-8 flex flex-col gap-5"
+  *ngIf="bookForm"
   [formGroup]="bookForm"
   (ngSubmit)="onSubmit()"
 >

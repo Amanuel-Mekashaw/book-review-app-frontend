@@ -1,0 +1,55 @@
+<hlm-toaster richColors closeButton position="top-right" />
+<!-- user detail setting form -->
+<form
+  class="mt-8 flex flex-col gap-5"
+  [formGroup]="genreForm"
+  (ngSubmit)="onSubmit()"
+>
+  <input type="hidden" formControlName="id" />
+
+  <label hlmLabel class="w-full"
+    >Genre Name
+    <input
+      hlmInput
+      formControlName="name"
+      type="text"
+      placeholder="Enter genre name"
+      class="w-full"
+    />
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="genreForm.get('name')?.invalid && genreForm.get('name')?.touched"
+    >
+      <small *ngIf="genreForm.get('name')?.errors">name is required</small>
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Description
+    <textarea
+      hlmInput
+      formControlName="description"
+      type="text"
+      placeholder="Enter your description"
+      class="w-full"
+      row="20"
+    ></textarea>
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        genreForm.get('description')?.invalid &&
+        genreForm.get('description')?.touched
+      "
+    >
+      <small *ngIf="genreForm.get('description')?.errors"
+        >description is required</small
+      >
+    </div>
+  </label>
+
+  <button [disabled]="genreForm.invalid" type="submit" hlmBtn variant="default">
+    Submit
+  </button>
+</form>

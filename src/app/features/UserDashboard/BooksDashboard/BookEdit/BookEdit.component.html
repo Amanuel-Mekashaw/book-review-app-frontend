@@ -6,7 +6,19 @@
     quisquam at? Necessitatibus delectus cupiditate corrupti sunt ipsam a amet."
   ></app-hero-header>
 
-  <pre>{{ book() | json }}</pre>
+  <!-- <pre>{{ book() | json }}</pre> -->
+  <!-- loading state -->
+  <div
+    class="flex w-full flex-col items-center justify-center gap-5"
+    *ngIf="loading()"
+  >
+    <app-loading-spinner></app-loading-spinner>
+    <p class="text-2xl font-bold text-green-500">
+      Loading book with id {{ bookId() }} ...
+    </p>
+  </div>
 
-  <app-book-form [book]="book()"></app-book-form>
+  <section *ngIf="!loading() && !error()" class="">
+    <app-book-form [bookId]="bookId()" [bookRecieved]="book()"></app-book-form>
+  </section>
 </div>
