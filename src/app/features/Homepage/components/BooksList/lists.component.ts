@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  input,
   OnInit,
   signal,
 } from '@angular/core';
@@ -28,20 +29,32 @@ export type ItemProps = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BooksListsComponent implements OnInit {
+  inputBooks = input<Book[]>();
   books = signal<Book[]>([]);
 
-  loading = signal(true);
+  loading = signal(false);
   error = signal<string | null>(null);
 
   constructor(private booksService: BooksService) {}
 
   ngOnInit(): void {
+    console.log(this.inputBooks());
+    if (this.inputBooks() !== undefined) {
+      this.books.set(this.inputBooks());
+    } else {
+      this.fetchBooks();
+    }
+  }
+
+  fetchBooks() {
     this.booksService.getBooks().subscribe({
       next: (data: BookResponse) => {
+        this.loading.set(true);
         this.books.set(data.content);
         this.loading.set(false);
       },
       error: (err) => {
+        this.loading.set(true);
         this.error.set('Failed to load books.');
         this.loading.set(false);
         console.log(err.message);

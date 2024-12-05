@@ -19,14 +19,22 @@
 <div class="my-3">
   <div class="h-screen" *ngIf="!loading() && !error()">
     <div
+      class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
+      *ngIf="inputBooks() !== undefined"
+    >
+      <app-book *ngFor="let book of inputBooks()" [book]="book"></app-book>
+    </div>
+    <div
       class="grid grid-cols-1 gap-8 md:grid-cols-3"
-      *ngIf="books().length > 0; else noBooks"
+      *ngIf="inputBooks() === undefined && books()?.length > 0; else noBooks"
     >
       <app-book *ngFor="let book of books()" [book]="book"></app-book>
     </div>
 
+    <!-- no books -->
     <ng-template #noBooks>
-      <p>No books available.</p>
+      <div class="flex w-full flex-col items-center justify-center gap-5"></div>
+      <p class="text-green-500">No books available.</p>
     </ng-template>
   </div>
 </div>
