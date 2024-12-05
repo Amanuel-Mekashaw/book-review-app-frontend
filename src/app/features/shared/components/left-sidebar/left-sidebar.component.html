@@ -8,7 +8,7 @@
     </button>
     <!-- the close button -->
     @if (!isLeftSidebarCollapsed()) {
-      <div class="logo-text">AM Books</div>
+      <div class="logo-text cursor-pointer" routerLink="/books">AM Books</div>
       <button class="btn-close text-white" (click)="closeSidenav()">
         <i
           class="fal fa-solid fa-times close-icon rounded-full p-3 hover:bg-white/80 hover:text-black"
