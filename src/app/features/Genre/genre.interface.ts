@@ -28,3 +28,9 @@ export interface Pageable {
   paged: boolean;
   unpaged: boolean;
 }
+
+export interface GenrePostResponse {
+  message: 'string';
+  code: 0;
+  data: Genre;
+}

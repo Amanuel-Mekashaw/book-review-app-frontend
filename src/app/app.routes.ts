@@ -51,6 +51,14 @@ export const routes: Routes = [
             (c) => c.GenreComponent,
           ),
       },
+
+      {
+        path: 'genres/:genreId',
+        loadComponent: () =>
+          import('../app/features/GenreSingle/GenreSingle.component').then(
+            (c) => c.GenreSingleComponent,
+          ),
+      },
       {
         path: 'collections',
         title: 'Collection page',

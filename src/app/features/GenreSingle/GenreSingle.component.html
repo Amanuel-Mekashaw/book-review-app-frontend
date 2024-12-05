@@ -1,0 +1,32 @@
+<!-- loading state -->
+<div
+  class="flex h-screen w-full flex-col items-center justify-center gap-5"
+  *ngIf="loading()"
+>
+  <app-loading-spinner></app-loading-spinner>
+  <p class="text-2xl font-bold text-green-500">Loading Genres...</p>
+</div>
+
+<!-- error state -->
+<div
+  class="flex h-screen w-full flex-col items-center justify-center"
+  *ngIf="error() !== ''"
+>
+  <p class="text-center text-2xl font-bold text-red-500">
+    {{ error() }}
+  </p>
+</div>
+
+<div
+  *ngIf="!loading() && !error()"
+  class="mx-[1rem] my-[7rem] flex flex-col gap-5 md:mx-[5rem] xl:mx-[10rem]"
+>
+  <app-hero-header
+    [title]="genre()?.name"
+    [subtitle]="genre()?.description"
+  ></app-hero-header>
+
+  <div>
+    <app-books [inputBooks]="BooksByGenre()"></app-books>
+  </div>
+</div>

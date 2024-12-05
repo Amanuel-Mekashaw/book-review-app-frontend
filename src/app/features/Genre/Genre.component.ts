@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
 import { URL } from '../shared/constants';
 import { Genre } from '../../genre.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-genre',
@@ -23,6 +24,7 @@ import { Genre } from '../../genre.interface';
 })
 export class GenreComponent {
   http = inject(HttpClient);
+  router = inject(Router);
 
   genres = signal<Genre[] | null | undefined>(null);
   error = signal('');
@@ -43,5 +45,10 @@ export class GenreComponent {
         this.loading.set(false);
       },
     });
+  }
+
+  fetchBookByGenre(id: number) {
+    console.log(id);
+    this.router.navigateByUrl(`/genres/${id}`);
   }
 }
