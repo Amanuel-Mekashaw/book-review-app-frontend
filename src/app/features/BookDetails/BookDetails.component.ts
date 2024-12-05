@@ -22,6 +22,7 @@ import { AuthorDetails, AuthorDetailsResponse } from '../Auth/user.interface';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { AuthService } from '../Auth/auth.service';
 import { Router } from '@angular/router';
+import { Genre } from '../../genre.interface';
 
 @Component({
   selector: 'app-book-details',
@@ -46,6 +47,7 @@ export class BookDetailsComponent implements OnInit {
 
   book = signal<Book | null | undefined>(null);
   author = signal<AuthorDetailsResponse>(null);
+  genre = signal<Genre[] | null>(null);
   error = signal('');
   authorError = signal('');
   loading = signal(true);
@@ -60,11 +62,10 @@ export class BookDetailsComponent implements OnInit {
   isReadMe = signal(false);
 
   ngOnInit(): void {
-    console.log('book id', this.bookId());
-    console.log(
-      'authorId from LS',
-      this.authService.currentUserDetail()?.data?.user?.id,
-    );
+    // console.log(
+    //   'authorId from LS',
+    //   this.authService.currentUserDetail()?.data?.user?.id,
+    // );
     // fetch book detail
     this.http.get<Book>(`${URL}/books/${+this.bookId()}`).subscribe({
       next: (response: Book) => {
@@ -73,9 +74,10 @@ export class BookDetailsComponent implements OnInit {
         this.loading.set(false);
 
         this.fetchAuthorDetail();
+        this.fetchGenre();
       },
       error: (error: ApiError) => {
-        console.log('error', error);
+        // console.log('error', error);
         this.error.set(error.message);
         this.loading.set(false);
       },
@@ -85,7 +87,8 @@ export class BookDetailsComponent implements OnInit {
   }
 
   fetchAuthorDetail() {
-    // fetch book author
+    // fetch book genre
+
     this.http
       .get<AuthorDetailsResponse>(
         `${URL}/userdetail/by-authordetail/${this.book()?.author?.id}`,
@@ -103,6 +106,26 @@ export class BookDetailsComponent implements OnInit {
           this.authorLoading.set(false);
         },
       });
+  }
+
+  fetchGenre() {
+    // fetch book author
+    // fetch book genre
+    this.book()?.genres.map((genre, index) => {
+      this.http.get<Genre>(`${URL}/genre/${index}`).subscribe({
+        next: (response: Genre) => {
+          this.authorLoading.set(true);
+          console.log('authordetail', response);
+          this.genre.set([response]);
+          this.authorLoading.set(false);
+        },
+        error: (error: ApiError) => {
+          console.log('error', error);
+          this.authorError.set(error.message);
+          this.authorLoading.set(false);
+        },
+      });
+    });
   }
 
   openReadMe() {

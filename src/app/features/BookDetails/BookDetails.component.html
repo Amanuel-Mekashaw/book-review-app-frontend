@@ -130,11 +130,11 @@
               </div>
             }
 
-            @if (book().genres.length > 0) {
-              @for (genre of book().genres; track $index) {
-                <a class="border-b-2 border-green-500 px-8 py-3"
-                  >{{ $index }} {{ genre.name }}</a
-                >
+            @if (book().genres.length > 0 && genre() !== null) {
+              @for (genre of genre(); track $index) {
+                <a class="border-b-2 border-green-500 px-8 py-3">{{
+                  genre?.name
+                }}</a>
               }
             }
           </div>
