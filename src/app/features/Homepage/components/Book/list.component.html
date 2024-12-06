@@ -5,10 +5,14 @@
   [title]="book()?.title"
 >
   <!-- card image -->
+  <!-- TODO check the loading=eager -->
   <img
-    [src]="book()?.coverImage || 'https://placehold.co/400x520'"
+    [ngSrc]="book()?.coverImage || 'https://placehold.co/400x520'"
+    loading="eager"
     [alt]="book()?.title"
     class="h-full w-full object-cover"
+    width="430"
+    height="500"
   />
   <p target="_blank" class="text-md truncate text-wrap font-semibold md:hidden">
     {{ book()?.title | titlecase }}
