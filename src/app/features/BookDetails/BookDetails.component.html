@@ -121,6 +121,7 @@
             @if (book().genres.length == 0) {
               <div class="flex items-center gap-5">
                 <button
+                  (click)="onModalOpen()"
                   class="flex gap-1 rounded-xl border-4 border-dashed border-green-500 bg-green-200 px-8 py-3 transition-all delay-100 hover:bg-white"
                 >
                   <span class="text-xl font-bold">+</span>
@@ -130,11 +131,13 @@
               </div>
             }
 
-            @if (book().genres.length > 0 && genre() !== null) {
-              @for (genre of genre(); track $index) {
-                <a class="border-b-2 border-green-500 px-8 py-3">{{
-                  genre?.name
-                }}</a>
+            @if (book().genres.length > 0) {
+              @for (genre of book()?.genres; track $index) {
+                <a
+                  [routerLink]="'/genres/' + genre.id"
+                  class="border-b-2 border-green-500 px-8 py-3"
+                  >{{ genre?.name }}</a
+                >
               }
             }
           </div>

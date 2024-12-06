@@ -21,8 +21,10 @@ import {
 import { AuthorDetails, AuthorDetailsResponse } from '../Auth/user.interface';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { AuthService } from '../Auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Genre } from '../../genre.interface';
+import { HlmDialogService } from '@spartan-ng/ui-dialog-helm';
+import { GenreAddModalComponent } from './GenreAddModal/GenreAddModal.component';
 
 @Component({
   selector: 'app-book-details',
@@ -34,6 +36,8 @@ import { Genre } from '../../genre.interface';
     HlmAvatarFallbackDirective,
     HlmAvatarImageDirective,
     HlmButtonDirective,
+    RouterLink,
+    GenreAddModalComponent,
   ],
   templateUrl: './BookDetails.component.html',
   styleUrl: './BookDetails.component.css',
@@ -44,10 +48,10 @@ export class BookDetailsComponent implements OnInit {
   http = inject(HttpClient);
   authService = inject(AuthService);
   router = inject(Router);
+  dialog = inject(HlmDialogService);
 
   book = signal<Book | null | undefined>(null);
   author = signal<AuthorDetailsResponse>(null);
-  genre = signal<Genre[] | null>(null);
   error = signal('');
   authorError = signal('');
   loading = signal(true);
@@ -74,7 +78,7 @@ export class BookDetailsComponent implements OnInit {
         this.loading.set(false);
 
         this.fetchAuthorDetail();
-        this.fetchGenre();
+        // this.fetchGenre();
       },
       error: (error: ApiError) => {
         // console.log('error', error);
@@ -108,31 +112,17 @@ export class BookDetailsComponent implements OnInit {
       });
   }
 
-  fetchGenre() {
-    // fetch book author
-    // fetch book genre
-    this.book()?.genres.map((genre, index) => {
-      this.http.get<Genre>(`${URL}/genre/${index}`).subscribe({
-        next: (response: Genre) => {
-          this.authorLoading.set(true);
-          console.log('authordetail', response);
-          this.genre.set([response]);
-          this.authorLoading.set(false);
-        },
-        error: (error: ApiError) => {
-          console.log('error', error);
-          this.authorError.set(error.message);
-          this.authorLoading.set(false);
-        },
-      });
-    });
-  }
-
   openReadMe() {
     this.isReadMe.update((current) => !current);
   }
 
   editBook(id: number) {
     this.router.navigateByUrl(`/dashboard/books/edit/${id}`);
+  }
+
+  onModalOpen() {
+    this.dialog.open(GenreAddModalComponent, {
+      closeOnBackdropClick: true,
+    });
   }
 }
