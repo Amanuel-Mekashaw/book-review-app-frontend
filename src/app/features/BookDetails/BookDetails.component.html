@@ -1,11 +1,16 @@
 <!-- loading state -->
-<div
+<!-- <div
   class="flex h-screen w-full flex-col items-center justify-center gap-5"
   *ngIf="loading()"
 >
   <app-loading-spinner></app-loading-spinner>
-  <p class="text-2xl font-bold text-green-500">Loading books...</p>
-</div>
+  <p class="text-2xl font-bold text-green-500"></p>
+</div> -->
+
+<app-loading-state
+  [loading]="loading()"
+  loadingText="Loading books..."
+></app-loading-state>
 
 <!-- error state -->
 <div
@@ -24,7 +29,7 @@
     <section class="flex flex-col gap-5 md:flex-row">
       <!-- don't forget to add images -->
       <img
-        class="h-[500px] max-h-min w-[400px] overflow-hidden rounded-lg object-cover shadow-lg"
+        class="h-[500px] max-h-min w-[400px] self-center overflow-hidden rounded-lg object-cover shadow-lg md:self-auto"
         [src]="book()?.coverImage || 'https://placehold.co/400x500'"
         [alt]="book()?.title + 'cover image'"
       />
@@ -135,7 +140,7 @@
               @for (genre of book()?.genres; track $index) {
                 <a
                   [routerLink]="'/genres/' + genre.id"
-                  class="border-b-2 border-green-500 px-8 py-3"
+                  class="border-b-2 border-green-500 p-2 hover:bg-green-100"
                   >{{ genre?.name }}</a
                 >
               }

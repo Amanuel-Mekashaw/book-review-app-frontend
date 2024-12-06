@@ -14,6 +14,7 @@
     <div class="mb-4 flex gap-2">
       <!-- search input -->
       <input
+        [(ngModel)]="searchTerm"
         class="w-full"
         hlmInput
         placeholder="enter book name"
@@ -21,7 +22,12 @@
       />
 
       <!-- search button -->
-      <button hlmBtn variant="default" class="rounded-full">
+      <button
+        hlmBtn
+        variant="default"
+        class="rounded-full"
+        (click)="searchBooks()"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"
@@ -78,5 +84,36 @@
 
   <!-- list of books -->
   <div class=""></div>
-  <app-books></app-books>
+  @if (searchTerm == "") {
+    <app-books></app-books>
+  } @else {
+    <!-- loading state -->
+    <div
+      class="flex h-screen w-full flex-col items-center justify-center gap-5"
+      *ngIf="loading()"
+    >
+      <app-loading-spinner></app-loading-spinner>
+      <p class="text-2xl font-bold text-green-500">Loading books...</p>
+    </div>
+
+    <!-- error state -->
+    <div
+      class="flex h-screen w-full flex-col items-center justify-center"
+      *ngIf="error() !== ''"
+    >
+      <p class="text-2xl font-bold text-red-500">{{ error() }}</p>
+    </div>
+
+    @if (!loading() && !error()) {
+      <section>
+        <app-hero-header title="Search result"></app-hero-header>
+        <app-books [inputBooks]="books()"></app-books>
+      </section>
+    } @else {
+      <!-- No book info section -->
+      <ng-template #noBookFound>
+        <p>No books information with name {{ searchTerm }}.</p>
+      </ng-template>
+    }
+  }
 </main>

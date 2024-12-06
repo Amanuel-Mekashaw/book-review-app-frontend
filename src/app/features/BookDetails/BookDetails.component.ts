@@ -25,6 +25,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Genre } from '../../genre.interface';
 import { HlmDialogService } from '@spartan-ng/ui-dialog-helm';
 import { GenreAddModalComponent } from './GenreAddModal/GenreAddModal.component';
+import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
 
 @Component({
   selector: 'app-book-details',
@@ -38,6 +39,7 @@ import { GenreAddModalComponent } from './GenreAddModal/GenreAddModal.component'
     HlmButtonDirective,
     RouterLink,
     GenreAddModalComponent,
+    LoadingStateComponent,
   ],
   templateUrl: './BookDetails.component.html',
   styleUrl: './BookDetails.component.css',
