@@ -18,11 +18,13 @@ import { AuthService } from '../Auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ApiError, Book } from '../../book.interface';
+import { ApiError, Book, BookResponse } from '../../book.interface';
 import { URL } from '../shared/constants';
 import { HeroHeaderComponent } from '../shared/components/HeroHeader/HeroHeader.component';
 import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
 import { CommonModule } from '@angular/common';
+import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
+import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
 
 @Component({
   imports: [
@@ -37,6 +39,8 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     HeroHeaderComponent,
     LoadingSpinnerComponent,
+    LoadingStateComponent,
+    ErrorStateComponent,
   ],
   providers: [BooksComponent],
   standalone: true,
@@ -73,9 +77,9 @@ export class BooksComponent implements OnInit {
 
       // Fetch the data from the backend
       this.http
-        .get<any>(`${URL}/books/by-title?title=${this.searchTerm}`)
+        .get<BookResponse>(`${URL}/books/by-title?title=${this.searchTerm}`)
         .subscribe({
-          next: (response) => {
+          next: (response: BookResponse) => {
             this.loading.set(true);
             this.books.set(response.content);
             console.log(response);

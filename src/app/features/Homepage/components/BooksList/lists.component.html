@@ -10,14 +10,14 @@
 <!-- error state -->
 <div
   class="flex w-full flex-col items-center justify-center"
-  *ngIf="error() !== undefined"
+  *ngIf="error() !== ''"
 >
   <p class="text-2xl font-bold text-red-500">{{ error() }}</p>
 </div>
 
 <!-- loading books -->
 <div class="my-3">
-  <div class="h-screen" *ngIf="!loading() && !error()">
+  <div class="" *ngIf="!loading() && !error()">
     <div
       class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
       *ngIf="inputBooks() !== undefined"
@@ -34,7 +34,9 @@
     <!-- no books -->
     <ng-template #noBooks>
       <div class="flex w-full flex-col items-center justify-center gap-5"></div>
-      <p class="text-green-500">No books available.</p>
+      <p class="text-green-500">
+        No books available.{{ books().length }} {{ inputBooks() }}
+      </p>
     </ng-template>
   </div>
 </div>

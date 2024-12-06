@@ -29,7 +29,7 @@ export type ItemProps = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BooksListsComponent implements OnInit {
-  inputBooks = input<Book[]>();
+  inputBooks = input<Book[] | null | undefined>();
   books = signal<Book[]>([]);
 
   loading = signal(false);
@@ -38,7 +38,7 @@ export class BooksListsComponent implements OnInit {
   constructor(private booksService: BooksService) {}
 
   ngOnInit(): void {
-    console.log(this.inputBooks());
+    console.log('Input books', this.inputBooks());
     if (this.inputBooks() !== undefined) {
       this.books.set(this.inputBooks());
     } else {
