@@ -166,9 +166,9 @@
 
   <input hlmInput formControlName="authorId" type="hidden" class="w-full" />
 
-  <div formArrayName="genreIds">
+  <div formArrayName="genreIds" class="rounded-md border-4 p-3 shadow-xl">
     <div class="flex w-full items-center justify-between gap-3">
-      <label hlmLabel>Genres</label>
+      <label hlmLabel class="font-bold text-green-500">Genres</label>
       <button
         hlmBtn
         variant="outline"
@@ -176,12 +176,12 @@
         (click)="addGenreId()"
         class="flex items-center gap-2"
       >
-        <i class="fa-solid fa-hashtag"></i>
+        <i class="fal fa-solid fa-masks-theater"></i>
         <span> Add Genre</span>
       </button>
     </div>
 
-    <!-- Add Socials -->
+    <!-- Add Genres -->
     <div *ngFor="let link of genreIds.controls; let i = index">
       <!-- loading state -->
       <div class="w-full" *ngIf="loading()">
@@ -190,10 +190,9 @@
       </div>
 
       <!-- genre form -->
-      <div class="flex w-full items-end gap-5">
+      <div class="col flex w-full items-end gap-5 md:flex-row">
         <label class="w-full">
           Genre
-          <!-- <input hlmInput [formControlName]="i" type="number" class="w-full" /> -->
           <brn-select
             class="w-full"
             placeholder="Select a Genre"
@@ -204,9 +203,7 @@
             </hlm-select-trigger>
             <hlm-select-content class="w-full">
               @for (genre of genres(); track $index) {
-                <hlm-option class="w-full" [value]="genre.id">{{
-                  genre.name
-                }}</hlm-option>
+                <hlm-option [value]="genre.id">{{ genre.name }}</hlm-option>
               }
             </hlm-select-content>
           </brn-select>
@@ -228,11 +225,11 @@
         </label>
         <button
           hlmBtn
-          variant="secondary"
+          variant="destructive"
           type="button"
           (click)="removeGenreId(i)"
         >
-          Remove
+          <i class="fa-solid fa-trash"></i>
         </button>
       </div>
     </div>

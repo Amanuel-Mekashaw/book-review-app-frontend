@@ -11,7 +11,7 @@ export interface Book {
   pages: number;
   language: string;
   author?: User;
-  genres: Object[];
+  genres: Genre[];
   coverImage: string;
   averageRating: number;
   ratingCount: number;

@@ -60,15 +60,17 @@ export class NavbarComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    if (this.authService.currentUserDetail() !== null) {
+    console.log('user', this.authService.currentUserSignal());
+    if (this.authService.currentUserDetail() !== undefined) {
       this.authService.currentUserDetail.set(
         JSON.parse(atob(localStorage.getItem('userDetail'))),
       );
     }
 
     // TODO: encrypt this information
+
     this.authService.currentUserSignal.set(
-      JSON.parse(localStorage.getItem('user')),
+      JSON.parse(atob(localStorage.getItem('user'))),
     );
   }
 

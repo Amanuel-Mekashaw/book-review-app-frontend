@@ -27,7 +27,7 @@ import { HlmToasterComponent } from '../../../../../lib/ui-sonner-helm/src/lib/h
 import { URL } from '../../../shared/constants';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
-import { Book, BookRequest } from '../../../../book.interface';
+import { ApiError, Book, BookRequest } from '../../../../book.interface';
 import { GenreApiResponse } from '../../../Genre/genre.interface';
 import { Genre } from '../../../../genre.interface';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
@@ -70,25 +70,18 @@ export class BooksFormComponent implements OnInit, OnChanges {
   error = signal('');
 
   ngOnInit(): void {
-    console.log('First Start-------------------------');
-
-    console.log('Second Form Init -------------------------');
-
     // retrieve genre
     this.http.get<GenreApiResponse>(`${URL}/genre`).subscribe({
       next: (response: GenreApiResponse) => {
-        console.log('Third Genre -------------------------');
         this.loading.set(true);
         // console.log('Genre', response);
         this.genres.set(response.content);
         this.book.set(this.bookRecieved);
         this.loading.set(false);
-        // this.logShit();
-        console.log('Forth Genre finished -------------------------');
+        this.logShit();
       },
       error: (error: AuthError) => {
         this.errorResponse(error);
-        console.log('Five Error -------------------------');
       },
     });
   }
@@ -157,8 +150,8 @@ export class BooksFormComponent implements OnInit, OnChanges {
   }
 
   // Add a new social link to the FormArray
-  addGenreId(link: string = ''): void {
-    this.genreIds.push(this.formBuilder.control(link, [Validators.required]));
+  addGenreId(genre: string = ''): void {
+    this.genreIds.push(this.formBuilder.control(genre, [Validators.required]));
   }
 
   // Remove a social link from the FormArray
@@ -181,37 +174,37 @@ export class BooksFormComponent implements OnInit, OnChanges {
 
   onSubmit() {
     console.log(this.bookForm.value);
-    // if (this.bookForm.valid && this.book) {
-    //   this.http
-    //     .put<AuthorDetailsResponse>(
-    //       `${URL}/books/${this.book()?.id}`,
-    //       this.bookForm.getRawValue(),
-    //     )
-    //     .subscribe({
-    //       next: (response: AuthorDetailsResponse) => {
-    //         this.nextResponse(response);
-    //       },
-    //       error: (error: AuthError) => {
-    //         this.errorResponse(error);
-    //       },
-    //     });
-    // }
+    if (this.bookForm.valid && this.book) {
+      this.http
+        .put<AuthorDetailsResponse>(
+          `${URL}/books/${this.book()?.id}`,
+          this.bookForm.getRawValue(),
+        )
+        .subscribe({
+          next: (response: AuthorDetailsResponse) => {
+            this.nextResponse(response);
+          },
+          error: (error: AuthError) => {
+            this.errorResponse(error);
+          },
+        });
+    }
 
-    // if (this.bookForm.valid && !this.book) {
-    //   this.http
-    //     .post<AuthorDetailsResponse>(
-    //       `${URL}/books`,
-    //       this.bookForm.getRawValue(),
-    //     )
-    //     .subscribe({
-    //       next: (response: AuthorDetailsResponse) => {
-    //         this.nextResponse(response);
-    //       },
-    //       error: (error: AuthError) => {
-    //         this.errorResponse(error);
-    //       },
-    //     });
-    // }
+    if (this.bookForm.valid && !this.book) {
+      this.http
+        .post<AuthorDetailsResponse>(
+          `${URL}/books`,
+          this.bookForm.getRawValue(),
+        )
+        .subscribe({
+          next: (response: AuthorDetailsResponse) => {
+            this.nextResponse(response);
+          },
+          error: (error: AuthError) => {
+            this.errorResponse(error);
+          },
+        });
+    }
   }
 
   showToastSuccess() {
