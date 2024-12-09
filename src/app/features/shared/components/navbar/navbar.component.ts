@@ -29,6 +29,9 @@ import {
   HlmMenuShortcutComponent,
   HlmSubMenuComponent,
 } from '@spartan-ng/ui-menu-helm';
+import { AuthorDetailsResponse } from '../../../Auth/user.interface';
+import { ApiError } from '../../../../book.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -54,6 +57,11 @@ import {
 export class NavbarComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
+  http = inject(HttpClient);
+
+  author = signal(null);
+  authorLoading = signal(false);
+  authorError = signal('');
 
   isOpen = signal(false);
 
@@ -67,11 +75,30 @@ export class NavbarComponent implements OnInit {
       );
     }
 
-    // TODO: encrypt this information
-
     this.authService.currentUserSignal.set(
       JSON.parse(atob(localStorage.getItem('user'))),
     );
+  }
+
+  fetchAuthorDetail() {
+    this.http
+      .get<AuthorDetailsResponse>(
+        `${URL}/userdetail/by-authordetail/${this.authService.currentUserSignal().data?.user?.id}`,
+      )
+      .subscribe({
+        next: (response: AuthorDetailsResponse) => {
+          this.authorLoading.set(true);
+          console.log('authordetail', response);
+          this.author.set(response);
+          localStorage.setItem('userDetail', btoa(JSON.stringify(response)));
+          this.authorLoading.set(false);
+        },
+        error: (error: ApiError) => {
+          console.log('error', error);
+          this.authorError.set(error.message);
+          this.authorLoading.set(false);
+        },
+      });
   }
 
   navbarOpen() {

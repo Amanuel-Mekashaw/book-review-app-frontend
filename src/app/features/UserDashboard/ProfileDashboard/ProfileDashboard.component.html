@@ -21,10 +21,19 @@
     <div class="flex flex-col gap-5">
       <div>
         <p class="text-xl font-bold text-green-500">Author</p>
-        <h1 class="text-2xl font-bold">
-          {{ authService.currentUserDetail()?.data?.firstName | titlecase }}
-          {{ authService.currentUserDetail()?.data?.lastName | titlecase }}
-        </h1>
+        <div class="flex items-center justify-between gap-2">
+          <h1 class="text-2xl font-bold">
+            {{ authService.currentUserDetail()?.data?.firstName | titlecase }}
+            {{ authService.currentUserDetail()?.data?.lastName | titlecase }}
+          </h1>
+          @if (authService.currentUserDetail()?.data?.user?.role == "ADMIN") {
+            <div
+              class="w-fit rounded-xl bg-green-500 px-3 py-1 text-sm font-bold text-white"
+            >
+              ADMIN
+            </div>
+          }
+        </div>
       </div>
 
       <p class="text-xl font-bold text-green-500">Biography</p>

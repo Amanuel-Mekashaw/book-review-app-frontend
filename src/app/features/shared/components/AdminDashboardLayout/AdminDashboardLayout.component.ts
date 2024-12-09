@@ -5,11 +5,9 @@ import {
   computed,
   HostListener,
   inject,
-  input,
-  OnInit,
   signal,
 } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import {
   LeftSidebarComponent,
   Links,
@@ -17,34 +15,24 @@ import {
 import { AuthService } from '../../../Auth/auth.service';
 
 @Component({
-  selector: 'app-dashboard-layout',
+  selector: 'app-admin-dashboard-layout',
   standalone: true,
-  imports: [RouterModule, CommonModule, LeftSidebarComponent],
-  templateUrl: './dashboard-layout.component.html',
-  styleUrl: './dashboard-layout.component.css',
+  imports: [RouterOutlet, CommonModule, LeftSidebarComponent],
+  templateUrl: './AdminDashboardLayout.component.html',
+  styleUrl: './AdminDashboardLayout.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardLayoutComponent implements OnInit {
+export class AdminDashboardLayoutComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
   links: Links[] = [
     {
-      routeLink: 'books',
-      icon: 'fal fa-solid fa-book',
-      label: 'Books',
+      routeLink: 'users',
+      icon: 'fal fa-solid fa-masks-theater',
+      label: 'Users',
     },
 
-    {
-      routeLink: 'genres',
-      icon: 'fal fa-solid fa-masks-theater',
-      label: 'Genres',
-    },
-    {
-      routeLink: 'collections',
-      icon: 'fal fa-solid fa-rectangle-list',
-      label: 'Collections',
-    },
     {
       routeLink: 'profile',
       icon: 'fal fa-regular fa-user ',

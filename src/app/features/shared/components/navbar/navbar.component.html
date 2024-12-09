@@ -141,7 +141,7 @@
           <hlm-menu-group>
             <a hlmMenuItem routerLink="/dashboard/profile">Profile</a>
             @if (authService.currentUserSignal().data.user.role === "ADMIN") {
-              <button hlmMenuItem>Admin</button>
+              <button hlmMenuItem routerLink="/admin">Admin Dashboard</button>
             }
             @if (
               authService.currentUserSignal().data.user.role === "USER" ||

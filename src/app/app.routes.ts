@@ -123,6 +123,31 @@ export const routes: Routes = [
     ],
   },
 
+  // Admin dashboard routes
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import(
+        '../app/features/shared/components/AdminDashboardLayout/AdminDashboardLayout.component'
+      ).then((c) => c.AdminDashboardLayoutComponent),
+    children: [
+      {
+        path: 'users',
+        loadComponent: () =>
+          import(
+            '../app/features/AdminDashboard/AdminUserDashboard/AdminUserDashboard.component'
+          ).then((c) => c.AdminUserDashboardComponent),
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import(
+            '../app/features/UserDashboard/ProfileDashboard/ProfileDashboard.component'
+          ).then((c) => c.ProfileDashboardComponent),
+      },
+    ],
+  },
+
   // Not found route must be in the bottom
   {
     path: '**',

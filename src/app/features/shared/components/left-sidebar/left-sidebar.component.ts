@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, Input, input, OnInit, output, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
+export interface Links {
+  routeLink: string;
+  icon: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-left-sidebar',
@@ -10,31 +16,10 @@ import { RouterModule } from '@angular/router';
   styleUrl: './left-sidebar.component.css',
 })
 export class LeftSidebarComponent {
+  links = input.required<Links[]>();
+
   isLeftSidebarCollapsed = input.required<boolean>();
   changeIsLeftSidebarCollapsed = output<boolean>();
-  items = [
-    {
-      routeLink: 'books',
-      icon: 'fal fa-solid fa-book',
-      label: 'Books',
-    },
-
-    {
-      routeLink: 'genres',
-      icon: 'fal fa-solid fa-masks-theater',
-      label: 'Genres',
-    },
-    {
-      routeLink: 'collections',
-      icon: 'fal fa-solid fa-rectangle-list',
-      label: 'Collections',
-    },
-    {
-      routeLink: 'profile',
-      icon: 'fal fa-regular fa-user ',
-      label: 'Profile',
-    },
-  ];
 
   toggleCollapse(): void {
     this.changeIsLeftSidebarCollapsed.emit(!this.isLeftSidebarCollapsed());
