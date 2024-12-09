@@ -137,7 +137,7 @@ export class BooksFormComponent implements OnInit, OnChanges {
   logShit() {
     console.log({
       'book id': this.bookId(),
-      'Book revieved id': this.bookRecieved?.id,
+      'Book revieved id': this.bookRecieved,
       'Main book': this.book(),
       'error state': this.error(),
       'loading state': this.loading(),

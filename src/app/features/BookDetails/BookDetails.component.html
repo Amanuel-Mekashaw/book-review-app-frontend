@@ -74,8 +74,9 @@
             <!-- gradient overlay -->
             <div
               [ngClass]="{
-                'absolute inset-0 h-full w-full bg-gradient-to-b from-transparent to-white': true,
-                'bg-gradient-to-b from-transparent to-transparent': !isReadMe(),
+                'absolute inset-0 h-full w-full bg-gradient-to-b from-transparent to-white opacity-100': true,
+                'bg-gradient-to-b from-transparent to-transparent opacity-0 transition-all delay-200':
+                  !isReadMe(),
               }"
             ></div>
           </div>
