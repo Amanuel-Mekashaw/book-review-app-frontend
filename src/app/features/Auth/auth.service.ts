@@ -6,8 +6,6 @@ import { AuthorDetailsResponse, AuthResponse, User } from './user.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  currentUserSignal = signal<AuthResponse | undefined | null>(undefined);
-  currentUserDetail = signal<AuthorDetailsResponse | undefined | null>(
-    undefined,
-  );
+  currentUserSignal = signal<AuthResponse | null>(null);
+  currentUserDetail = signal<AuthorDetailsResponse | null>(null);
 }

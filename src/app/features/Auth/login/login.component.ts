@@ -43,6 +43,7 @@ import { URL } from '../../shared/constants';
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
   http = inject(HttpClient);
@@ -66,11 +67,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.authService.currentUserSignal() !== null) {
-      this.router.navigateByUrl('/books');
-    }
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
     console.log(this.loginForm.value);
@@ -81,16 +78,16 @@ export class LoginComponent implements OnInit {
       )
       .subscribe({
         next: (response: AuthResponse) => {
-          console.log('response', response);
+          console.log('Login response', response);
           this.message.set(response.message);
-          localStorage.setItem('token', response.data.token);
           this.authService.currentUserSignal.set(response);
+          localStorage.setItem('token', response.data.token);
           localStorage.setItem(
             'user',
             btoa(JSON.stringify(this.authService.currentUserSignal())),
           );
-          this.showToastSuccess();
 
+          this.showToastSuccess();
           this.router.navigateByUrl('/books');
         },
         error: (error: AuthError) => {

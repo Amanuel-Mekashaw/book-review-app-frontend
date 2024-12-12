@@ -1,0 +1,20 @@
+<p>AdminProfileEdit works! and id is {{ userId() }}</p>
+
+@if (authorLoading() === true) {
+  <app-loading-state
+    [loading]="authorLoading()"
+    loadingText="loading author information"
+    heightclass="h-screen"
+  ></app-loading-state>
+}
+
+@if (authorError()) {
+  <app-error-state
+    [error]="authorError()"
+    heightclass="h-screen"
+  ></app-error-state>
+}
+
+@if (!authorLoading() && !authorError()) {
+  <app-profile-form [user]="author()"></app-profile-form>
+}
