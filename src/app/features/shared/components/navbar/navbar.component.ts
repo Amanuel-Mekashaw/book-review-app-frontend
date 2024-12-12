@@ -32,6 +32,7 @@ import {
 import { AuthorDetailsResponse } from '../../../Auth/user.interface';
 import { ApiError } from '../../../../book.interface';
 import { HttpClient } from '@angular/common/http';
+import { URL } from '../../constants';
 
 @Component({
   selector: 'app-navbar',
@@ -68,23 +69,23 @@ export class NavbarComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log('user', this.authService.currentUserSignal());
-    if (this.authService.currentUserDetail() !== undefined) {
+    console.log(
+      'is there a user',
+      this.authService.currentUserSignal() !== null,
+    );
+    if (this.authService.currentUserSignal() !== null) {
+      this.fetchAuthorDetail(
+        this.authService.currentUserSignal().data?.user?.id,
+      );
       this.authService.currentUserDetail.set(
         JSON.parse(atob(localStorage.getItem('userDetail'))),
       );
     }
-
-    this.authService.currentUserSignal.set(
-      JSON.parse(atob(localStorage.getItem('user'))),
-    );
   }
 
-  fetchAuthorDetail() {
+  fetchAuthorDetail(id: number) {
     this.http
-      .get<AuthorDetailsResponse>(
-        `${URL}/userdetail/by-authordetail/${this.authService.currentUserSignal().data?.user?.id}`,
-      )
+      .get<AuthorDetailsResponse>(`${URL}/userdetail/by-authordetail/${id}`)
       .subscribe({
         next: (response: AuthorDetailsResponse) => {
           this.authorLoading.set(true);
@@ -106,10 +107,11 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.authService.currentUserSignal.set(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('userDetail');
+    this.authService.currentUserSignal.set(null);
+    this.authService.currentUserDetail.set(null);
     this.router.navigateByUrl('/login');
   }
 }

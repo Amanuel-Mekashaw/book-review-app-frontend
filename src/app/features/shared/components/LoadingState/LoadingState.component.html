@@ -1,6 +1,7 @@
 <!-- loading state -->
 <div
   class="flex w-full flex-col items-center justify-center gap-5"
+  [ngClass]="heightclass ? heightclass : ''"
   *ngIf="loading"
 >
   <app-loading-spinner></app-loading-spinner>

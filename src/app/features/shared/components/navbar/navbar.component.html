@@ -93,7 +93,7 @@
 
     <!-- user name Avatar -->
     <div
-      *ngIf="authService.currentUserSignal()"
+      *ngIf="authService.currentUserSignal() !== null"
       class="flex items-center gap-3 rounded-md hover:md:bg-green-200"
       [brnMenuTriggerFor]="menu"
     >
@@ -116,7 +116,7 @@
           >{{
             authService
               .currentUserSignal()
-              ?.data.user.username.at(0)
+              ?.data?.user?.username.at(0)
               .toUpperCase()
           }}</span
         >
@@ -124,7 +124,7 @@
       <p class="hidden text-lg md:block">
         {{
           authService.currentUserDetail()?.data?.firstName ||
-            authService.currentUserSignal()?.data.user.username
+            authService.currentUserSignal()?.data?.user?.username
         }}
       </p>
 
@@ -134,18 +134,21 @@
           <hlm-menu-label
             ><p class="text-green-500">My Account</p>
             <p class="text-lg">
-              {{ authService.currentUserSignal()?.data.user.username }}
+              {{ authService.currentUserSignal()?.data?.user?.username }}
             </p></hlm-menu-label
           >
           <hlm-menu-separator />
           <hlm-menu-group>
             <a hlmMenuItem routerLink="/dashboard/profile">Profile</a>
-            @if (authService.currentUserSignal().data.user.role === "ADMIN") {
+            @if (
+              authService.currentUserSignal()?.data?.user?.role === "ADMIN"
+            ) {
               <button hlmMenuItem routerLink="/admin">Admin Dashboard</button>
             }
+
             @if (
-              authService.currentUserSignal().data.user.role === "USER" ||
-              authService.currentUserSignal().data.user.role === "AUTHOR"
+              authService.currentUserSignal()?.data?.user?.role === "USER" ||
+              authService.currentUserSignal()?.data?.user?.role === "AUTHOR"
             ) {
               <button hlmMenuItem routerLink="/dashboard/books">
                 Dashboard

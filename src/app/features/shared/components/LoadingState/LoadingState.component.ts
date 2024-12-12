@@ -13,4 +13,5 @@ import { CommonModule } from '@angular/common';
 export class LoadingStateComponent {
   @Input() loading!: boolean;
   @Input() loadingText!: string;
+  @Input() heightclass: string;
 }

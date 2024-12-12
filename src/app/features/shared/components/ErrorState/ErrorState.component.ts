@@ -11,4 +11,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class ErrorStateComponent {
   @Input() error!: string;
+  @Input() heightclass = '';
 }
