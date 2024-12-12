@@ -61,8 +61,11 @@ export class BooksComponent implements OnInit {
   searchTerm: string = '';
 
   ngOnInit(): void {
-    if (this.authService.currentUserSignal === null) {
-      this.router.navigateByUrl('/login');
+    // console.log('from books', this.authService.currentUserSignal());
+    if (this.authService.currentUserSignal() === null) {
+      this.authService.currentUserSignal.set(
+        JSON.parse(atob(localStorage.getItem('user'))),
+      );
     }
   }
 

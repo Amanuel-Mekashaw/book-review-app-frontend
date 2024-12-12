@@ -73,3 +73,48 @@ export interface ApiError {
     [key: string]: string;
   };
 }
+
+export type BookResponseByAuthor = {
+  message: string;
+  code: number;
+  data: BookByAuthor[];
+};
+
+export type BookByAuthor = {
+  id: number;
+  title: string;
+  isbn: string;
+  description: string;
+  publishedYear: number;
+  publisher: string;
+  pages: number;
+  language: string;
+  author: Author;
+  genres: Genre[];
+  coverImage: string;
+  averageRating: number;
+  ratingCount: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type Author = {
+  id: number;
+  email: string;
+  passwordHash: string;
+  role: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  password: string;
+  authorities: Authority[];
+  username: string;
+  enabled: boolean;
+  accountNonExpired: boolean;
+  credentialsNonExpired: boolean;
+  accountNonLocked: boolean;
+};
+
+type Authority = {
+  authority: string;
+};
