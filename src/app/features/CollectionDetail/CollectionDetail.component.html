@@ -1,0 +1,22 @@
+<app-loading-state
+  [loading]="loading()"
+  loadingText="Loading books..."
+  heightclass="h-screen"
+></app-loading-state>
+
+<!-- error state -->
+<app-error-state heightclass="h-screen" [error]="error()"></app-error-state>
+
+<section
+  *ngIf="!loading() && !error()"
+  class="mx-[1rem] my-[7rem] flex flex-col gap-5 md:mx-[5rem] xl:mx-[10rem]"
+>
+  <h1 class="text-3xl font-bold text-green-500">{{ collection()?.name }}</h1>
+  <p class="max-w-[80ch] text-lg text-slate-400">
+    {{ collection()?.description }}
+  </p>
+
+  <section>
+    <app-books [inputBooks]="collection()?.books"></app-books>
+  </section>
+</section>
