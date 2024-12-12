@@ -51,7 +51,6 @@ export const routes: Routes = [
             (c) => c.GenreComponent,
           ),
       },
-
       {
         path: 'genres/:genreId',
         loadComponent: () =>
@@ -66,6 +65,14 @@ export const routes: Routes = [
           import('../app/features/Collection/Collection.component').then(
             (c) => c.CollectionComponent,
           ),
+      },
+
+      {
+        path: 'collections/:collectionId',
+        loadComponent: () =>
+          import(
+            '../app/features/CollectionDetail/CollectionDetail.component'
+          ).then((c) => c.CollectionDetailComponent),
       },
     ],
   },
@@ -120,6 +127,13 @@ export const routes: Routes = [
             '../app/features/UserDashboard/CollectionsDashboard/CollectionsDashboard.component'
           ).then((c) => c.CollectionsDashboardComponent),
       },
+      {
+        path: 'collections/edit/:collectionId',
+        loadComponent: () =>
+          import(
+            '../app/features/UserDashboard/CollectionsDashboard/CollectionEdit/CollectionEdit.component'
+          ).then((c) => c.CollectionEditComponent),
+      },
     ],
   },
 
@@ -144,6 +158,13 @@ export const routes: Routes = [
           import(
             '../app/features/UserDashboard/ProfileDashboard/ProfileDashboard.component'
           ).then((c) => c.ProfileDashboardComponent),
+      },
+      {
+        path: 'profile/edit/:userId',
+        loadComponent: () =>
+          import(
+            '../app/features/AdminDashboard/AdminUserDashboard/AdminProfileEdit/AdminProfileEdit.component'
+          ).then((c) => c.AdminProfileEditComponent),
       },
     ],
   },
