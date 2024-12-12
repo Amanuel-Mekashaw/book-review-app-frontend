@@ -35,7 +35,7 @@
     <ng-template #noBooks>
       <div class="flex w-full flex-col items-center justify-center gap-5"></div>
       <p class="text-green-500">
-        No books available.{{ books().length }} {{ inputBooks() }}
+        No books available.{{ books()?.length }} {{ inputBooks() }}
       </p>
     </ng-template>
   </div>

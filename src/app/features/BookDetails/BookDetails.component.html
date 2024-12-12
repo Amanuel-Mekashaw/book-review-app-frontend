@@ -10,15 +10,18 @@
 <app-loading-state
   [loading]="loading()"
   loadingText="Loading books..."
+  heightclass="h-screen"
 ></app-loading-state>
 
-<!-- error state -->
-<div
+<!-- <div
   class="flex h-screen w-full flex-col items-center justify-center"
   *ngIf="error() !== ''"
 >
   <p class="text-2xl font-bold text-red-500">{{ error() }}</p>
-</div>
+</div> -->
+
+<!-- error state -->
+<app-error-state heightclass="h-screen" [error]="error()"></app-error-state>
 
 <!-- Book Detail render -->
 <section

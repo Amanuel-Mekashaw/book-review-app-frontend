@@ -44,6 +44,12 @@ export interface User {
   accountNonLocked: boolean;
 }
 
+export interface UsersApiResponse {
+  message: string;
+  code: number;
+  data: User[] | null;
+}
+
 export interface AuthorDetails {
   id: number;
   firstName: string;

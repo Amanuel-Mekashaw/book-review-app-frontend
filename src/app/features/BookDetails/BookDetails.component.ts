@@ -26,6 +26,7 @@ import { Genre } from '../../genre.interface';
 import { HlmDialogService } from '@spartan-ng/ui-dialog-helm';
 import { GenreAddModalComponent } from './GenreAddModal/GenreAddModal.component';
 import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
+import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
 
 @Component({
   selector: 'app-book-details',
@@ -40,6 +41,7 @@ import { LoadingStateComponent } from '../shared/components/LoadingState/Loading
     RouterLink,
     GenreAddModalComponent,
     LoadingStateComponent,
+    ErrorStateComponent,
   ],
   templateUrl: './BookDetails.component.html',
   styleUrl: './BookDetails.component.css',
@@ -56,7 +58,7 @@ export class BookDetailsComponent implements OnInit {
   author = signal<AuthorDetailsResponse>(null);
   error = signal('');
   authorError = signal('');
-  loading = signal(true);
+  loading = signal(false);
   authorLoading = signal(true);
 
   // bookId = signal(this.activeRoute.snapshot.params['id']);
@@ -68,24 +70,35 @@ export class BookDetailsComponent implements OnInit {
   isReadMe = signal(false);
 
   ngOnInit(): void {
-    // console.log(
-    //   'authorId from LS',
-    //   this.authService.currentUserDetail()?.data?.user?.id,
-    // );
+    console.log('from book details', this.authService.currentUserSignal());
+    console.log(
+      'from book details user detail',
+      this.authService.currentUserDetail(),
+    );
+
+    if (this.authService.currentUserDetail() === null) {
+      this.authService.currentUserDetail.set(
+        JSON.parse(atob(localStorage.getItem('userDetail'))),
+      );
+    }
+    console.log(
+      'from book details user detail updated',
+      this.authService.currentUserDetail(),
+    );
+
     // fetch book detail
     this.http.get<Book>(`${URL}/books/${+this.bookId()}`).subscribe({
       next: (response: Book) => {
-        console.log('response', response);
+        this.loading.set(true);
+        console.log('Books recieved', response);
         this.book.set(response);
         this.loading.set(false);
-
         this.fetchAuthorDetail();
         // this.fetchGenre();
       },
       error: (error: ApiError) => {
         // console.log('error', error);
         this.error.set(error.message);
-        this.loading.set(false);
       },
     });
 
