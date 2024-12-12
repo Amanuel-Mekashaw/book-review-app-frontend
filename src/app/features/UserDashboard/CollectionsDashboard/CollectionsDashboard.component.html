@@ -1,1 +1,33 @@
-<p>CollectionsDashboard works!</p>,
+<app-hero-header
+  title="Collections"
+  subtitle="List of collection by the user"
+></app-hero-header>
+
+<app-loading-state
+  [loading]="loading()"
+  loadingText="Loading Collections..."
+  heightclass="h-screen"
+></app-loading-state>
+
+<app-error-state [error]="error()" heightclass="h-screen"></app-error-state>
+
+<section class="my-4">
+  <button hlmBtn class="space-x-2" (click)="openCreateForm()">
+    <i class="fa-solid fa-rectangle-list"></i
+    ><span>{{
+      isCreateFormOpen() ? "Show Existing Collection" : "Add Collection"
+    }}</span>
+  </button>
+</section>
+
+@if (collections() !== null && !isCreateFormOpen()) {
+  <app-collection-list
+    [collections]="collections()"
+    [delete]="true"
+    [edit]="true"
+  ></app-collection-list>
+}
+
+@if (isCreateFormOpen()) {
+  <app-collection-form [edit]="false"></app-collection-form>
+}

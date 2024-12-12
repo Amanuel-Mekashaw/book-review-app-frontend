@@ -1,0 +1,74 @@
+<hlm-toaster richColors closeButton position="top-right" />
+<!-- Collections setting form -->
+
+<form
+  class="mt-8 flex flex-col gap-5"
+  [formGroup]="collectionForm"
+  (ngSubmit)="onSubmit()"
+>
+  <!-- id -->
+  <input type="hidden" formControlName="id" />
+
+  <!-- Name -->
+  <label hlmLabel class="w-full"
+    >Collection Name
+    <input
+      hlmInput
+      formControlName="name"
+      type="text"
+      placeholder="Enter your Collection name"
+      class="w-full"
+    />
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        collectionForm?.get('name')?.invalid &&
+        collectionForm?.get('name')?.touched
+      "
+    >
+      <small *ngIf="collectionForm?.get('name')?.errors"
+        >collection name is required</small
+      >
+    </div>
+  </label>
+
+  <!-- description -->
+  <label hlmLabel class="w-full"
+    >Description
+    <textarea
+      hlmInput
+      formControlName="description"
+      type="text"
+      placeholder="Enter your Collection Description"
+      class="w-full"
+    ></textarea>
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        collectionForm?.get('description')?.invalid &&
+        collectionForm?.get('description')?.touched
+      "
+    >
+      <small *ngIf="collectionForm?.get('description')?.errors"
+        >collection description is required</small
+      >
+    </div>
+  </label>
+
+  <!-- user id -->
+  <input hlmInput formControlName="userId" type="hidden" class="w-full" />
+  <!-- <input hlmInput formControlName="createdAt" type="hidden" class="w-full" />
+  <input hlmInput formControlName="updatedAt" type="hidden" class="w-full" /> -->
+
+  <!-- submit button -->
+  <button
+    [disabled]="collectionForm.invalid"
+    type="submit"
+    hlmBtn
+    variant="default"
+  >
+    {{ edit ? "Edit Collection" : "Create Collection" }}
+  </button>
+</form>

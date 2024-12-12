@@ -1,0 +1,22 @@
+<div>
+  <!-- header -->
+  <app-hero-header
+    title="Update Collection"
+    subtitle="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate vel
+    quisquam at? Necessitatibus delectus cupiditate corrupti sunt ipsam a amet."
+  ></app-hero-header>
+
+  <app-loading-state
+    [loading]="loading()"
+    [loadingText]="'Loading collection with id ' + collectionId()"
+  ></app-loading-state>
+  <app-error-state [error]="error()"></app-error-state>
+
+  <section *ngIf="!loading() && !error()">
+    <app-collection-form
+      [collectionId]="collectionId()"
+      [collectionRecived]="collection()"
+      [edit]="true"
+    ></app-collection-form>
+  </section>
+</div>
