@@ -1,16 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { ApiError } from '../../../book.interface';
-import { URL } from '../../shared/constants';
-import { User, UsersApiResponse } from '../../Auth/user.interface';
 import { UsersTable } from './UsersTable/UsersTable.component';
 
 @Component({

@@ -231,12 +231,11 @@ export class UsersTable implements OnInit, OnChanges {
     this.fetchUsers();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('changed');
-    // this._users.set(this.users());
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
   onUserDelete(id: number) {
+    console.log('User id', id);
+
     this.http.delete<UsersApiResponse>(`${URL}/auth/delete/${id}`).subscribe({
       next: (response) => {
         this.message.set(response.message);
