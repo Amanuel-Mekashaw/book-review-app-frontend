@@ -1,1 +1,20 @@
-<p>Collection works!</p>,
+<app-loading-state
+  [loading]="loading()"
+  loadingText="Loading books..."
+  heightclass="h-screen"
+></app-loading-state>
+
+<!-- error state -->
+<app-error-state heightclass="h-screen" [error]="error()"></app-error-state>
+
+<!-- <pre>{{ collections() | json }}</pre> -->
+<section
+  class="mx-[1rem] my-[7rem] flex flex-col gap-5 md:mx-[5rem] xl:mx-[10rem]"
+>
+  <div class="">
+    <app-collection-list
+      [collections]="collections()"
+      [delete]="false"
+    ></app-collection-list>
+  </div>
+</section>

@@ -1,0 +1,10 @@
+<div class="grid w-full grid-cols-1 gap-5 md:grid-cols-3">
+  @for (collection of collections; track $index) {
+    <app-collection-card
+      [collection]="collection"
+      [index]="$index"
+      [delete]="delete ? true : false"
+      [edit]="edit ? true : false"
+    ></app-collection-card>
+  }
+</div>

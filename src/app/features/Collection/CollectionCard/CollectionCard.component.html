@@ -1,0 +1,42 @@
+<hlm-toaster richColors closeButton="top-right" />
+<div
+  class="transform rounded-xl border-2 bg-white px-8 py-5 shadow-lg transition-transform duration-300 hover:scale-105"
+>
+  @if (delete) {
+    <button
+      (click)="deleteCollection(collection?.id)"
+      class="absolute right-2 top-4 size-8 rounded-full text-red-500 hover:bg-red-200"
+    >
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  }
+  @if (edit) {
+    <button
+      (click)="editCollection(collection?.id)"
+      class="absolute right-2 top-14 size-8 rounded-full text-purple-700 hover:bg-green-200"
+    >
+      <i class="fa-solid fa-pen"></i>
+    </button>
+  }
+  <div
+    [routerLink]="'/collections/' + collection?.id"
+    class="relative flex cursor-pointer flex-col gap-3"
+  >
+    <!-- Index Number -->
+    <p class="text-4xl font-bold text-slate-500">0{{ index + 1 }}</p>
+    <div class="h-1 w-10 bg-green-600"></div>
+    <div class="flex flex-col">
+      <!-- Collection name -->
+      <h2 class="text-xl font-bold text-slate-900">
+        {{ collection?.name }}
+      </h2>
+
+      <!-- Date -->
+      <p class="">
+        <span class="text-lg font-light text-slate-500">{{
+          collection?.updatedAt | date
+        }}</span>
+      </p>
+    </div>
+  </div>
+</div>
