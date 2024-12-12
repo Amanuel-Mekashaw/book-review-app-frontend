@@ -27,11 +27,10 @@ import { HlmToasterComponent } from '../../../../../lib/ui-sonner-helm/src/lib/h
 import { URL } from '../../../shared/constants';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
-import { ApiError, Book, BookRequest } from '../../../../book.interface';
+import { Book } from '../../../../book.interface';
 import { GenreApiResponse } from '../../../Genre/genre.interface';
 import { Genre } from '../../../../genre.interface';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
-import { HlmSelectDirective } from '../../../../../lib/ui-select-helm/src/lib/hlm-select.directive';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 @Component({
@@ -70,6 +69,41 @@ export class BooksFormComponent implements OnInit, OnChanges {
   error = signal('');
 
   ngOnInit(): void {
+    this.bookForm = this.formBuilder.group({
+      id: new FormControl(this.bookRecieved?.id | 1, [Validators.required]),
+      title: new FormControl(this.bookRecieved?.title || '', [
+        Validators.required,
+      ]),
+      isbn: new FormControl(this.bookRecieved?.isbn || '', [
+        Validators.required,
+      ]),
+      description: new FormControl(this.bookRecieved?.description || ''),
+      coverImage: new FormControl(this.bookRecieved?.coverImage),
+      authorId: [
+        this.authService.currentUserSignal().data.user.id,
+        [Validators.required],
+      ],
+      publishedYear: new FormControl(this.bookRecieved?.publishedYear || '', [
+        Validators.required,
+      ]),
+      publisher: new FormControl(this.bookRecieved?.publisher || '', [
+        Validators.required,
+      ]),
+      pages: new FormControl(this.bookRecieved?.pages || '', [
+        Validators.required,
+      ]),
+      language: new FormControl(this.bookRecieved?.language || '', [
+        Validators.required,
+      ]),
+      createdAt: new FormControl(
+        this.bookRecieved?.createdAt || new Date().toISOString(),
+        [Validators.required],
+      ),
+      updatedAt: new FormControl(new Date().toISOString(), [
+        Validators.required,
+      ]),
+      genreIds: this.formBuilder.array(this.bookRecieved?.genres || []),
+    });
     // retrieve genre
     this.http.get<GenreApiResponse>(`${URL}/genre`).subscribe({
       next: (response: GenreApiResponse) => {

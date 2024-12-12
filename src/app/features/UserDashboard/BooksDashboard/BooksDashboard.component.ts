@@ -12,13 +12,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
   ApiError,
-  Book,
   BookByAuthor,
-  BookResponse,
   BookResponseByAuthor,
 } from '../../../book.interface';
 import { URL } from '../../shared/constants';
-import { AuthorDetailsResponse } from '../../Auth/user.interface';
 import { AuthService } from '../../Auth/auth.service';
 import { BooksListsComponent } from '../../Homepage/components/BooksList/lists.component';
 import { BooksListsByAuthorComponent } from './BooksList/lists.component';
@@ -31,7 +28,6 @@ import { BooksListsByAuthorComponent } from './BooksList/lists.component';
     BooksFormComponent,
     HlmButtonDirective,
     CommonModule,
-    BooksListsComponent,
     BooksListsByAuthorComponent,
   ],
   templateUrl: './BooksDashboard.component.html',
