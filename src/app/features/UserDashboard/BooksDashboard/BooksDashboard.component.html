@@ -1,10 +1,23 @@
 <!-- header -->
 <app-hero-header
-  title="Books"
+  title="My Books"
   subtitle="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate vel
     quisquam at? Necessitatibus delectus cupiditate corrupti sunt ipsam a amet."
 ></app-hero-header>
 
-<div>
+<button (click)="addBook()" hlmBtn variant="default" class="space-x-2">
+  <i class="fa-solid fa-book"></i><span>Add book</span>
+</button>
+
+<!-- Render all books -->
+<div class="mt-5 flex flex-col gap-5">
+  <h1 class="text-xl font-bold">
+    Total number of books
+    <span class="text-green-500">( {{ books()?.length }} Books )</span>
+  </h1>
+  <app-books-by-author [inputBooks]="books()"></app-books-by-author>
+</div>
+
+<div *ngIf="isAddBookOpen()">
   <app-book-form></app-book-form>
 </div>

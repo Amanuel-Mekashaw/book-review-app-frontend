@@ -1,0 +1,49 @@
+<!-- card -->
+<div class="m-2 rounded-md border-2 border-slate-200 p-2 shadow-lg">
+  <div class="relative overflow-hidden" [title]="book()?.title">
+    <!-- card image -->
+    <!-- TODO check the loading=eager -->
+
+    <img
+      [routerLink]="'/books/' + book()?.id"
+      [ngSrc]="book()?.coverImage || 'https://placehold.co/400x520'"
+      loading="eager"
+      [alt]="book()?.title"
+      class="h-full w-full cursor-pointer object-cover"
+      width="430"
+      height="500"
+    />
+    <!-- Edit button -->
+    <button
+      (click)="editBook(book()?.id)"
+      hlmBtn
+      variant="default"
+      class="absolute right-3 top-2"
+    >
+      <i class="fa-solid fa-pen"></i>
+    </button>
+    <!-- Delete button -->
+    <button
+      (click)="deleteBook(book()?.id)"
+      hlmBtn
+      variant="destructive"
+      class="absolute right-3 top-16"
+    >
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  </div>
+  <div class="mt-2 flex items-center justify-between">
+    <div class="flex flex-col">
+      <p
+        (click)="editBook(book()?.id)"
+        target="_blank"
+        class="text-md cursor-pointer truncate text-wrap font-semibold hover:underline"
+      >
+        {{ book()?.title | titlecase }}
+      </p>
+      <p target="_blank" class="text-wrap text-xs font-semibold text-green-500">
+        {{ book()?.author?.username }}
+      </p>
+    </div>
+  </div>
+</div>

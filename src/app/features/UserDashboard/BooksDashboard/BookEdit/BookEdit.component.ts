@@ -13,6 +13,8 @@ import { ApiError, Book } from '../../../../book.interface';
 import { URL } from '../../../shared/constants';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { LoadingStateComponent } from '../../../shared/components/LoadingState/LoadingState.component';
+import { ErrorStateComponent } from '../../../shared/components/ErrorState/ErrorState.component';
 
 @Component({
   selector: 'app-book-edit',
@@ -22,6 +24,8 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
     HeroHeaderComponent,
     CommonModule,
     LoadingSpinnerComponent,
+    LoadingStateComponent,
+    ErrorStateComponent,
   ],
   templateUrl: './BookEdit.component.html',
   styleUrl: './BookEdit.component.css',

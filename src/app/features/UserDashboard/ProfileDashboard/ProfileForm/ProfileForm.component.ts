@@ -4,7 +4,10 @@ import {
   Component,
   inject,
   Input,
+  OnChanges,
+  OnInit,
   signal,
+  SimpleChanges,
 } from '@angular/core';
 import {
   FormArray,
@@ -39,7 +42,7 @@ import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
   styleUrl: './ProfileForm.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileFormComponent {
+export class ProfileFormComponent implements OnInit, OnChanges {
   @Input() user!: AuthorDetailsResponse;
 
   formBuilder = inject(FormBuilder);
@@ -51,10 +54,10 @@ export class ProfileFormComponent {
   error = signal('');
 
   ngOnInit(): void {
-    console.log('userId', this.user?.data?.id);
+    console.log('user passed', this.user);
 
     this.profileForm = this.formBuilder.group({
-      id: new FormControl(this.user?.data?.id | 1, Validators.required),
+      id: new FormControl(this.user?.data?.id | 0, Validators.required),
       firstName: new FormControl(
         this.user?.data?.firstName || '',
         Validators.required,
@@ -71,6 +74,14 @@ export class ProfileFormComponent {
       ],
       socialLinks: this.formBuilder.array(this.user?.data?.socialLinks || []),
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {}
+
+  private initializeForm(): void {
+    if (!this.user) {
+      return;
+    }
   }
 
   // Get the FormArray for socialLinks
@@ -124,6 +135,8 @@ export class ProfileFormComponent {
         .subscribe({
           next: (response: AuthorDetailsResponse) => {
             this.nextResponse(response);
+            this.authService.currentUserDetail.set(response);
+            localStorage.setItem('userDetail', btoa(JSON.stringify(response)));
           },
           error: (error: AuthError) => {
             this.errorResponse(error);

@@ -52,29 +52,24 @@ export class ProfileDashboardComponent implements OnInit {
   authorError = signal('');
 
   ngOnInit(): void {
-    if (this.authService.currentUserDetail() !== undefined) {
-      this.authService.currentUserDetail.set(
-        JSON.parse(atob(localStorage.getItem('userDetail'))),
-      );
-    } else if (this.authService.currentUserDetail() === undefined) {
-      this.fetchAuthorDetail();
-      this.authService.currentUserDetail.set(
-        JSON.parse(atob(localStorage.getItem('userDetail'))),
+    if (this.authService.currentUserSignal() !== null) {
+      console.log('Profile User signal', this.authService.currentUserSignal());
+      this.fetchAuthorDetail(
+        this.authService.currentUserSignal()?.data?.user?.id,
       );
     }
   }
 
-  fetchAuthorDetail() {
+  fetchAuthorDetail(id: number) {
     this.http
-      .get<AuthorDetailsResponse>(
-        `${URL}/userdetail/by-authordetail/${this.authService.currentUserSignal().data?.user?.id}`,
-      )
+      .get<AuthorDetailsResponse>(`${URL}/userdetail/by-authordetail/${id}`)
       .subscribe({
         next: (response: AuthorDetailsResponse) => {
           this.authorLoading.set(true);
           console.log('authordetail', response);
           this.author.set(response);
           localStorage.setItem('userDetail', btoa(JSON.stringify(response)));
+          this.authService.currentUserDetail.set(response);
           this.authorLoading.set(false);
         },
         error: (error: ApiError) => {

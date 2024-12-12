@@ -53,7 +53,7 @@ import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BooksFormComponent implements OnInit, OnChanges {
-  @Input() bookRecieved!: Book;
+  @Input() bookRecieved: Book;
 
   bookId = input<number | null>();
 
@@ -177,7 +177,7 @@ export class BooksFormComponent implements OnInit, OnChanges {
     if (this.bookForm.valid && this.book) {
       this.http
         .put<AuthorDetailsResponse>(
-          `${URL}/books/${this.book()?.id}`,
+          `${URL}/books/${this.bookId()}`,
           this.bookForm.getRawValue(),
         )
         .subscribe({

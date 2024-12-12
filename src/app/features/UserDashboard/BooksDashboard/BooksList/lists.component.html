@@ -1,0 +1,39 @@
+<!-- loading state -->
+<div
+  class="flex w-full flex-col items-center justify-center gap-5"
+  *ngIf="loading()"
+>
+  <app-loading-spinner></app-loading-spinner>
+  <p class="text-2xl font-bold text-green-500">Loading books...</p>
+</div>
+
+<!-- error state -->
+<div
+  class="flex w-full flex-col items-center justify-center"
+  *ngIf="error() !== ''"
+>
+  <p class="text-2xl font-bold text-red-500">{{ error() }}</p>
+</div>
+
+<!-- loading books -->
+<div class="my-3">
+  <div class="" *ngIf="!loading() && !error()">
+    <div
+      class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
+      *ngIf="inputBooks() !== null"
+    >
+      <app-book-author
+        *ngFor="let book of inputBooks()"
+        [book]="book"
+      ></app-book-author>
+    </div>
+
+    <!-- no books -->
+    <ng-template #noBooks>
+      <div class="flex w-full flex-col items-center justify-center gap-5"></div>
+      <p class="text-green-500">
+        No books available.{{ books()?.length }} {{ inputBooks() }}
+      </p>
+    </ng-template>
+  </div>
+</div>
