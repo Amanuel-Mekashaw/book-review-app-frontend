@@ -1,27 +1,15 @@
 <!-- loading state -->
-<!-- <div
-  class="flex h-screen w-full flex-col items-center justify-center gap-5"
-  *ngIf="loading()"
->
-  <app-loading-spinner></app-loading-spinner>
-  <p class="text-2xl font-bold text-green-500"></p>
-</div> -->
-
 <app-loading-state
   [loading]="loading()"
   loadingText="Loading books..."
   heightclass="h-screen"
 ></app-loading-state>
 
-<!-- <div
-  class="flex h-screen w-full flex-col items-center justify-center"
-  *ngIf="error() !== ''"
->
-  <p class="text-2xl font-bold text-red-500">{{ error() }}</p>
-</div> -->
-
 <!-- error state -->
 <app-error-state heightclass="h-screen" [error]="error()"></app-error-state>
+
+<!-- toaster component -->
+<hlm-toaster richColors closeButton="top-right" />
 
 <!-- Book Detail render -->
 <section
@@ -31,11 +19,35 @@
   <section *ngIf="book(); else noBooks" class="flex flex-col gap-8">
     <section class="flex flex-col gap-5 md:flex-row">
       <!-- don't forget to add images -->
-      <img
-        class="h-[500px] max-h-min w-[400px] self-center overflow-hidden rounded-lg object-cover shadow-lg md:self-auto"
-        [src]="book()?.coverImage || 'https://placehold.co/400x500'"
-        [alt]="book()?.title + 'cover image'"
-      />
+      <div class="group relative">
+        <img
+          class="h-[500px] max-h-min w-[400px] self-center overflow-hidden rounded-lg object-cover shadow-lg md:self-auto"
+          [src]="book()?.coverImage || 'https://placehold.co/400x500'"
+          [alt]="book()?.title + 'cover image'"
+        />
+
+        <!-- Bookmark button add to collection -->
+        <button
+          (click)="fetchCollections()"
+          class="peer absolute right-5 top-5 size-10 rounded-full bg-green-500 text-xl text-white opacity-0 ring-green-500 ring-offset-1 hover:ring-4 group-hover:opacity-100"
+        >
+          <i class="fa-solid fa-bookmark"></i>
+        </button>
+        <div
+          class="absolute right-10 top-5 rounded-md bg-white p-5 opacity-0 shadow-xl peer-focus:opacity-100"
+        >
+          @if (collections() !== null) {
+            @for (collection of collections(); track $index) {
+              <button
+                (click)="addToCollection(book()?.id, collection?.id)"
+                class="w-full border-b-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-5"
+              >
+                {{ collection?.name }}
+              </button>
+            }
+          }
+        </div>
+      </div>
 
       <!-- Text block  -->
       <section class="flex flex-col gap-5">

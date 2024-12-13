@@ -27,6 +27,12 @@ import { HlmDialogService } from '@spartan-ng/ui-dialog-helm';
 import { GenreAddModalComponent } from './GenreAddModal/GenreAddModal.component';
 import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
 import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
+import {
+  Collection,
+  CollectionApiResponse,
+} from '../Collection/collection.interface';
+import { toast } from 'ngx-sonner';
+import { HlmToasterComponent } from '../../../lib/ui-sonner-helm/src/lib/hlm-toaster.component';
 
 @Component({
   selector: 'app-book-details',
@@ -42,6 +48,7 @@ import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.
     GenreAddModalComponent,
     LoadingStateComponent,
     ErrorStateComponent,
+    HlmToasterComponent,
   ],
   templateUrl: './BookDetails.component.html',
   styleUrl: './BookDetails.component.css',
@@ -56,10 +63,16 @@ export class BookDetailsComponent implements OnInit {
 
   book = signal<Book | null | undefined>(null);
   author = signal<AuthorDetailsResponse>(null);
+  collections = signal<Collection[] | null>(null);
+  collectionSuccess = signal('');
   error = signal('');
   authorError = signal('');
+  collectionError = signal('');
+  collectionAddError = signal('');
   loading = signal(false);
-  authorLoading = signal(true);
+  authorLoading = signal(false);
+  collectionLoading = signal(false);
+  isCollectionListOpen = signal(false);
 
   // bookId = signal(this.activeRoute.snapshot.params['id']);
 
@@ -106,8 +119,6 @@ export class BookDetailsComponent implements OnInit {
   }
 
   fetchAuthorDetail() {
-    // fetch book genre
-
     this.http
       .get<AuthorDetailsResponse>(
         `${URL}/userdetail/by-authordetail/${this.book()?.author?.id}`,
@@ -127,6 +138,21 @@ export class BookDetailsComponent implements OnInit {
       });
   }
 
+  fetchCollections() {
+    this.http.get<CollectionApiResponse>(`${URL}/collections`).subscribe({
+      next: (response: CollectionApiResponse) => {
+        this.collectionLoading.set(true);
+        console.log('collections', response.data.content);
+        this.collections.set(response.data.content);
+        this.collectionLoading.set(false);
+      },
+      error: (error: ApiError) => {
+        console.log('collections error', error);
+        this.collectionError.set(error.message);
+      },
+    });
+  }
+
   openReadMe() {
     this.isReadMe.update((current) => !current);
   }
@@ -138,6 +164,42 @@ export class BookDetailsComponent implements OnInit {
   onModalOpen() {
     this.dialog.open(GenreAddModalComponent, {
       closeOnBackdropClick: true,
+    });
+  }
+
+  // displayCollections(bookId: number, collectionId: number) {
+  //   this.fetchCollections();
+  //   this.isCollectionListOpen.update((current) => !current);
+  //   this.addToCollection(bookId, collectionId);
+  // }
+
+  addToCollection(bookId: number, collectionId: number) {
+    console.log({ bookid: bookId, collectionid: collectionId });
+    this.http
+      .post(`${URL}/collections/${collectionId}/books/${bookId}`, {})
+      .subscribe({
+        next: (response: CollectionApiResponse) => {
+          console.log(response);
+          this.collectionSuccess.set(response.message);
+          this.showToastSuccess();
+        },
+        error: (error: ApiError) => {
+          console.log(error.message);
+          this.collectionAddError.set(error.message);
+          this.showToastDanger();
+        },
+      });
+  }
+
+  showToastSuccess() {
+    toast.success('Success', {
+      description: this.collectionSuccess(),
+    });
+  }
+
+  showToastDanger() {
+    toast.error('Unsuccessfull', {
+      description: this.collectionAddError(),
     });
   }
 }
