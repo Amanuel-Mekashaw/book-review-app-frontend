@@ -69,41 +69,7 @@ export class BooksFormComponent implements OnInit, OnChanges {
   error = signal('');
 
   ngOnInit(): void {
-    this.bookForm = this.formBuilder.group({
-      id: new FormControl(this.bookRecieved?.id | 1, [Validators.required]),
-      title: new FormControl(this.bookRecieved?.title || '', [
-        Validators.required,
-      ]),
-      isbn: new FormControl(this.bookRecieved?.isbn || '', [
-        Validators.required,
-      ]),
-      description: new FormControl(this.bookRecieved?.description || ''),
-      coverImage: new FormControl(this.bookRecieved?.coverImage),
-      authorId: [
-        this.authService.currentUserSignal().data.user.id,
-        [Validators.required],
-      ],
-      publishedYear: new FormControl(this.bookRecieved?.publishedYear || '', [
-        Validators.required,
-      ]),
-      publisher: new FormControl(this.bookRecieved?.publisher || '', [
-        Validators.required,
-      ]),
-      pages: new FormControl(this.bookRecieved?.pages || '', [
-        Validators.required,
-      ]),
-      language: new FormControl(this.bookRecieved?.language || '', [
-        Validators.required,
-      ]),
-      createdAt: new FormControl(
-        this.bookRecieved?.createdAt || new Date().toISOString(),
-        [Validators.required],
-      ),
-      updatedAt: new FormControl(new Date().toISOString(), [
-        Validators.required,
-      ]),
-      genreIds: this.formBuilder.array(this.bookRecieved?.genres || []),
-    });
+    this.initializeForm();
     // retrieve genre
     this.http.get<GenreApiResponse>(`${URL}/genre`).subscribe({
       next: (response: GenreApiResponse) => {
@@ -125,14 +91,9 @@ export class BooksFormComponent implements OnInit, OnChanges {
   }
 
   private initializeForm(): void {
-    if (!this.bookRecieved) {
-      // If bookRecieved is not available, wait for it
-      return;
-    }
-
     // form initializing
     this.bookForm = this.formBuilder.group({
-      id: new FormControl(this.bookRecieved?.id | 1, [Validators.required]),
+      id: new FormControl(this.bookRecieved?.id | 0, [Validators.required]),
       title: new FormControl(this.bookRecieved?.title || '', [
         Validators.required,
       ]),
@@ -208,7 +169,7 @@ export class BooksFormComponent implements OnInit, OnChanges {
 
   onSubmit() {
     console.log(this.bookForm.value);
-    if (this.bookForm.valid && this.book) {
+    if (this.bookForm.valid && this.bookRecieved) {
       this.http
         .put<AuthorDetailsResponse>(
           `${URL}/books/${this.bookId()}`,
@@ -224,7 +185,7 @@ export class BooksFormComponent implements OnInit, OnChanges {
         });
     }
 
-    if (this.bookForm.valid && !this.book) {
+    if (this.bookForm.valid && !this.bookRecieved) {
       this.http
         .post<AuthorDetailsResponse>(
           `${URL}/books`,

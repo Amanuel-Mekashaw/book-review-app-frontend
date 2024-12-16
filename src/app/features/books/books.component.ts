@@ -25,6 +25,8 @@ import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/lo
 import { CommonModule } from '@angular/common';
 import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
 import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
+import { AuthorDetailsResponse } from '../Auth/user.interface';
+import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
 
 @Component({
   imports: [
@@ -38,9 +40,9 @@ import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.
     FormsModule,
     CommonModule,
     HeroHeaderComponent,
-    LoadingSpinnerComponent,
     LoadingStateComponent,
     ErrorStateComponent,
+    NoBooksFoundComponent,
   ],
   providers: [BooksComponent],
   standalone: true,
@@ -58,6 +60,10 @@ export class BooksComponent implements OnInit {
   loading = signal(false);
   error = signal<string>('');
 
+  author = signal(null);
+  authorLoading = signal(false);
+  authorError = signal('');
+
   searchTerm: string = '';
 
   ngOnInit(): void {
@@ -67,6 +73,35 @@ export class BooksComponent implements OnInit {
         JSON.parse(atob(localStorage.getItem('user'))),
       );
     }
+
+    this.fetchAuthorDetail(
+      this.authService.currentUserSignal()?.data?.user?.id,
+    );
+    if (this.authService.currentUserDetail() === null) {
+      this.router.navigateByUrl('/dashboard/profile');
+    } else {
+      this.router.navigateByUrl('/books');
+    }
+  }
+
+  fetchAuthorDetail(id: number) {
+    this.http
+      .get<AuthorDetailsResponse>(`${URL}/userdetail/by-authordetail/${id}`)
+      .subscribe({
+        next: (response: AuthorDetailsResponse) => {
+          this.authorLoading.set(true);
+          console.log('authordetail', response);
+          this.author.set(response);
+          localStorage.setItem('userDetail', btoa(JSON.stringify(response)));
+          this.authService.currentUserDetail.set(response);
+          this.authorLoading.set(false);
+        },
+        error: (error: ApiError) => {
+          console.log('error', error);
+          this.authorError.set(error.message);
+          this.authorLoading.set(false);
+        },
+      });
   }
 
   searchBooks() {

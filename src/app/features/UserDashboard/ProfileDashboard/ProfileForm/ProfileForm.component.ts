@@ -44,6 +44,8 @@ import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 })
 export class ProfileFormComponent implements OnInit, OnChanges {
   @Input() user!: AuthorDetailsResponse;
+  @Input() userId: number;
+  @Input() admin: boolean;
 
   formBuilder = inject(FormBuilder);
   authService = inject(AuthService);
@@ -52,12 +54,29 @@ export class ProfileFormComponent implements OnInit, OnChanges {
   profileForm: FormGroup;
   message = signal('');
   error = signal('');
+  isSubmitting = signal(false);
 
   ngOnInit(): void {
     console.log('user passed', this.user);
 
+    this.initializeForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
+    console.log('Info', {
+      userid: this.userId || null,
+      userwithid: this.user?.data?.id || null,
+      user: this.user?.data,
+    });
     this.profileForm = this.formBuilder.group({
-      id: new FormControl(this.user?.data?.id | 0, Validators.required),
+      id: new FormControl(
+        this.admin ? this.userId : this.user?.data?.id | 0,
+        Validators.required,
+      ),
       firstName: new FormControl(
         this.user?.data?.firstName || '',
         Validators.required,
@@ -69,19 +88,14 @@ export class ProfileFormComponent implements OnInit, OnChanges {
       biography: new FormControl(this.user?.data?.biography || ''),
       profilePicture: new FormControl(this.user?.data?.profilePicture),
       userId: [
-        this.authService.currentUserSignal().data.user.id,
+        this.admin
+          ? this.userId
+          : this.authService.currentUserSignal().data.user.id ||
+            this.user?.data?.id,
         Validators.required,
       ],
       socialLinks: this.formBuilder.array(this.user?.data?.socialLinks || []),
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {}
-
-  private initializeForm(): void {
-    if (!this.user) {
-      return;
-    }
   }
 
   // Get the FormArray for socialLinks
@@ -107,6 +121,7 @@ export class ProfileFormComponent implements OnInit, OnChanges {
   }
 
   nextResponse(response: AuthorDetailsResponse) {
+    this.isSubmitting.set(true);
     console.log('response', response);
     this.message.set(response.message);
     this.authService.currentUserDetail.set(response);
@@ -114,6 +129,7 @@ export class ProfileFormComponent implements OnInit, OnChanges {
       'userDetail',
       btoa(JSON.stringify(this.authService.currentUserDetail())),
     );
+    this.isSubmitting.set(false);
     this.showToastSuccess();
   }
 
@@ -124,6 +140,8 @@ export class ProfileFormComponent implements OnInit, OnChanges {
   }
 
   onSubmit() {
+    console.log(this.profileForm.getRawValue());
+
     if (this.profileForm.valid && this.user) {
       console.log(this.profileForm.getRawValue());
 

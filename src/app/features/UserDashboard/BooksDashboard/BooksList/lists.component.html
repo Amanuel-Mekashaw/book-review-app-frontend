@@ -18,22 +18,16 @@
 <!-- loading books -->
 <div class="my-3">
   <div class="" *ngIf="!loading() && !error()">
-    <div
-      class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
-      *ngIf="inputBooks() !== null"
-    >
-      <app-book-author
-        *ngFor="let book of inputBooks()"
-        [book]="book"
-      ></app-book-author>
-    </div>
-
-    <!-- no books -->
-    <ng-template #noBooks>
-      <div class="flex w-full flex-col items-center justify-center gap-5"></div>
-      <p class="text-green-500">
-        No books available.{{ books()?.length }} {{ inputBooks() }}
-      </p>
-    </ng-template>
+    @if (inputBooks() !== null && books()?.length > 0) {
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <app-book-author
+          *ngFor="let book of inputBooks()"
+          [book]="book"
+        ></app-book-author>
+      </div>
+    } @else {
+      <!-- no books -->
+      <app-no-element-found element="Books by Author"></app-no-element-found>
+    }
   </div>
 </div>

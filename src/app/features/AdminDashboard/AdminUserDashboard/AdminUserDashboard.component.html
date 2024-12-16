@@ -1,3 +1,16 @@
-<p>AdminUserDashboard works!</p>
+<section class="flex flex-col gap-8">
+  <app-hero-header
+    title="Admin User Dashboard"
+    subtitle="Edit, Remove and Assign role of all users in this database"
+  ></app-hero-header>
 
-<app-user-dashboard-table></app-user-dashboard-table>
+  <section class="flex flex-col gap-5">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-bold">Users Table</h1>
+      <button routerLink="/register" hlmBtn class="space-x-2">
+        <i class="fa-solid fa-user-plus"></i><span>Add Users</span>
+      </button>
+    </div>
+    <app-user-dashboard-table></app-user-dashboard-table>
+  </section>
+</section>

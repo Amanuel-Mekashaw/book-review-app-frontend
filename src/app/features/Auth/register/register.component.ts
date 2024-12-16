@@ -11,6 +11,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -52,6 +53,22 @@ export class RegisterComponent {
   message = signal('');
   error = signal('');
 
+  passwordValidator(control: FormControl): ValidationErrors | null {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const valid = regex.test(control.value);
+
+    return valid
+      ? null
+      : {
+          passwordInvalid: {
+            value: control.value,
+            message:
+              'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+          },
+        };
+  }
+
   constructor() {
     this.registerForm = new FormGroup({
       username: new FormControl<string>('', [
@@ -66,6 +83,7 @@ export class RegisterComponent {
       password: new FormControl<string>('', [
         Validators.minLength(8),
         Validators.required,
+        this.passwordValidator,
       ]),
     });
   }
@@ -85,7 +103,7 @@ export class RegisterComponent {
           this.authService.currentUserSignal.set(response);
           this.showToastSuccess();
 
-          this.router.navigateByUrl('/login');
+          // this.router.navigateByUrl('/login');
         },
         error: (error: AuthError) => {
           console.log('error', error);

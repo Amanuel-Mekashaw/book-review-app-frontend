@@ -18,11 +18,10 @@ import {
   HlmAvatarFallbackDirective,
   HlmAvatarImageDirective,
 } from '@spartan-ng/ui-avatar-helm';
-import { AuthorDetails, AuthorDetailsResponse } from '../Auth/user.interface';
+import { AuthorDetailsResponse } from '../Auth/user.interface';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { AuthService } from '../Auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { Genre } from '../../genre.interface';
 import { HlmDialogService } from '@spartan-ng/ui-dialog-helm';
 import { GenreAddModalComponent } from './GenreAddModal/GenreAddModal.component';
 import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
@@ -33,6 +32,9 @@ import {
 } from '../Collection/collection.interface';
 import { toast } from 'ngx-sonner';
 import { HlmToasterComponent } from '../../../lib/ui-sonner-helm/src/lib/hlm-toaster.component';
+import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
+import { StarRatingComponent } from '../shared/components/StarRating/StarRating.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-book-details',
@@ -49,6 +51,8 @@ import { HlmToasterComponent } from '../../../lib/ui-sonner-helm/src/lib/hlm-toa
     LoadingStateComponent,
     ErrorStateComponent,
     HlmToasterComponent,
+    NoBooksFoundComponent,
+    StarRatingComponent,
   ],
   templateUrl: './BookDetails.component.html',
   styleUrl: './BookDetails.component.css',
@@ -60,6 +64,7 @@ export class BookDetailsComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
   dialog = inject(HlmDialogService);
+  formBuilder = inject(FormBuilder);
 
   book = signal<Book | null | undefined>(null);
   author = signal<AuthorDetailsResponse>(null);
@@ -74,6 +79,10 @@ export class BookDetailsComponent implements OnInit {
   collectionLoading = signal(false);
   isCollectionListOpen = signal(false);
 
+  ratingForm: FormGroup;
+  isRatingChecked = signal(false);
+  maxRating = signal(10);
+
   // bookId = signal(this.activeRoute.snapshot.params['id']);
 
   // automatically bookId will be fetched from the url since i have enabled withComponentInputBinding()
@@ -83,6 +92,7 @@ export class BookDetailsComponent implements OnInit {
   isReadMe = signal(false);
 
   ngOnInit(): void {
+    this.initializeForm();
     console.log('from book details', this.authService.currentUserSignal());
     console.log(
       'from book details user detail',
@@ -116,6 +126,12 @@ export class BookDetailsComponent implements OnInit {
     });
 
     console.log('id', this.book()?.author?.id);
+  }
+
+  private initializeForm() {
+    this.ratingForm = this.formBuilder.group({
+      rating: [0], // Default rating
+    });
   }
 
   fetchAuthorDetail() {
@@ -201,5 +217,25 @@ export class BookDetailsComponent implements OnInit {
     toast.error('Unsuccessfull', {
       description: this.collectionAddError(),
     });
+  }
+
+  onRatingChange(rating: number) {
+    console.log(rating);
+    // this.isRatingChecked.set(rating > 0 ? true : false);
+    // console.log('checked', this.isRatingChecked());
+
+    this.http.put(`${URL}/books/rating/${this.book()?.id}`, rating).subscribe({
+      next: (response) => {
+        console.log(response);
+        location.reload();
+      },
+      error: (error: ApiError) => {
+        console.log(error);
+      },
+    });
+  }
+
+  onSubmit() {
+    console.log('Form submitted:', this.ratingForm.value);
   }
 }

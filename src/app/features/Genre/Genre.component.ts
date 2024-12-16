@@ -13,11 +13,13 @@ import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/lo
 import { URL } from '../shared/constants';
 import { Genre } from '../../genre.interface';
 import { Router } from '@angular/router';
+import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
+import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
 
 @Component({
   selector: 'app-genre',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent],
+  imports: [CommonModule, ErrorStateComponent, LoadingStateComponent],
   templateUrl: './Genre.component.html',
   styleUrl: './Genre.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

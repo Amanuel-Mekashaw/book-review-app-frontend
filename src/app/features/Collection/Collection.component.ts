@@ -8,6 +8,7 @@ import { LoadingStateComponent } from '../shared/components/LoadingState/Loading
 import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
 import { RouterLink } from '@angular/router';
 import { CollectionListComponent } from './CollectionList/CollectionList.component';
+import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
 
 @Component({
   selector: 'app-collection',
@@ -18,6 +19,7 @@ import { CollectionListComponent } from './CollectionList/CollectionList.compone
     ErrorStateComponent,
     RouterLink,
     CollectionListComponent,
+    NoBooksFoundComponent,
   ],
   templateUrl: './Collection.component.html',
   styleUrl: './Collection.component.css',

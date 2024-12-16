@@ -14,15 +14,18 @@ import { Genre } from '../../genre.interface';
 import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
 import { CommonModule } from '@angular/common';
 import { BooksListsComponent } from '../Homepage/components/BooksList/lists.component';
+import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
+import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
 
 @Component({
   selector: 'app-genre-single',
   standalone: true,
   imports: [
     HeroHeaderComponent,
-    LoadingSpinnerComponent,
     CommonModule,
     BooksListsComponent,
+    LoadingStateComponent,
+    ErrorStateComponent,
   ],
   templateUrl: './GenreSingle.component.html',
   styleUrl: './GenreSingle.component.css',
@@ -58,7 +61,7 @@ export class GenreSingleComponent implements OnInit {
   fetchBooksByGenre() {
     this.http.get<Book[]>(`${URL}/books/genre/${this.genreId()}`).subscribe({
       next: (response: Book[]) => {
-        console.log(response);
+        console.log('Book By Genre', response);
         this.BooksByGenre.set(response);
       },
       error: (error: ApiError) => {

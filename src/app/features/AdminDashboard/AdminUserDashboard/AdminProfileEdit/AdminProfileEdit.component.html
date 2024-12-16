@@ -1,4 +1,4 @@
-<p>AdminProfileEdit works! and id is {{ userId() }}</p>
+<p>AdminProfileEdit works! and name is {{ author()?.data?.firstName }}</p>
 
 @if (authorLoading() === true) {
   <app-loading-state
@@ -16,5 +16,9 @@
 }
 
 @if (!authorLoading() && !authorError()) {
-  <app-profile-form [user]="author()"></app-profile-form>
+  <app-profile-form
+    [userId]="userId()"
+    [user]="author()"
+    [admin]="true"
+  ></app-profile-form>
 }

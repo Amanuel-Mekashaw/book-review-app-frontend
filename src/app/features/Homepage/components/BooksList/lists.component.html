@@ -1,42 +1,33 @@
 <!-- loading state -->
-<div
-  class="flex w-full flex-col items-center justify-center gap-5"
-  *ngIf="loading()"
->
-  <app-loading-spinner></app-loading-spinner>
-  <p class="text-2xl font-bold text-green-500">Loading books...</p>
-</div>
+<app-loading-state
+  [loading]="loading()"
+  loadingText="Loading Books..."
+></app-loading-state>
 
 <!-- error state -->
-<div
-  class="flex w-full flex-col items-center justify-center"
-  *ngIf="error() !== ''"
->
-  <p class="text-2xl font-bold text-red-500">{{ error() }}</p>
-</div>
+<app-error-state [error]="error()"></app-error-state>
 
 <!-- loading books -->
-<div class="my-3">
-  <div class="" *ngIf="!loading() && !error()">
-    <div
+<div>
+  <div class="my-3" *ngIf="!loading() && !error()">
+    <!-- <div
       class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
       *ngIf="inputBooks() !== undefined"
     >
       <app-book *ngFor="let book of inputBooks()" [book]="book"></app-book>
-    </div>
-    <div
-      class="grid grid-cols-1 gap-8 md:grid-cols-3"
-      *ngIf="inputBooks() === undefined && books()?.length > 0; else noBooks"
-    >
-      <app-book *ngFor="let book of books()" [book]="book"></app-book>
-    </div>
+    </div> -->
 
-    <!-- no books -->
-    <ng-template #noBooks>
-      <div class="flex w-full flex-col items-center justify-center gap-5"></div>
-      <p class="text-green-500">
-        No books available.{{ books()?.length }} {{ inputBooks() }}
-      </p>
-    </ng-template>
+    <!-- <pre>null {{ inputBooks() === undefined && books().length > 0 }}</pre> -->
+    @if (inputBooks() !== undefined) {
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <app-book *ngFor="let book of books()" [book]="book"></app-book>
+      </div>
+    } @else if (inputBooks() == null && books().length > 0) {
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <app-book *ngFor="let book of books()" [book]="book"></app-book>
+      </div>
+    } @else {
+      <app-no-element-found element="Book"></app-no-element-found>
+    }
   </div>
 </div>

@@ -98,18 +98,19 @@
       loadingText="Loading Books...."
     ></app-loading-state>
 
-    <app-error-state></app-error-state>
+    <app-error-state [error]="error()"></app-error-state>
 
-    @if (!loading() && !error()) {
+    @if (!loading() && !error() && books().length > 0) {
       <section>
         <app-hero-header title="Search result"></app-hero-header>
         <app-books [inputBooks]="books()"></app-books>
       </section>
     } @else {
       <!-- No book info section -->
-      <ng-template #noBookFound>
-        <p>No books information with name {{ searchTerm }}.</p>
-      </ng-template>
+      <app-no-element-found
+        [amountOfBooks]="0"
+        [element]="'Books searched with title ' + searchTerm + ' '"
+      ></app-no-element-found>
     }
   }
 </main>

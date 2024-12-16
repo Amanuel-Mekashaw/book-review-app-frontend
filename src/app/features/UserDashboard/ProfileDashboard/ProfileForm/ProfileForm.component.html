@@ -139,11 +139,11 @@
   </div>
 
   <button
-    [disabled]="profileForm.invalid"
+    [disabled]="profileForm.invalid && isSubmitting()"
     type="submit"
     hlmBtn
     variant="default"
   >
-    Submit
+    {{ isSubmitting() ? "Submitting form...." : "Submit profile" }}
   </button>
 </form>

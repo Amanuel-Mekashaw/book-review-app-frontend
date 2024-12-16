@@ -31,7 +31,7 @@ export class AdminProfileEditComponent implements OnInit {
   authorError = signal('');
 
   ngOnInit(): void {
-    console.log('User to be editied', this.userId());
+    console.log('User to be edited', this.userId());
     this.fetchUserDetail();
   }
 

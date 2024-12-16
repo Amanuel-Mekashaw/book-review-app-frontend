@@ -6,9 +6,11 @@ import {
 } from '@angular/core';
 
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { BookByAuthor } from '../../../../book.interface';
+import { ApiError, BookByAuthor } from '../../../../book.interface';
 import { Router, RouterLink } from '@angular/router';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { HttpClient } from '@angular/common/http';
+import { URL } from '../../../shared/constants';
 
 @Component({
   selector: 'app-book-author',
@@ -22,6 +24,7 @@ export class BookComponent {
   book = input.required<BookByAuthor>();
 
   router = inject(Router);
+  http = inject(HttpClient);
 
   editBook(id: number) {
     console.log(`dashboard/books/edit/${id}`);
@@ -29,5 +32,16 @@ export class BookComponent {
     this.router.navigateByUrl(`dashboard/books/edit/${id}`);
   }
 
-  deleteBook(id: number) {}
+  deleteBook(id: number) {
+    console.log('deleted book ', id);
+    this.http.delete(`${URL}/books/${id}`).subscribe({
+      next: (response) => {
+        console.log(response);
+        location.reload();
+      },
+      error: (error: ApiError) => {
+        console.log(error);
+      },
+    });
+  }
 }

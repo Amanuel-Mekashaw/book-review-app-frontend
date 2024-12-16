@@ -105,7 +105,7 @@
         <img
           [src]="
             authService.currentUserDetail()?.data?.profilePicture ||
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqWhCchAwn000tHQ0C7ccgfewAaqBik7v_w&s'
+            'https://t3.ftcdn.net/jpg/06/33/54/78/360_F_633547842_AugYzexTpMJ9z1YcpTKUBoqBF0CUCk10.jpg'
           "
           alt="spartan logo. Resembling a spartanic shield"
           hlmAvatarImage
@@ -134,7 +134,9 @@
           <hlm-menu-label
             ><p class="text-green-500">My Account</p>
             <p class="text-lg">
-              {{ authService.currentUserSignal()?.data?.user?.username }}
+              {{ authService.currentUserDetail()?.data?.firstName }}
+              {{ authService.currentUserDetail()?.data?.lastName }}
+              <!-- {{ authService.currentUserSignal()?.data?.user?.username }} -->
             </p></hlm-menu-label
           >
           <hlm-menu-separator />

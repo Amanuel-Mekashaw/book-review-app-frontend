@@ -17,7 +17,6 @@ import {
 } from '../../../book.interface';
 import { URL } from '../../shared/constants';
 import { AuthService } from '../../Auth/auth.service';
-import { BooksListsComponent } from '../../Homepage/components/BooksList/lists.component';
 import { BooksListsByAuthorComponent } from './BooksList/lists.component';
 
 @Component({
