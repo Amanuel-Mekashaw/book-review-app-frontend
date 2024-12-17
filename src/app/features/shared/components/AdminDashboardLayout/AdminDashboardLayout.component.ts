@@ -28,6 +28,11 @@ export class AdminDashboardLayoutComponent {
 
   links: Links[] = [
     {
+      routeLink: 'dashboard',
+      icon: 'fa-solid fa-grip',
+      label: 'Dashboard',
+    },
+    {
       routeLink: 'users',
       icon: 'fal fa-solid fa-masks-theater',
       label: 'Users',

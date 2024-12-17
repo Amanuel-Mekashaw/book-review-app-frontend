@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  Input,
   input,
   OnChanges,
   OnInit,
@@ -43,6 +44,8 @@ export type ItemProps = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BooksListsComponent implements OnInit, OnChanges {
+  @Input() remove: boolean;
+  @Input() collectionId: number;
   inputBooks = input<Book[] | null | undefined>();
   books = signal<Book[]>(null);
 

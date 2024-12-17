@@ -16,7 +16,20 @@
     {{ collection()?.description }}
   </p>
 
-  <section>
-    <app-books [inputBooks]="collection()?.books"></app-books>
-  </section>
+  @if (collection()?.books.length > 0) {
+    <section>
+      <app-books
+        [collectionId]="collection()?.id"
+        [remove]="true"
+        [inputBooks]="collection()?.books"
+      ></app-books>
+    </section>
+  }
+
+  @if (collection()?.books.length === 0) {
+    <app-no-element-found
+      [amountOfBooks]="0"
+      [element]="'Books in ' + collection()?.name + ' collection'"
+    ></app-no-element-found>
+  }
 </section>

@@ -1,6 +1,12 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'books',
+    pathMatch: 'full',
+  },
+
   // Auth Routes
   {
     path: 'login',
@@ -145,6 +151,14 @@ export const routes: Routes = [
         '../app/features/shared/components/AdminDashboardLayout/AdminDashboardLayout.component'
       ).then((c) => c.AdminDashboardLayoutComponent),
     children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import(
+            '../app/features/AdminDashboard/Dashboard/Dashboard.component'
+          ).then((c) => c.DashboardComponent),
+        pathMatch: 'full',
+      },
       {
         path: 'users',
         loadComponent: () =>

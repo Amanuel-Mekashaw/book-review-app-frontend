@@ -15,6 +15,7 @@ import { LoadingStateComponent } from '../shared/components/LoadingState/Loading
 import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
 import { CommonModule } from '@angular/common';
 import { BooksListsComponent } from '../Homepage/components/BooksList/lists.component';
+import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
 
 @Component({
   selector: 'app-collection-detail',
@@ -24,6 +25,7 @@ import { BooksListsComponent } from '../Homepage/components/BooksList/lists.comp
     ErrorStateComponent,
     CommonModule,
     BooksListsComponent,
+    NoBooksFoundComponent,
   ],
   templateUrl: './CollectionDetail.component.html',
   styleUrl: './CollectionDetail.component.css',

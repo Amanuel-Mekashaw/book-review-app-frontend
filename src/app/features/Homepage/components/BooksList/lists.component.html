@@ -20,11 +20,21 @@
     <!-- <pre>null {{ inputBooks() === undefined && books().length > 0 }}</pre> -->
     @if (inputBooks() !== undefined) {
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-        <app-book *ngFor="let book of books()" [book]="book"></app-book>
+        <app-book
+          [collectionId]="collectionId"
+          [remove]="remove"
+          *ngFor="let book of books()"
+          [book]="book"
+        ></app-book>
       </div>
     } @else if (inputBooks() == null && books().length > 0) {
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-        <app-book *ngFor="let book of books()" [book]="book"></app-book>
+        <app-book
+          [collectionId]="collectionId"
+          [remove]="remove"
+          *ngFor="let book of books()"
+          [book]="book"
+        ></app-book>
       </div>
     } @else {
       <app-no-element-found element="Book"></app-no-element-found>
