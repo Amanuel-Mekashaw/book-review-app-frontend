@@ -35,10 +35,10 @@ export class GenreComponent {
   isReadMe = signal(false);
 
   ngOnInit(): void {
-    this.http.get<GenreApiResponse>(`${URL}/genre`).subscribe({
-      next: (response: GenreApiResponse) => {
+    this.http.get<Genre[]>(`${URL}/genre`).subscribe({
+      next: (response: Genre[]) => {
         console.log('response', response);
-        this.genres.set(response.content);
+        this.genres.set(response);
         this.loading.set(false);
       },
       error: (error: ApiError) => {

@@ -32,24 +32,31 @@
       formControlName="description"
       type="text"
       placeholder="Enter your description"
-      class="w-full"
-      row="20"
+      class="min-h-[120px] w-full"
+      maxlength="255"
     ></textarea>
 
-    <div
-      class="flex flex-col font-normal text-red-500"
-      *ngIf="
-        genreForm.get('description')?.invalid &&
-        genreForm.get('description')?.touched
-      "
+    <p
+      [ngClass]="{
+        'mt-3 text-right text-sm text-green-500': true,
+        'text-red-500': genreForm.getRawValue()?.description.length > 255,
+      }"
     >
-      <small *ngIf="genreForm.get('description')?.errors"
-        >description is required</small
-      >
-    </div>
+      {{ genreForm.getRawValue()?.description.length }} / 255
+    </p>
+
+    <small *ngIf="genreForm.get('description')?.errors">
+      <ul class="flex flex-col gap-1">
+        <li
+          *ngFor="let error of genreForm.get('description').errors | keyvalue"
+        >
+          {{ error.value?.message }}
+        </li>
+      </ul>
+    </small>
   </label>
 
   <button [disabled]="genreForm.invalid" type="submit" hlmBtn variant="default">
-    Submit
+    {{ genre ? "Edit Genre" : "Create Genre" }}
   </button>
 </form>

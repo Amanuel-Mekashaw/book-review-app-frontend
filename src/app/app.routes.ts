@@ -166,6 +166,20 @@ export const routes: Routes = [
             '../app/features/AdminDashboard/AdminUserDashboard/AdminProfileEdit/AdminProfileEdit.component'
           ).then((c) => c.AdminProfileEditComponent),
       },
+      {
+        path: 'genre',
+        loadComponent: () =>
+          import(
+            '../app/features/AdminDashboard/AdminGenre/AdminGenre.component'
+          ).then((c) => c.AdminGenreComponent),
+      },
+      {
+        path: 'genre/edit/:genreId',
+        loadComponent: () =>
+          import(
+            '../app/features/AdminDashboard/AdminGenre/GenreEdit/GenreEdit.component'
+          ).then((c) => c.GenreEditComponent),
+      },
     ],
   },
 

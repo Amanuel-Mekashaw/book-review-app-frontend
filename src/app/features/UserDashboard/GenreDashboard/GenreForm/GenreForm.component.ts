@@ -4,7 +4,10 @@ import {
   Component,
   inject,
   Input,
+  OnChanges,
+  OnInit,
   signal,
+  SimpleChanges,
 } from '@angular/core';
 import {
   FormArray,
@@ -24,6 +27,7 @@ import { URL } from '../../../shared/constants';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { GenrePostResponse } from '../../../Genre/genre.interface';
+import { Genre } from '../../../../genre.interface';
 
 @Component({
   selector: 'app-genre-form',
@@ -40,8 +44,8 @@ import { GenrePostResponse } from '../../../Genre/genre.interface';
   styleUrl: './GenreForm.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileFormComponent {
-  @Input() genre!: GenrePostResponse;
+export class ProfileFormComponent implements OnInit, OnChanges {
+  @Input() genre!: Genre;
 
   formBuilder = inject(FormBuilder);
   authService = inject(AuthService);
@@ -52,13 +56,20 @@ export class ProfileFormComponent {
   error = signal('');
 
   ngOnInit(): void {
-    console.log('userId', this.genre?.data?.id);
+    console.log('userId', this.genre?.id);
+    this.initializeForm();
+  }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.initializeForm();
+  }
+
+  private initializeForm() {
     this.genreForm = this.formBuilder.group({
-      id: new FormControl(this.genre?.data?.id || 0, Validators.required),
-      name: new FormControl(this.genre?.data?.name || '', Validators.required),
+      id: new FormControl(this.genre?.id || 0, Validators.required),
+      name: new FormControl(this.genre?.name || '', Validators.required),
       description: new FormControl(
-        this.genre?.data?.description || '',
+        this.genre?.description || '',
         Validators.required,
       ),
     });
@@ -83,7 +94,7 @@ export class ProfileFormComponent {
 
       this.http
         .put<GenrePostResponse>(
-          `${URL}/genre/${this.genre?.data?.id}`,
+          `${URL}/genre/${this.genre?.id}`,
           this.genreForm.getRawValue(),
         )
         .subscribe({

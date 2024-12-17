@@ -1,0 +1,16 @@
+<section class="flex flex-col gap-8">
+  <app-hero-header
+    title="Admin Genre Dashboard"
+    subtitle="Create, Edit and Delete all Genre in this database"
+  ></app-hero-header>
+
+  <section class="flex flex-col gap-5">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-bold">Genres Table</h1>
+      <button routerLink="#" hlmBtn class="space-x-2">
+        <i class="fa-solid fa-masks-theater"></i><span>Add Genre</span>
+      </button>
+    </div>
+    <app-genre-dashboard-table></app-genre-dashboard-table>
+  </section>
+</section>

@@ -89,7 +89,7 @@ export type BookByAuthor = {
   publisher: string;
   pages: number;
   language: string;
-  author: Author;
+  author: User;
   genres: Genre[];
   coverImage: string;
   averageRating: number;

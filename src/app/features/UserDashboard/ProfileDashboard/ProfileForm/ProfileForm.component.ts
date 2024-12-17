@@ -85,7 +85,10 @@ export class ProfileFormComponent implements OnInit, OnChanges {
         this.user?.data?.lastName || '',
         Validators.required,
       ),
-      biography: new FormControl(this.user?.data?.biography || ''),
+      biography: new FormControl(
+        this.user?.data?.biography || '',
+        Validators.maxLength(255),
+      ),
       profilePicture: new FormControl(this.user?.data?.profilePicture),
       userId: [
         this.admin

@@ -38,6 +38,11 @@ export class AdminDashboardLayoutComponent {
       icon: 'fal fa-regular fa-user ',
       label: 'Profile',
     },
+    {
+      routeLink: 'genre',
+      icon: 'fal fa-solid fa-masks-theater',
+      label: 'Genre',
+    },
   ];
 
   isLeftSidebarCollapsed = signal<boolean>(false);
