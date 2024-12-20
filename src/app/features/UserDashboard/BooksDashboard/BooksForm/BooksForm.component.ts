@@ -71,11 +71,11 @@ export class BooksFormComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.initializeForm();
     // retrieve genre
-    this.http.get<GenreApiResponse>(`${URL}/genre`).subscribe({
-      next: (response: GenreApiResponse) => {
+    this.http.get<Genre[]>(`${URL}/genre`).subscribe({
+      next: (response: Genre[]) => {
         this.loading.set(true);
         // console.log('Genre', response);
-        this.genres.set(response.content);
+        this.genres.set(response);
         this.book.set(this.bookRecieved);
         this.loading.set(false);
         this.logShit();

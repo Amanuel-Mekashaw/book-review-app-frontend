@@ -27,6 +27,7 @@ import { LoadingStateComponent } from '../shared/components/LoadingState/Loading
 import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
 import { AuthorDetailsResponse } from '../Auth/user.interface';
 import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
+import { CommentComponent } from '../shared/components/Comment/Comment.component';
 
 @Component({
   imports: [
@@ -43,6 +44,7 @@ import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoEle
     LoadingStateComponent,
     ErrorStateComponent,
     NoBooksFoundComponent,
+    CommentComponent,
   ],
   providers: [BooksComponent],
   standalone: true,

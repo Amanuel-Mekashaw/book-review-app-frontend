@@ -35,6 +35,11 @@ import { HlmToasterComponent } from '../../../lib/ui-sonner-helm/src/lib/hlm-toa
 import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
 import { StarRatingComponent } from '../shared/components/StarRating/StarRating.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CommentComponent } from '../shared/components/Comment/Comment.component';
+import { Rating, RatingApiResponse } from '../../rating.interface';
+import { response } from 'express';
+import { CommentFormComponent } from '../shared/components/CommentForm/CommentForm.component';
+import { RatingDescriptionComponent } from '../shared/components/RatingDescription/RatingDescription.component';
 
 @Component({
   selector: 'app-book-details',
@@ -53,6 +58,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
     HlmToasterComponent,
     NoBooksFoundComponent,
     StarRatingComponent,
+    CommentComponent,
+    CommentFormComponent,
+    RatingDescriptionComponent,
   ],
   templateUrl: './BookDetails.component.html',
   styleUrl: './BookDetails.component.css',
@@ -79,6 +87,10 @@ export class BookDetailsComponent implements OnInit {
   collectionLoading = signal(false);
   isCollectionListOpen = signal(false);
 
+  ratings = signal<Rating[] | null>(null);
+  ratingLoading = signal(false);
+  ratingError = signal('');
+
   ratingForm: FormGroup;
   isRatingChecked = signal(false);
   maxRating = signal(10);
@@ -88,6 +100,8 @@ export class BookDetailsComponent implements OnInit {
   // automatically bookId will be fetched from the url since i have enabled withComponentInputBinding()
   // in angular route provider in app.config.ts
   bookId = input.required<number>();
+
+  userId = this.authService.currentUserSignal()?.data?.user?.id;
 
   isReadMe = signal(false);
 
@@ -169,6 +183,21 @@ export class BookDetailsComponent implements OnInit {
     });
   }
 
+  fetchRating() {
+    this.http.get(`${URL}/bookrating/getratings/${this.bookId()}`).subscribe({
+      next: (response: RatingApiResponse) => {
+        this.ratingLoading.set(true);
+        console.log(response);
+        this.ratings.set(response.data);
+        this.ratingLoading.set(false);
+      },
+      error: (error: ApiError) => {
+        console.log(error);
+        this.ratingError.set(error.message);
+      },
+    });
+  }
+
   openReadMe() {
     this.isReadMe.update((current) => !current);
   }
@@ -219,20 +248,24 @@ export class BookDetailsComponent implements OnInit {
     });
   }
 
-  onRatingChange(rating: number) {
-    console.log(rating);
+  onRatingChange(ratingValue: number, bookId: number) {
     // this.isRatingChecked.set(rating > 0 ? true : false);
     // console.log('checked', this.isRatingChecked());
 
-    this.http.put(`${URL}/books/rating/${this.book()?.id}`, rating).subscribe({
-      next: (response) => {
-        console.log(response);
-        location.reload();
-      },
-      error: (error: ApiError) => {
-        console.log(error);
-      },
-    });
+    this.http
+      .post(
+        `${URL}/bookrating/rate?userId=${this.userId}&bookId=${bookId}&ratingValue=${ratingValue}`,
+        {},
+      )
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          location.reload();
+        },
+        error: (error: ApiError) => {
+          console.log(error);
+        },
+      });
   }
 
   onSubmit() {

@@ -190,7 +190,7 @@
           </div>
 
           <!-- Rating section -->
-          <div class="flex flex-col gap-2">
+          <!-- <div class="flex flex-col gap-2">
             <h2 class="text-2xl font-bold text-green-500">
               Rating (<span class="text-yellow-500">{{
                 book()?.averageRating
@@ -203,10 +203,10 @@
               [max]="maxRating()"
               [value]="book()?.averageRating > 0 ? book()?.averageRating : 0"
               [avgRating]="book()?.averageRating"
-              (ratingChange)="onRatingChange($event)"
+              (ratingChange)="onRatingChange($event, bookId())"
             >
             </app-star-rating>
-          </div>
+          </div> -->
         </section>
       </section>
 
@@ -263,6 +263,19 @@
             </p>
           </div>
         </section>
+      </section>
+
+      <!-- Rating and comment section -->
+      <button hlmBtn (click)="fetchRating()">load rating</button>
+      <section class="flex flex-col gap-5">
+        <app-rating-description [ratings]="ratings()"></app-rating-description>
+        <app-comment-form
+          [avgRating]="book()?.averageRating"
+          [bookId]="bookId()"
+          [userId]="authService?.currentUserSignal()?.data?.user?.id"
+          [ratings]="ratings()"
+        ></app-comment-form>
+        <app-comment [ratings]="ratings()"></app-comment>
       </section>
     </section>
   } @else {

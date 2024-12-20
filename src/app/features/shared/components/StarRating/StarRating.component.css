@@ -10,4 +10,5 @@
 }
 .star.filled {
   color: gold;
+  border: gold solid 2px;
 }
