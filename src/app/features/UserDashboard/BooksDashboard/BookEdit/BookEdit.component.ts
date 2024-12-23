@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { LoadingStateComponent } from '../../../shared/components/LoadingState/LoadingState.component';
 import { ErrorStateComponent } from '../../../shared/components/ErrorState/ErrorState.component';
+import { BooksFormWithFileComponent } from '../BooksFormWithFile/BooksFormWithFile.component';
 
 @Component({
   selector: 'app-book-edit',
@@ -26,6 +27,7 @@ import { ErrorStateComponent } from '../../../shared/components/ErrorState/Error
     LoadingSpinnerComponent,
     LoadingStateComponent,
     ErrorStateComponent,
+    BooksFormWithFileComponent,
   ],
   templateUrl: './BookEdit.component.html',
   styleUrl: './BookEdit.component.css',

@@ -1,0 +1,294 @@
+<hlm-toaster richColors closeButton position="top-right" />
+<!-- user detail setting form -->
+<form
+  class="mt-8 flex flex-col gap-5"
+  *ngIf="bookForm"
+  [formGroup]="bookForm"
+  (ngSubmit)="onSubmit()"
+>
+  <input type="hidden" formControlName="id" />
+
+  <label hlmLabel class="w-full"
+    >Book title
+    <input
+      hlmInput
+      formControlName="title"
+      type="text"
+      placeholder="Enter the book name"
+      class="w-full"
+    />
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched"
+    >
+      <small *ngIf="bookForm.get('title')?.errors">title is required</small>
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >ISBN
+    <input
+      hlmInput
+      formControlName="isbn"
+      type="text"
+      placeholder="Enter book isbn"
+      class="w-full"
+    />
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="bookForm.get('isbn')?.invalid && bookForm.get('isbn')?.touched"
+    >
+      <small *ngIf="bookForm.get('isbn')?.errors">Isbn is required</small>
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Description
+    <textarea
+      hlmInput
+      formControlName="description"
+      type="text"
+      placeholder="Enter book description"
+      class="min-h-[80px] w-full"
+      maxlength="700"
+    ></textarea>
+
+    <p
+      [ngClass]="{
+        'mt-3 text-right text-green-500': true,
+        'text-red-500': bookForm.getRawValue()?.description?.length > 700,
+      }"
+    >
+      {{ bookForm.getRawValue()?.description?.length }} / 700
+    </p>
+
+    <small *ngIf="bookForm.get('description')?.errors">
+      <ul class="flex flex-col gap-1">
+        <li *ngFor="let error of bookForm.get('description').errors | keyvalue">
+          {{ error.value?.message }}
+        </li>
+      </ul>
+    </small>
+  </label>
+
+  <!-- <label hlmLabel class="w-full"
+    >Book Cover Image
+    <input
+      hlmInput
+      type="file"
+      placeholder="select cover image"
+      class="w-full"
+      (change)="onFileChange($event)"
+      accept="image/png, image/jpeg, image/webp"
+    />
+  </label> -->
+
+  <!-- Cover Image -->
+  <div>
+    <label hlmLabel>Book Cover Image</label>
+    <div class="flex w-full items-center justify-center">
+      <label
+        for="dropzone-file"
+        class="flex min-h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-green-500 bg-green-50 hover:bg-green-100"
+      >
+        <div class="flex flex-col items-center justify-center py-4">
+          <svg
+            class="mb-4 size-8"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 16"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+            />
+          </svg>
+          <p class="mb-2 text-wrap text-sm text-gray-500">
+            <span class="font-semibold">Click to upload</span> or drag and drop
+          </p>
+          <p class="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 4MB)</p>
+        </div>
+        <input
+          id="dropzone-file"
+          type="file"
+          class="hidden"
+          (change)="onFileChange($event)"
+          accept="image/png, image/jpeg, image/webp"
+        />
+      </label>
+    </div>
+  </div>
+  @if (selectedFile) {
+    <img
+      class="max-w-52 rounded-md border-2 border-green-500 object-cover p-5"
+      [src]="selectedFile?.name"
+      [alt]="selectedFile?.name"
+    />
+  }
+
+  <label hlmLabel class="w-full"
+    >Published Year
+    <input
+      hlmInput
+      formControlName="publishedYear"
+      type="text"
+      placeholder="Enter book Published Year"
+      class="w-full"
+    />
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        bookForm.get('publishedYear')?.invalid &&
+        bookForm.get('publishedYear')?.touched
+      "
+    >
+      <small *ngIf="bookForm.get('publishedYear')?.errors"
+        >published year is required</small
+      >
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Publisher
+    <input
+      hlmInput
+      formControlName="publisher"
+      type="text"
+      placeholder="Enter book Publisher"
+      class="w-full"
+    />
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        bookForm.get('publisher')?.invalid && bookForm.get('publisher')?.touched
+      "
+    >
+      <small *ngIf="bookForm.get('publisher')?.errors"
+        >Publisher is required</small
+      >
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Pages
+    <input
+      hlmInput
+      formControlName="pages"
+      type="number"
+      placeholder="How many pages the book have"
+      class="w-full"
+    />
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="bookForm.get('pages')?.invalid && bookForm.get('pages')?.touched"
+    >
+      <small *ngIf="bookForm.get('pages')?.errors">Pages is required</small>
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Language
+    <input
+      hlmInput
+      formControlName="language"
+      type="text"
+      placeholder="in what language is the book written"
+      class="w-full"
+    />
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        bookForm.get('language')?.invalid && bookForm.get('language')?.touched
+      "
+    >
+      <small *ngIf="bookForm.get('language')?.errors"
+        >Language is required</small
+      >
+    </div>
+  </label>
+
+  <input hlmInput formControlName="createdAt" type="hidden" class="w-full" />
+
+  <input hlmInput formControlName="updatedAt" type="hidden" class="w-full" />
+
+  <input hlmInput formControlName="authorId" type="hidden" class="w-full" />
+
+  <div formArrayName="genreIds" class="rounded-md border-4 p-3 shadow-xl">
+    <div class="flex w-full items-center justify-between gap-3">
+      <label hlmLabel class="font-bold text-green-500">Genres</label>
+      <button
+        hlmBtn
+        variant="outline"
+        type="button"
+        (click)="addGenreId()"
+        class="flex items-center gap-2"
+      >
+        <i class="fal fa-solid fa-masks-theater"></i>
+        <span> Add Genre</span>
+      </button>
+    </div>
+
+    <!-- Add Genres -->
+    <div *ngFor="let link of genreIds.controls; let i = index">
+      <!-- loading state -->
+      <div class="w-full" *ngIf="loading()">
+        <app-loading-spinner></app-loading-spinner>
+        <p class="text-2xl font-bold text-green-500">Loading genres...</p>
+      </div>
+
+      <!-- genre form -->
+      <div class="col flex w-full items-end gap-5 md:flex-row">
+        <label class="w-full">
+          Genre
+          <brn-select
+            class="w-full"
+            placeholder="Select a Genre"
+            [formControlName]="i"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value />
+            </hlm-select-trigger>
+            <hlm-select-content class="w-full">
+              @for (genre of genres(); track $index) {
+                <hlm-option [value]="genre.id">{{ genre.name }}</hlm-option>
+              }
+            </hlm-select-content>
+          </brn-select>
+          <pre *ngIf="bookForm.get('genreIds.at(i)')?.invalid">{{
+            bookForm.get("genreIds.at(i)")?.errors | json
+          }}</pre>
+          <div
+            class="flex flex-col font-normal text-red-500"
+            *ngIf="
+              bookForm.get('genreIds.at(i)')?.invalid &&
+              bookForm.get('genreIds.at(i)')?.touched &&
+              bookForm.get('genreIds.at(i)')?.hasError
+            "
+          >
+            <small *ngIf="bookForm.get('genreIds.at(i)')?.errors"
+              >invalid Genre</small
+            >
+          </div>
+        </label>
+        <button
+          hlmBtn
+          variant="destructive"
+          type="button"
+          (click)="removeGenreId(i)"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button [disabled]="bookForm.invalid" type="submit" hlmBtn variant="default">
+    Submit
+  </button>
+</form>

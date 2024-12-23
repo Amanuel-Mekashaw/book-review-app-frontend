@@ -18,6 +18,7 @@ import {
 import { URL } from '../../shared/constants';
 import { AuthService } from '../../Auth/auth.service';
 import { BooksListsByAuthorComponent } from './BooksList/lists.component';
+import { BooksFormWithFileComponent } from './BooksFormWithFile/BooksFormWithFile.component';
 
 @Component({
   selector: 'app-books-dashboard',
@@ -28,6 +29,7 @@ import { BooksListsByAuthorComponent } from './BooksList/lists.component';
     HlmButtonDirective,
     CommonModule,
     BooksListsByAuthorComponent,
+    BooksFormWithFileComponent,
   ],
   templateUrl: './BooksDashboard.component.html',
   styleUrl: './BooksDashboard.component.css',

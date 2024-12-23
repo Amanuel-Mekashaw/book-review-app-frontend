@@ -11,7 +11,7 @@ import {
 import { URL } from '../shared/constants';
 import { Book } from '../../book.interface';
 import { ApiError } from '../../book.interface';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
 import {
   HlmAvatarComponent,
@@ -61,6 +61,7 @@ import { RatingDescriptionComponent } from '../shared/components/RatingDescripti
     CommentComponent,
     CommentFormComponent,
     RatingDescriptionComponent,
+    NgOptimizedImage,
   ],
   templateUrl: './BookDetails.component.html',
   styleUrl: './BookDetails.component.css',

@@ -15,6 +15,10 @@
   <app-error-state [error]="error()"></app-error-state>
 
   <section *ngIf="!loading() && !error()" class="">
-    <app-book-form [bookId]="bookId()" [bookRecieved]="book()"></app-book-form>
+    <!-- <app-book-form [bookId]="bookId()" [bookRecieved]="book()"></app-book-form> -->
+    <app-book-form-with-file
+      [bookId]="bookId()"
+      [bookRecieved]="book()"
+    ></app-book-form-with-file>
   </section>
 </div>

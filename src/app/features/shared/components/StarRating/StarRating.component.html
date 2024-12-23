@@ -1,8 +1,8 @@
 <div class="flex flex-col gap-5 md:flex">
-  <div class="flex w-fit items-center gap-3 p-3">
+  <div class="flex items-center gap-2">
     <ng-container *ngFor="let star of stars; index as i">
       <span
-        class="star cursor-pointer flex-wrap rounded-md border-2 p-1 text-3xl text-slate-500"
+        class="star cursor-pointer flex-wrap rounded-md border-2 px-1 text-2xl text-slate-500"
         [class.filled]="i < value"
         (click)="onStarClick(i + 1)"
         (mouseover)="onHover(i + 1)"

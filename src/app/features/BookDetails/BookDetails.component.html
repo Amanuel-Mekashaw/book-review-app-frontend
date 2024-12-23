@@ -22,8 +22,13 @@
         <div class="group relative">
           <!-- book cover image -->
           <img
+            height="500"
+            width="400"
             class="h-[500px] max-h-min w-[400px] self-center overflow-hidden rounded-lg object-cover shadow-lg md:self-auto"
-            [src]="book()?.coverImage || 'https://placehold.co/400x500'"
+            [ngSrc]="
+              'book_images/' + book()?.coverImage ||
+              'https://placehold.co/400x500'
+            "
             [alt]="book()?.title + 'cover image'"
           />
 

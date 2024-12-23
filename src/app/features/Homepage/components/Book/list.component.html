@@ -7,7 +7,9 @@
   <!-- card image -->
   <!-- TODO check the loading=eager -->
   <img
-    [ngSrc]="book()?.coverImage || 'https://placehold.co/400x520'"
+    [ngSrc]="
+      'book_images/' + book()?.coverImage || 'https://placehold.co/400x520'
+    "
     loading="eager"
     [alt]="book()?.title"
     class="h-full w-full object-cover"

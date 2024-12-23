@@ -28,7 +28,7 @@ export class CollectionComponent implements OnInit {
   http = inject(HttpClient);
 
   collections = signal<Collection[] | null>(null);
-  loading = signal(false);
+  loading = signal(true);
   error = signal('');
 
   ngOnInit(): void {

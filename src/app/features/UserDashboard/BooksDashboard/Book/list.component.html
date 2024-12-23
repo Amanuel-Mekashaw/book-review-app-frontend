@@ -6,7 +6,9 @@
 
     <img
       [routerLink]="'/books/' + book()?.id"
-      [ngSrc]="book()?.coverImage || 'https://placehold.co/400x520'"
+      [ngSrc]="
+        'book_images/' + book()?.coverImage || 'https://placehold.co/430x520'
+      "
       loading="eager"
       [alt]="book()?.title"
       class="h-full w-full cursor-pointer object-cover"

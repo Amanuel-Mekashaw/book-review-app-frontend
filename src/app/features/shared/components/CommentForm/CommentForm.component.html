@@ -2,15 +2,16 @@
 
 <!-- Comment Input -->
 @for (rating of ratings; track $index) {
-  @if (rating?.user?.id !== authService.currentUserSignal()?.data?.user?.id) {
-    {{ rating?.user?.id }}
-    {{ authService.currentUserSignal()?.data?.user?.id }}
-    {{ rating?.user?.id !== authService.currentUserSignal()?.data?.user?.id }}
+  @if (rating?.user?.id === authService.currentUserSignal()?.data?.user?.id) {
+    rating user {{ rating?.user?.id }} main user{{
+      authService.currentUserSignal()?.data?.user?.id
+    }}
     <form
       [formGroup]="ratingForm"
       (ngSubmit)="onSubmit()"
-      class="gap3 mt-5 flex flex-col items-center rounded-lg border-2 border-green-500 p-3"
+      class="gap3 mt-5 flex flex-col items-center gap-3 rounded-lg"
     >
+      <!-- starts -->
       <app-star-rating
         formControlName="ratingValue"
         [min]="1"
