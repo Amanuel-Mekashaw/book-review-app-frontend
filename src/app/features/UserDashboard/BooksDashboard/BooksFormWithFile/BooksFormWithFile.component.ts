@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -46,6 +46,7 @@ import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
     LoadingSpinnerComponent,
     BrnSelectImports,
     HlmSelectModule,
+    NgOptimizedImage,
   ],
   templateUrl: './BooksFormWithFile.component.html',
   styleUrl: './BooksFormWithFile.component.css',
@@ -197,25 +198,25 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
     // Make POST request
     // const headers = new HttpHeaders().set('Accept', 'application/json');
 
-    // if (this.bookForm.valid && this.bookRecieved) {
-    //   this.http
-    //     .put<AuthorDetailsResponse>(
-    //       `${URL}/books/${this.bookId()}`,
-    //       this.bookForm.getRawValue(),
-    //     )
-    //     .subscribe({
-    //       next: (response: AuthorDetailsResponse) => {
-    //         this.nextResponse(response);
-    //       },
-    //       error: (error: AuthError) => {
-    //         this.errorResponse(error);
-    //       },
-    //     });
-    // }
-    // console.log({
-    //   'form data': formData.getAll('book'),
-    //   image: formData.getAll('coverImage'),
-    // });
+    if (this.bookForm.valid && this.bookRecieved) {
+      this.http
+        .put<AuthorDetailsResponse>(
+          `${URL}/books/bycover/${this.bookId()}`,
+          formData,
+        )
+        .subscribe({
+          next: (response: AuthorDetailsResponse) => {
+            this.nextResponse(response);
+          },
+          error: (error: AuthError) => {
+            this.errorResponse(error);
+          },
+        });
+    }
+    console.log({
+      'form data': formData.getAll('book'),
+      image: formData.getAll('coverImage'),
+    });
 
     if (this.bookForm.valid && !this.bookRecieved) {
       this.http

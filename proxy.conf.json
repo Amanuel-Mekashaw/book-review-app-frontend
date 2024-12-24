@@ -1,0 +1,10 @@
+{
+  "/book_images": {
+    "target": "http://localhost:4000/public/",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/book_images": "/book_images"
+    }
+  }
+}
