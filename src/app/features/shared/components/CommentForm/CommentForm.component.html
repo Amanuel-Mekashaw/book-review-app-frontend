@@ -1,44 +1,41 @@
 <hlm-toaster richColors closeButton position="top-right" />
 
 <!-- Comment Input -->
-@for (rating of ratings; track $index) {
-  @if (rating?.user?.id === authService.currentUserSignal()?.data?.user?.id) {
-    rating user {{ rating?.user?.id }} main user{{
-      authService.currentUserSignal()?.data?.user?.id
-    }}
-    <form
-      [formGroup]="ratingForm"
-      (ngSubmit)="onSubmit()"
-      class="gap3 mt-5 flex flex-col items-center gap-3 rounded-lg"
-    >
-      <!-- starts -->
-      <app-star-rating
-        formControlName="ratingValue"
-        [min]="1"
-        [max]="maxRating()"
-        [value]="avgRating > 0 ? avgRating : 0"
-        [avgRating]="avgRating"
-        (ratingChange)="onRatingChange($event)"
+<!-- @for (rating of ratings; track $index) { -->
+<!-- @if (ratings.length == 0) { -->
+<form
+  [formGroup]="ratingForm"
+  (ngSubmit)="onSubmit()"
+  class="gap3 mt-5 flex flex-col items-center gap-3 rounded-lg"
+>
+  <!-- starts -->
+  <app-star-rating
+    formControlName="ratingValue"
+    [min]="1"
+    [max]="maxRating()"
+    [value]="avgRating > 0 ? avgRating : 0"
+    [avgRating]="avgRating"
+    (ratingChange)="onRatingChange($event)"
+  >
+  </app-star-rating>
+  <div class="w-full">
+    <div class="flex w-full flex-col gap-3 md:flex-row">
+      <input
+        formControlName="comment"
+        hlmInput
+        placeholder="write a review"
+        type="text"
+        class="grow rounded-md"
+      />
+      <button
+        hlmBtn
+        type="submit"
+        class="w-[10rem] rounded-md bg-[#323357] px-5 py-2 font-bold text-white"
       >
-      </app-star-rating>
-      <div class="w-full">
-        <div class="flex w-full flex-col gap-3 md:flex-row">
-          <input
-            formControlName="comment"
-            hlmInput
-            placeholder="write a review"
-            type="text"
-            class="grow rounded-md"
-          />
-          <button
-            hlmBtn
-            type="submit"
-            class="w-[10rem] rounded-md bg-[#323357] px-5 py-2 font-bold text-white"
-          >
-            Write a review
-          </button>
-        </div>
-      </div>
-    </form>
-  }
-}
+        Write a review
+      </button>
+    </div>
+  </div>
+</form>
+<!-- } -->
+<!-- } -->

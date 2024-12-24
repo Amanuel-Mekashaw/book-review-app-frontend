@@ -26,6 +26,7 @@ import { ApiError } from '../../../../book.interface';
 import { URL } from '../../constants';
 import { toast } from 'ngx-sonner';
 import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-comment-form',
@@ -37,6 +38,7 @@ import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
     ReactiveFormsModule,
     FormsModule,
     HlmToasterComponent,
+    CommonModule,
   ],
   templateUrl: './CommentForm.component.html',
   styleUrl: './CommentForm.component.css',
