@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../Auth/auth.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 
 import {
   HlmAvatarComponent,
@@ -49,6 +49,7 @@ import { URL } from '../../constants';
     HlmMenuLabelComponent,
     HlmMenuSeparatorComponent,
     BrnMenuTriggerDirective,
+    NgOptimizedImage,
   ],
   standalone: true,
   templateUrl: './navbar.component.html',

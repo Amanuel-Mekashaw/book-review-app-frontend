@@ -25,7 +25,7 @@
             height="500"
             width="400"
             class="h-[500px] max-h-min w-[400px] self-center overflow-hidden rounded-lg object-cover shadow-lg md:self-auto"
-            [ngSrc]="
+            [src]="
               'book_images/' + book()?.coverImage ||
               'https://placehold.co/400x500'
             "
@@ -238,7 +238,10 @@
             <div class="flex items-center gap-3">
               <hlm-avatar variant="large">
                 <img
-                  [src]="author()?.data?.profilePicture || '/assets/avatar.png'"
+                  [src]="
+                    'profile_images/' + author()?.data?.profilePicture ||
+                    '/assets/avatar.png'
+                  "
                   [alt]="book()?.title + 'cover image'"
                   hlmAvatarImage
                 />

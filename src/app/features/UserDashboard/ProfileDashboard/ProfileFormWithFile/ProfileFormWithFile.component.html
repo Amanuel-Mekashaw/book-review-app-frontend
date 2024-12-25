@@ -1,0 +1,204 @@
+<hlm-toaster richColors closeButton position="top-right" />
+<!-- user detail setting form -->
+<form
+  class="mt-8 flex flex-col gap-5"
+  [formGroup]="profileForm"
+  (ngSubmit)="onSubmit()"
+>
+  <input type="hidden" formControlName="id" />
+
+  <label hlmLabel class="w-full"
+    >First Name
+    <input
+      hlmInput
+      formControlName="firstName"
+      type="text"
+      placeholder="Enter your first name"
+      class="w-full"
+    />
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        profileForm.get('firstName')?.invalid &&
+        profileForm.get('firstName')?.touched
+      "
+    >
+      <small *ngIf="profileForm.get('firstName')?.errors"
+        >first name is required</small
+      >
+    </div>
+  </label>
+  <label hlmLabel class="w-full"
+    >Last Name
+    <input
+      hlmInput
+      formControlName="lastName"
+      type="text"
+      placeholder="Enter your last name"
+      class="w-full"
+    />
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        profileForm.get('lastName')?.invalid &&
+        profileForm.get('lastName')?.touched
+      "
+    >
+      <small *ngIf="profileForm.get('lastName')?.errors"
+        >first name is required</small
+      >
+    </div>
+  </label>
+
+  <label hlmLabel class="w-full"
+    >Bio
+    <textarea
+      hlmInput
+      formControlName="biography"
+      type="text"
+      placeholder="Enter your biography"
+      class="min-h-[80px] w-full"
+      maxlength="255"
+    ></textarea>
+    <p
+      [ngClass]="{
+        'mt-3 text-right text-green-500': true,
+        'text-red-500': profileForm.getRawValue()?.biography.length > 255,
+      }"
+    >
+      {{ profileForm.getRawValue()?.biography.length }} / 255
+    </p>
+
+    <small *ngIf="profileForm.get('biography')?.errors">
+      <ul class="flex flex-col gap-1">
+        <li
+          *ngFor="let error of profileForm.get('biography').errors | keyvalue"
+        >
+          {{ error.value?.message }}
+        </li>
+      </ul>
+    </small>
+  </label>
+
+  <!-- Cover Image form control -->
+  <label hlmLabel>Book Cover Image</label>
+  <div class="flex w-full flex-col gap-5 md:flex-row">
+    <!-- image display -->
+    @if (user) {
+      <img
+        class="rounded-lg shadow-xl shadow-green-200"
+        width="200"
+        height="300"
+        [src]="'profile_images/' + this.user?.data?.profilePicture"
+      />
+    }
+    <!-- profile photo form control -->
+    <div class="h-full w-full">
+      <div class="flex w-full grow items-center justify-center">
+        <label
+          for="dropzone-file"
+          class="flex min-h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-green-500 bg-green-50 hover:bg-green-100"
+        >
+          <div class="flex flex-col items-center justify-center py-4">
+            <svg
+              class="mb-4 size-8"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+              />
+            </svg>
+            <p class="mb-2 text-wrap text-sm text-gray-500">
+              <span class="font-semibold">Click to upload</span> or drag and
+              drop
+            </p>
+            <p class="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 4MB)</p>
+          </div>
+          <input
+            id="dropzone-file"
+            type="file"
+            class="hidden"
+            (change)="onFileChange($event)"
+            accept="image/png, image/jpeg, image/webp"
+          />
+        </label>
+      </div>
+    </div>
+  </div>
+  @if (selectedFile) {
+    <img
+      class="max-w-52 rounded-md border-2 border-green-500 object-cover p-5"
+      [src]="selectedFile?.name"
+      [alt]="selectedFile?.name"
+    />
+  }
+
+  <input hlmInput formControlName="userId" type="hidden" class="w-full" />
+
+  <div formArrayName="socialLinks">
+    <div class="flex w-full items-center justify-between gap-3">
+      <label hlmLabel>Social Links</label>
+      <button
+        hlmBtn
+        variant="outline"
+        type="button"
+        (click)="addSocialLink()"
+        class="flex items-center gap-2"
+      >
+        <i class="fa-solid fa-link"></i>
+        <span> Add Social Link</span>
+      </button>
+    </div>
+
+    <!-- Add Socials -->
+    <div *ngFor="let link of socialLinks.controls; let i = index">
+      <div class="flex w-full items-end gap-5">
+        <label class="w-full">
+          Link {{ i + 1 }}
+          <input hlmInput [formControlName]="i" type="text" class="w-full" />
+          <pre *ngIf="profileForm.get('socialLinks.at(i)')?.invalid">{{
+            profileForm.get("socialLinks.at(i)")?.errors | json
+          }}</pre>
+          <div
+            class="flex flex-col font-normal text-red-500"
+            *ngIf="
+              profileForm.get('socialLinks.at(i)')?.invalid &&
+              profileForm.get('socialLinks.at(i)')?.touched &&
+              profileForm.get('socialLinks.at(i)')?.hasError
+            "
+          >
+            <small *ngIf="profileForm.get('socialLinks.at(i)')?.errors"
+              >invalid url</small
+            >
+          </div>
+        </label>
+        <button
+          hlmBtn
+          variant="destructive"
+          type="button"
+          (click)="removeSocialLink(i)"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button
+    [disabled]="profileForm.invalid && isSubmitting()"
+    type="submit"
+    hlmBtn
+    variant="default"
+  >
+    {{ isSubmitting() ? "Submitting form...." : "Submit profile" }}
+  </button>
+</form>

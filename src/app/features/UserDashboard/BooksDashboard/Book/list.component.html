@@ -1,12 +1,12 @@
 <!-- card -->
-<div class="m-2 rounded-md border-2 border-slate-200 p-2 shadow-lg">
+<div class="m-2 h-full rounded-md border-2 border-slate-200 p-2 shadow-lg">
   <div class="relative overflow-hidden" [title]="book()?.title">
     <!-- card image -->
     <!-- TODO check the loading=eager -->
 
     <img
       [routerLink]="'/books/' + book()?.id"
-      [ngSrc]="
+      [src]="
         'book_images/' + book()?.coverImage || 'https://placehold.co/430x520'
       "
       loading="eager"

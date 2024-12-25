@@ -7,7 +7,7 @@
   <!-- card image -->
   <!-- TODO check the loading=eager -->
   <img
-    [ngSrc]="
+    [src]="
       'book_images/' + book()?.coverImage || 'https://placehold.co/400x520'
     "
     loading="eager"
@@ -24,7 +24,7 @@
   <div
     class="absolute inset-0 w-full bg-black/70 p-4 text-white opacity-0 backdrop-blur-md transition-opacity duration-300 group-hover:opacity-100"
   >
-    <div class="relative">
+    <div class="relative h-full">
       <div class="flex h-full w-full flex-col items-start justify-between">
         <div class="flex flex-col items-start gap-3">
           <!-- title -->

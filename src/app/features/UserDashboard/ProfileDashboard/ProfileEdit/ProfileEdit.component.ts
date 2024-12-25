@@ -7,11 +7,12 @@ import {
 import { ProfileFormComponent } from '../ProfileForm/ProfileForm.component';
 import { AuthService } from '../../../Auth/auth.service';
 import { HeroHeaderComponent } from '../../../shared/components/HeroHeader/HeroHeader.component';
+import { ProfileFormWithFileComponent } from '../ProfileFormWithFile/ProfileFormWithFile.component';
 
 @Component({
   selector: 'app-profile-edit',
   standalone: true,
-  imports: [ProfileFormComponent, HeroHeaderComponent],
+  imports: [HeroHeaderComponent, ProfileFormWithFileComponent],
   templateUrl: './ProfileEdit.component.html',
   styleUrl: './ProfileEdit.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

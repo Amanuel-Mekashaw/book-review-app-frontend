@@ -19,7 +19,7 @@
 <div class="my-3">
   <div class="" *ngIf="!loading() && !error()">
     @if (inputBooks() !== null && books()?.length > 0) {
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         <app-book-author
           *ngFor="let book of inputBooks()"
           [book]="book"

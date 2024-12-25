@@ -10,7 +10,10 @@
     <div class="flex flex-grow flex-col gap-5">
       <img
         class="max-h-48 max-w-48 self-center overflow-hidden rounded-full object-cover shadow-2xl ring-4 ring-green-500 ring-offset-4 md:h-56 md:w-56"
-        [src]="authService.currentUserDetail()?.data?.profilePicture"
+        [src]="
+          'profile_images/' +
+          authService.currentUserDetail()?.data?.profilePicture
+        "
         alt=""
       />
       <button (click)="editForm()" class="flex gap-3" hlmBtn variant="default">
@@ -86,6 +89,10 @@
   </div>
 </div>
 
-<app-profile-form
+<!-- <app-profile-form
   *ngIf="authService.currentUserDetail() === null"
-></app-profile-form>
+></app-profile-form> -->
+
+<app-profile-form-with-file
+  *ngIf="authService.currentUserDetail() === null"
+></app-profile-form-with-file>

@@ -134,7 +134,9 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
       updatedAt: new FormControl(new Date().toISOString(), [
         Validators.required,
       ]),
-      genreIds: this.formBuilder.array(this.bookRecieved?.genres || []),
+      genreIds: this.formBuilder.array(this.bookRecieved?.genres || [], [
+        Validators.required,
+      ]),
     });
   }
 

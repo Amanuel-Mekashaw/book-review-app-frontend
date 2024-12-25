@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,6 +17,7 @@ import { AuthorDetailsResponse } from '../../Auth/user.interface';
 import { HttpClient } from '@angular/common/http';
 import { ApiError } from '../../../book.interface';
 import { URL } from '../../shared/constants';
+import { ProfileFormWithFileComponent } from './ProfileFormWithFile/ProfileFormWithFile.component';
 
 export interface UserProfile {
   id: number;
@@ -36,7 +37,8 @@ export interface UserProfile {
     FormsModule,
     CommonModule,
     HlmButtonModule,
-    ProfileFormComponent,
+    ProfileFormWithFileComponent,
+    NgOptimizedImage,
   ],
   templateUrl: './ProfileDashboard.component.html',
   styleUrl: './ProfileDashboard.component.css',

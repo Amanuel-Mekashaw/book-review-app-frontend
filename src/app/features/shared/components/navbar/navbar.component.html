@@ -104,7 +104,8 @@
       >
         <img
           [src]="
-            authService.currentUserDetail()?.data?.profilePicture ||
+            'profile_images/' +
+              authService.currentUserDetail()?.data?.profilePicture ||
             'https://t3.ftcdn.net/jpg/06/33/54/78/360_F_633547842_AugYzexTpMJ9z1YcpTKUBoqBF0CUCk10.jpg'
           "
           alt="spartan logo. Resembling a spartanic shield"

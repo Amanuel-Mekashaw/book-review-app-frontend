@@ -11,11 +11,12 @@ import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { Rating } from '../../../../rating.interface';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../Auth/auth.service';
+import { NoBooksFoundComponent } from '../NoElementFound/NoElementFound.component';
 
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [HlmInputDirective, HlmButtonDirective, CommonModule],
+  imports: [CommonModule, NoBooksFoundComponent],
   templateUrl: './Comment.component.html',
   styleUrl: './Comment.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,5 +45,6 @@ export class CommentComponent implements OnInit {
 
   toggleComments(): void {
     this.isCommentsOpen.update((prev) => !prev);
+    console.log('toggled comment', this.isCommentsOpen());
   }
 }
