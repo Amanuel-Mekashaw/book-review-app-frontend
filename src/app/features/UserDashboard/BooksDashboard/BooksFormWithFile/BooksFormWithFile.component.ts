@@ -18,6 +18,9 @@ import {
   FormsModule,
   ReactiveFormsModule,
   Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
 } from '@angular/forms';
 import { toast } from 'ngx-sonner';
 import { AuthError, AuthorDetailsResponse } from '../../../Auth/user.interface';
@@ -134,9 +137,10 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
       updatedAt: new FormControl(new Date().toISOString(), [
         Validators.required,
       ]),
-      genreIds: this.formBuilder.array(this.bookRecieved?.genres || [], [
-        Validators.required,
-      ]),
+      genreIds: this.formBuilder.array(
+        Array.from(new Set(this.bookRecieved?.genres || [])),
+        [Validators.required],
+      ),
     });
   }
 
@@ -150,6 +154,23 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
     });
   }
 
+  // checks if array contains duplicate value
+  noDuplicatesValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value && Array.isArray(control.value)) {
+        const uniqueValues = new Set(control.value);
+        if (uniqueValues.size !== control.value.length) {
+          return {
+            duplicates: {
+              message: 'The array contains duplicate values.',
+            },
+          }; // Return a message with the error
+        }
+      }
+      return null; // No error if no duplicates
+    };
+  }
+
   // Get the FormArray for socialLinks
   get genreIds(): FormArray {
     return this.bookForm.get('genreIds') as FormArray;
@@ -157,7 +178,14 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
 
   // Add a new social link to the FormArray
   addGenreId(genre: string = ''): void {
-    this.genreIds.push(this.formBuilder.control(genre, [Validators.required]));
+    // Add genre to the FormArray if it's not already in the array
+    const genreControl = this.formBuilder.control(genre, [Validators.required]);
+
+    // Push to the FormArray
+    this.genreIds.push(genreControl);
+
+    // Apply the noDuplicatesValidator to the entire FormArray to check for duplicates
+    this.genreIds.setValidators([this.noDuplicatesValidator()]);
   }
 
   // Remove a social link from the FormArray

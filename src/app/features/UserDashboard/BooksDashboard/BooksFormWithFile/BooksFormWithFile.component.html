@@ -248,6 +248,22 @@
     </div>
 
     <!-- Add Genres -->
+    <div class="my-3 flex gap-3">
+      @for (recievedGenre of this.bookRecieved?.genres; track $index) {
+        <div
+          class="flex w-full flex-wrap items-center justify-between rounded-lg border-2 border-slate-100 p-4 shadow-lg"
+        >
+          {{ recievedGenre?.name }}
+          <button
+            type="button"
+            class="cursor-pointer"
+            (click)="removeGenreId(recievedGenre?.id)"
+          >
+            <i class="fa-solid fa-trash text-red-500"></i>
+          </button>
+        </div>
+      }
+    </div>
     <div *ngFor="let link of genreIds.controls; let i = index">
       <!-- loading state -->
       <div class="w-full" *ngIf="loading()">
@@ -259,6 +275,7 @@
       <div class="col flex w-full items-end gap-5 md:flex-row">
         <label class="w-full">
           Genre
+
           <brn-select
             class="w-full"
             placeholder="Select a Genre"

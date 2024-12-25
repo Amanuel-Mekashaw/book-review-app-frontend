@@ -12,9 +12,9 @@
   font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
 }
 
-html {
+/* html {
   cursor: url("/icons/book_cursor.png"), auto;
-}
+} */
 
 :root {
   --background: 0 0% 100%;
