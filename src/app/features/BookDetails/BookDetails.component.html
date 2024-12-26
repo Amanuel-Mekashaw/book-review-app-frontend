@@ -3,20 +3,27 @@
 
 <!-- loading state -->
 <app-loading-state
-  [loading]="loading()"
+  [loading]="bookService.loading()"
   loadingText="Loading book info..."
   heightclass="h-screen"
 ></app-loading-state>
 
 <!-- error state -->
-<app-error-state heightclass="h-screen" [error]="error()"></app-error-state>
+<app-error-state
+  heightclass="h-screen"
+  [error]="bookService.error()"
+></app-error-state>
 
 <!-- Book Detail render -->
 <section
-  *ngIf="!loading() && !error()"
+  *ngIf="!bookService.loading() && !bookService.error()"
   class="mx-[1rem] my-[7rem] flex flex-col gap-5 md:mx-[5rem] xl:mx-[10rem]"
 >
-  @if (book()) {
+  @if (
+    bookService.book() &&
+    bookService.book() !== null &&
+    bookService.book() !== undefined
+  ) {
     <section class="flex flex-col gap-8">
       <section class="flex flex-col gap-5 md:flex-row">
         <div class="group relative">
@@ -26,16 +33,16 @@
             width="400"
             class="h-[500px] max-h-min w-[400px] self-center overflow-hidden rounded-lg object-cover shadow-lg md:self-auto"
             [src]="
-              'book_images/' + book()?.coverImage ||
+              '/book_images/' + bookService.book()?.coverImage ||
               'https://placehold.co/400x500'
             "
-            [alt]="book()?.title + 'cover image'"
+            [alt]="bookService.book()?.title + 'cover image'"
           />
 
           <!-- Bookmark button add to collection (mobile) -->
           <button
             hlmBtn
-            (click)="fetchCollections()"
+            (click)="bookService.fetchCollections()"
             class="peer mt-5 flex items-center gap-2 md:hidden"
           >
             <i class="fa-solid fa-bookmark"></i> Add to collection
@@ -43,7 +50,7 @@
 
           <!-- Bookmark button add to collection (desktop) -->
           <button
-            (click)="fetchCollections()"
+            (click)="bookService.fetchCollections()"
             class="peer absolute right-5 top-5 hidden size-10 rounded-full bg-green-500 text-xl text-white opacity-0 ring-green-500 ring-offset-1 hover:ring-4 group-hover:opacity-100 md:block"
           >
             <i class="fa-solid fa-bookmark"></i>
@@ -52,10 +59,18 @@
           <div
             class="absolute right-10 top-5 rounded-md bg-white p-5 opacity-0 shadow-xl peer-focus:opacity-100"
           >
-            @if (collections() !== null && collections().length > 0) {
-              @for (collection of collections(); track $index) {
+            @if (
+              bookService?.collections() !== null &&
+              bookService?.collections().length > 0
+            ) {
+              @for (collection of bookService?.collections(); track $index) {
                 <button
-                  (click)="addToCollection(book()?.id, collection?.id)"
+                  (click)="
+                    bookService?.addToCollection(
+                      bookService.book()?.id,
+                      collection?.id
+                    )
+                  "
                   class="w-full border-b-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-5"
                 >
                   {{ collection?.name }}
@@ -79,16 +94,17 @@
               <h1
                 class="text-center text-3xl font-bold text-green-500 md:text-left"
               >
-                {{ book()?.title }}
+                {{ bookService.book()?.title }}
               </h1>
 
               <!-- edit button -->
+
               <button
                 *ngIf="
                   authService.currentUserDetail()?.data.id ===
-                  author()?.data?.id
+                  bookService.author()?.data?.user?.id
                 "
-                (click)="editBook(book()?.id)"
+                (click)="editBook(bookService.book()?.id)"
                 class="flex gap-3"
                 hlmBtn
                 variant="default"
@@ -107,7 +123,7 @@
                   'line-clamp-none': isReadMe(),
                 }"
               >
-                {{ book()?.description }}
+                {{ bookService.book()?.description }}
               </p>
               <!-- gradient overlay -->
               <div
@@ -145,15 +161,17 @@
           <div class="flex flex-col gap-5">
             <p class="flex flex-col">
               <span class="text-green-500">ISBN</span
-              ><span class="text-lg">{{ book()?.isbn }}</span>
+              ><span class="text-lg">{{ bookService.book()?.isbn }}</span>
             </p>
             <p class="flex flex-col">
               <span class="text-green-500">Publisher</span
-              ><span class="text-lg">{{ book()?.publisher }}</span>
+              ><span class="text-lg">{{ bookService.book()?.publisher }}</span>
             </p>
             <p class="flex flex-col">
               <span class="text-green-500">Published Year</span
-              ><span class="text-lg">{{ book()?.publishedYear }}</span>
+              ><span class="text-lg">{{
+                bookService.book()?.publishedYear
+              }}</span>
             </p>
           </div>
 
@@ -164,7 +182,7 @@
             <!-- genre list -->
             <div class="flex flex-wrap items-start gap-3">
               <!-- add genre button with text if there is no genre -->
-              @if (book().genres.length == 0) {
+              @if (bookService.book().genres.length == 0) {
                 <div class="flex items-center gap-5">
                   <button
                     (click)="onModalOpen()"
@@ -182,8 +200,8 @@
               }
 
               <!-- Genres list -->
-              @if (book().genres.length > 0) {
-                @for (genre of book()?.genres; track $index) {
+              @if (bookService.book().genres.length > 0) {
+                @for (genre of bookService.book()?.genres; track $index) {
                   <a
                     [routerLink]="'/genres/' + genre.id"
                     class="border-b-2 border-green-500 p-2 hover:bg-green-100"
@@ -198,7 +216,7 @@
           <!-- <div class="flex flex-col gap-2">
             <h2 class="text-2xl font-bold text-green-500">
               Rating (<span class="text-yellow-500">{{
-                book()?.averageRating
+                bookService.book()?.averageRating
               }}</span>
               / {{ maxRating() }})
             </h2>
@@ -206,8 +224,8 @@
               formControlName="rating"
               [min]="1"
               [max]="maxRating()"
-              [value]="book()?.averageRating > 0 ? book()?.averageRating : 0"
-              [avgRating]="book()?.averageRating"
+              [value]="bookService.book()?.averageRating > 0 ? bookService.book()?.averageRating : 0"
+              [avgRating]="bookService.book()?.averageRating"
               (ratingChange)="onRatingChange($event, bookId())"
             >
             </app-star-rating>
@@ -218,17 +236,17 @@
       <!-- About the Author -->
       <!-- author loading state -->
       <app-loading-state
-        [loading]="authorLoading()"
+        [loading]="bookService.authorLoading()"
         loadingText="Loading author information..."
       ></app-loading-state>
 
       <!-- author error state -->
-      <app-error-state [error]="authorError()"></app-error-state>
+      <app-error-state [error]="bookService.authorError()"></app-error-state>
       <!-- author section loaded -->
       <section>
         <section
           class="flex flex-col gap-5"
-          *ngIf="!authorLoading() && !authorError()"
+          *ngIf="!bookService.authorLoading() && !bookService.authorError()"
         >
           <h2 class="text-2xl font-bold">About the Author</h2>
           <div
@@ -239,33 +257,34 @@
               <hlm-avatar variant="large">
                 <img
                   [src]="
-                    'profile_images/' + author()?.data?.profilePicture ||
+                    'profile_images/' +
+                      bookService.author()?.data?.profilePicture ||
                     '/assets/avatar.png'
                   "
-                  [alt]="book()?.title + 'cover image'"
+                  [alt]="bookService.book()?.title + 'cover image'"
                   hlmAvatarImage
                 />
                 <!-- avatar fallback -->
                 <span class="bg-[#FD005B] text-white" hlmAvatarFallback>
-                  {{ author()?.data.firstName.at(0).toUpperCase() }}
-                  {{ author()?.data.lastName.at(0).toUpperCase() }}
+                  {{ bookService.author()?.data.firstName.at(0).toUpperCase() }}
+                  {{ bookService.author()?.data.lastName.at(0).toUpperCase() }}
                 </span>
               </hlm-avatar>
               <!-- name section -->
               <div>
                 <!-- name -->
                 <h1 class="text-xl font-bold">
-                  {{ author()?.data?.firstName || "Amanuel" }}
-                  {{ author()?.data?.lastName || "Mekashaw" }}
+                  {{ bookService.author()?.data?.firstName || "Amanuel" }}
+                  {{ bookService.author()?.data?.lastName || "Mekashaw" }}
                 </h1>
                 <!-- email or username -->
-                <p>{{ book()?.author?.username }}</p>
+                <p>{{ bookService.book()?.author?.username }}</p>
               </div>
             </div>
             <!-- biography -->
             <p class="text-lg">
               {{
-                author()?.data?.biography ||
+                bookService.author()?.data?.biography ||
                   "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi vero eveniet magni vitae incidunt dolores quibusdam temporibus voluptatum eaque eos?"
               }}
             </p>
@@ -274,16 +293,20 @@
       </section>
 
       <!-- Rating and comment section -->
-      <button hlmBtn (click)="fetchRating()">load rating</button>
+      <button hlmBtn (click)="bookService.fetchRatings(bookId())">
+        load rating
+      </button>
       <section class="flex flex-col gap-5">
-        <app-rating-description [ratings]="ratings()"></app-rating-description>
+        <app-rating-description
+          [ratings]="bookService?.ratings()"
+        ></app-rating-description>
         <app-comment-form
-          [avgRating]="book()?.averageRating"
+          [avgRating]="bookService.book()?.averageRating"
           [bookId]="bookId()"
           [userId]="authService?.currentUserSignal()?.data?.user?.id"
-          [ratings]="ratings()"
+          [ratings]="bookService?.ratings()"
         ></app-comment-form>
-        <app-comment [ratings]="ratings()"></app-comment>
+        <app-comment [ratings]="bookService?.ratings()"></app-comment>
       </section>
     </section>
   } @else {

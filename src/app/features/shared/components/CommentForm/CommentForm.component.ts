@@ -27,6 +27,7 @@ import { URL } from '../../constants';
 import { toast } from 'ngx-sonner';
 import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
 import { CommonModule } from '@angular/common';
+import { BooksService } from '../../../../services/books.service';
 
 @Component({
   selector: 'app-comment-form',
@@ -57,6 +58,7 @@ export class CommentFormComponent implements OnInit, OnChanges {
   authService = inject(AuthService);
   formBuilder = inject(FormBuilder);
   http = inject(HttpClient);
+  bookService = inject(BooksService);
 
   ratingForm: FormGroup;
   isRatingChecked = signal(false);
@@ -106,6 +108,7 @@ export class CommentFormComponent implements OnInit, OnChanges {
         next: (response) => {
           console.log(response);
           this.message.set('Comment added successfully');
+          this.bookService.fetchRatings(this.bookId);
           this.showToastSuccess();
         },
         error: (error: ApiError) => {

@@ -15,7 +15,7 @@ import { URL } from '../../../shared/constants';
 @Component({
   selector: 'app-book-author',
   standalone: true,
-  imports: [CommonModule, RouterLink, NgOptimizedImage, HlmButtonDirective],
+  imports: [CommonModule, RouterLink, HlmButtonDirective],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
