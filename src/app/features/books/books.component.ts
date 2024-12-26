@@ -21,13 +21,12 @@ import { HttpClient } from '@angular/common/http';
 import { ApiError, Book, BookResponse } from '../../book.interface';
 import { URL } from '../shared/constants';
 import { HeroHeaderComponent } from '../shared/components/HeroHeader/HeroHeader.component';
-import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
 import { CommonModule } from '@angular/common';
 import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
 import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
 import { AuthorDetailsResponse } from '../Auth/user.interface';
 import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
-import { CommentComponent } from '../shared/components/Comment/Comment.component';
+import { BooksService } from '../../services/books.service';
 
 @Component({
   imports: [
@@ -44,7 +43,6 @@ import { CommentComponent } from '../shared/components/Comment/Comment.component
     LoadingStateComponent,
     ErrorStateComponent,
     NoBooksFoundComponent,
-    CommentComponent,
   ],
   providers: [BooksComponent],
   standalone: true,
@@ -54,6 +52,7 @@ import { CommentComponent } from '../shared/components/Comment/Comment.component
 })
 export class BooksComponent implements OnInit {
   authService = inject(AuthService);
+  bookService = inject(BooksService);
   http = inject(HttpClient);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -66,71 +65,63 @@ export class BooksComponent implements OnInit {
   authorLoading = signal(false);
   authorError = signal('');
 
-  searchTerm: string = '';
+  searchTerm = signal<string>('');
 
   ngOnInit(): void {
-    // console.log('from books', this.authService.currentUserSignal());
-    if (this.authService.currentUserSignal() === null) {
-      this.authService.currentUserSignal.set(
-        JSON.parse(atob(localStorage.getItem('user'))),
-      );
-    }
+    this.authService.initializeUser();
 
-    this.fetchAuthorDetail(
+    this.bookService.fetchAuthorDetail(
       this.authService.currentUserSignal()?.data?.user?.id,
     );
-    if (this.authService.currentUserDetail() === null) {
-      this.router.navigateByUrl('/dashboard/profile');
-    } else {
-      this.router.navigateByUrl('/books');
-    }
+
+    this.authService.navigateBasedOnUserDetail();
   }
 
-  fetchAuthorDetail(id: number) {
-    this.http
-      .get<AuthorDetailsResponse>(`${URL}/userdetail/by-authordetail/${id}`)
-      .subscribe({
-        next: (response: AuthorDetailsResponse) => {
-          this.authorLoading.set(true);
-          console.log('authordetail', response);
-          this.author.set(response);
-          localStorage.setItem('userDetail', btoa(JSON.stringify(response)));
-          this.authService.currentUserDetail.set(response);
-          this.authorLoading.set(false);
-        },
-        error: (error: ApiError) => {
-          console.log('error', error);
-          this.authorError.set(error.message);
-          this.authorLoading.set(false);
-        },
-      });
-  }
+  // fetchAuthorDetail(id: number) {
+  //   this.http
+  //     .get<AuthorDetailsResponse>(`${URL}/userdetail/by-authordetail/${id}`)
+  //     .subscribe({
+  //       next: (response: AuthorDetailsResponse) => {
+  //         this.authorLoading.set(true);
+  //         console.log('authordetail', response);
+  //         this.author.set(response);
+  //         localStorage.setItem('userDetail', btoa(JSON.stringify(response)));
+  //         this.authService.currentUserDetail.set(response);
+  //         this.authorLoading.set(false);
+  //       },
+  //       error: (error: ApiError) => {
+  //         console.log('error', error);
+  //         this.authorError.set(error.message);
+  //         this.authorLoading.set(false);
+  //       },
+  //     });
+  // }
 
-  searchBooks() {
-    if (this.searchTerm) {
-      // Navigate to the URL with the search parameter
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { title: this.searchTerm },
-        queryParamsHandling: 'merge',
-      });
+  // searchBooks() {
+  //   if (this.searchTerm) {
+  //     // Navigate to the URL with the search parameter
+  //     this.router.navigate([], {
+  //       relativeTo: this.route,
+  //       queryParams: { title: this.searchTerm },
+  //       queryParamsHandling: 'merge',
+  //     });
 
-      // Fetch the data from the backend
-      this.http
-        .get<BookResponse>(`${URL}/books/by-title?title=${this.searchTerm}`)
-        .subscribe({
-          next: (response: BookResponse) => {
-            this.loading.set(true);
-            this.books.set(response.content);
-            console.log(response);
+  //     // Fetch the data from the backend
+  //     this.http
+  //       .get<BookResponse>(`${URL}/books/by-title?title=${this.searchTerm}`)
+  //       .subscribe({
+  //         next: (response: BookResponse) => {
+  //           this.loading.set(true);
+  //           this.books.set(response.content);
+  //           console.log(response);
 
-            this.loading.set(false);
-          },
-          error: (error: ApiError) => {
-            this.error.set(error?.message);
-            console.log(error);
-          },
-        });
-    }
-  }
+  //           this.loading.set(false);
+  //         },
+  //         error: (error: ApiError) => {
+  //           this.error.set(error?.message);
+  //           console.log(error);
+  //         },
+  //       });
+  //   }
+  // }
 }

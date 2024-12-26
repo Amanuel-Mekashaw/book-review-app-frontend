@@ -25,7 +25,7 @@
         hlmBtn
         variant="default"
         class="rounded-full"
-        (click)="searchBooks()"
+        (click)="this.bookService.searchBooks(searchTerm())"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +82,7 @@
   </div>
 
   <!-- list of books -->
-  @if (books() == null) {
+  @if (bookService.searchedBooks() == null) {
     <app-books></app-books>
   } @else {
     <app-loading-state
@@ -92,16 +92,16 @@
 
     <app-error-state [error]="error()"></app-error-state>
 
-    @if (!loading() && !error() && books().length > 0) {
+    @if (!loading() && !error() && bookService.searchedBooks().length > 0) {
       <section>
         <app-hero-header title="Search result"></app-hero-header>
-        <app-books [inputBooks]="books()"></app-books>
+        <app-books [inputBooks]="bookService.searchedBooks()"></app-books>
       </section>
     } @else {
       <!-- No book info section -->
       <app-no-element-found
         [amountOfBooks]="0"
-        [element]="'Books searched with title ' + searchTerm + ' '"
+        [element]="'Books searched with title ' + searchTerm() + ' '"
       ></app-no-element-found>
     }
   }
