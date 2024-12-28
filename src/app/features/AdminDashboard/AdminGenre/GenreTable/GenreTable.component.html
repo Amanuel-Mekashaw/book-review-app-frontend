@@ -10,14 +10,20 @@
   <div class="flex flex-col justify-between gap-4 sm:flex-row">
     <input
       hlmInput
-      class="w-full md:w-80"
+      class="w-full bg-white md:w-80"
       placeholder="Filter by genre name..."
       [ngModel]="_genreFilter()"
       (ngModelChange)="_rawFilterInput.set($event)"
     />
 
     <!-- Column Visibility Selector -->
-    <button hlmBtn variant="outline" align="end" [brnMenuTriggerFor]="menu">
+    <button
+      hlmBtn
+      variant="outline"
+      class="bg-white"
+      align="end"
+      [brnMenuTriggerFor]="menu"
+    >
       Columns
       <hlm-icon name="lucideChevronDown" class="ml-2" size="sm" />
     </button>
