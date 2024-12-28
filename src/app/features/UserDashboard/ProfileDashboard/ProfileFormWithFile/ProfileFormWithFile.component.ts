@@ -37,7 +37,6 @@ import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
     HlmToasterComponent,
     HlmInputDirective,
     HlmButtonModule,
-    NgOptimizedImage,
   ],
   templateUrl: './ProfileFormWithFile.component.html',
   styleUrl: './ProfileFormWithFile.component.css',
@@ -56,6 +55,7 @@ export class ProfileFormWithFileComponent implements OnInit, OnChanges {
   selectedFile: File | null = null;
   message = signal('');
   error = signal('');
+  profileImageError = signal('');
   isSubmitting = signal(false);
 
   ngOnInit(): void {
@@ -154,8 +154,13 @@ export class ProfileFormWithFileComponent implements OnInit, OnChanges {
     console.log(this.profileForm.getRawValue());
 
     if (this.profileForm.invalid || !this.selectedFile) {
+      this.profileImageError.set(
+        'Please fill out all fields and upload a valid file.',
+      );
       alert('Please fill out all fields and upload a valid file.');
       return;
+    } else {
+      this.profileImageError.set('');
     }
 
     // Create profile data as JSON string

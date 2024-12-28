@@ -135,6 +135,9 @@
           />
         </label>
       </div>
+      <small class="mt-3 text-red-500">{{
+        bookCoverError() !== "" ? bookCoverError() : null
+      }}</small>
     </div>
   </div>
   @if (selectedFile) {

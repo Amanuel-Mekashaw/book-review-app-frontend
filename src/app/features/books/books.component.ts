@@ -27,6 +27,8 @@ import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.
 import { AuthorDetailsResponse } from '../Auth/user.interface';
 import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
 import { BooksService } from '../../services/books.service';
+import { GenreService } from '../../services/genre.service';
+import { Genre } from '../../genre.interface';
 
 @Component({
   imports: [
@@ -58,6 +60,7 @@ export class BooksComponent implements OnInit {
   route = inject(ActivatedRoute);
 
   books = signal<Book[] | null>(null);
+  genres = signal<Genre[] | null>(null);
   loading = signal(false);
   error = signal<string>('');
 
@@ -73,6 +76,8 @@ export class BooksComponent implements OnInit {
     this.bookService.fetchAuthorDetail(
       this.authService.currentUserSignal()?.data?.user?.id,
     );
+
+    this.fetchGenres();
 
     this.authService.navigateBasedOnUserDetail();
   }
@@ -124,4 +129,23 @@ export class BooksComponent implements OnInit {
   //       });
   //   }
   // }
+
+  fetchGenres() {
+    this.http.get<Genre[]>(`${URL}/genre`).subscribe({
+      next: (response: Genre[]) => {
+        console.log('response', response);
+        this.genres.set(response);
+        this.loading.set(false);
+      },
+      error: (error: ApiError) => {
+        console.log('error', error);
+        this.error.set(error.message);
+        this.loading.set(false);
+      },
+    });
+  }
+
+  searchByGenre(id: number) {
+    this.router.navigateByUrl(`/genres/${id}`);
+  }
 }

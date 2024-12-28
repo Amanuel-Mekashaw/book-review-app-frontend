@@ -46,14 +46,20 @@
 
     <!-- select elements -->
     <div class="grid w-full grid-cols-3 gap-2 md:gap-5 lg:gap-5">
-      <brn-select class="inline-block" placeholder="Select publisher">
+      <!-- genre selector -->
+      <brn-select class="inline-block" placeholder="Select genres">
         <hlm-select-trigger class="w-full">
           <hlm-select-value />
         </hlm-select-trigger>
         <hlm-select-content class="w-full">
-          <hlm-option value="Publisher">Publisher</hlm-option>
-          <hlm-option value="Settings">Settings</hlm-option>
-          <hlm-option value="Help">Help</hlm-option>
+          @for (genre of genres(); track $index) {
+            <button
+              class="w-full cursor-pointer"
+              (click)="searchByGenre(genre.id)"
+            >
+              <hlm-option [value]="genre?.id">{{ genre?.name }}</hlm-option>
+            </button>
+          }
         </hlm-select-content>
       </brn-select>
 

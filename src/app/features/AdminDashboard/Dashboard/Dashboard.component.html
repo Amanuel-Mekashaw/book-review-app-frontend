@@ -1,40 +1,90 @@
-<div class="grid grid-cols-1 gap-5 md:grid-cols-3">
-  <!-- users -->
-  <section hlmCard>
-    <div hlmCardContent class="mt-5 flex justify-between">
-      <div class="space-y-3">
-        <span class="rounded-full bg-purple-800 px-3 py-2 text-white">
-          <i class="fa-solid fa-user"></i>
-        </span>
-        <p hlmCardTitle>Users</p>
-      </div>
-      <p class="text-4xl font-bold text-purple-800">18</p>
-    </div>
-  </section>
+<app-loading-state
+  [loading]="loading()"
+  heightclass="h-screen"
+></app-loading-state>
 
-  <!-- books -->
-  <section hlmCard>
-    <div hlmCardContent class="mt-5 flex justify-between">
-      <div class="space-y-3">
-        <span class="rounded-full bg-slate-800 px-3 py-2 text-white">
-          <i class="fa-solid fa-book"></i>
-        </span>
-        <p hlmCardTitle>Books</p>
-      </div>
-      <p class="text-4xl font-bold text-slate-800">18</p>
-    </div>
-  </section>
+<app-error-state
+  [error]="bookService.error()"
+  heightclass="h-screen"
+></app-error-state>
 
-  <!-- Genres -->
-  <section hlmCard>
-    <div hlmCardContent class="mt-5 flex justify-between">
-      <div class="space-y-3">
-        <span class="rounded-full bg-green-500 px-3 py-3 text-white">
-          <i class="fa-solid fa-masks-theater"></i>
-        </span>
-        <p hlmCardTitle>Genres</p>
+@if (!loading()) {
+  <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+    <!-- users -->
+    <section>
+      <div
+        routerLink="/admin/users"
+        class="mt-5 flex scale-100 cursor-pointer justify-between rounded-lg border-2 p-5 shadow-xl transition-all delay-200 ease-in-out hover:scale-110"
+      >
+        <div class="space-y-3">
+          <span
+            class="rounded-full bg-gradient-to-r from-red-500 to-orange-500 px-3 py-2 text-white"
+          >
+            <i class="fa-solid fa-book"></i>
+          </span>
+          <p class="text-xl font-bold text-slate-800">Users</p>
+        </div>
+        <p class="text-4xl font-bold text-slate-800">
+          {{ users()?.length }}
+        </p>
       </div>
-      <p class="text-4xl font-bold text-green-500">18</p>
+    </section>
+
+    <!-- books -->
+    <section>
+      <div
+        class="mt-5 flex scale-100 cursor-pointer justify-between rounded-lg border-2 p-5 shadow-xl transition-all delay-200 ease-in-out hover:scale-110"
+      >
+        <div class="space-y-3">
+          <span
+            class="rounded-full bg-gradient-to-r from-green-800 to-emerald-500 px-3 py-2 text-white"
+          >
+            <i class="fa-solid fa-book"></i>
+          </span>
+          <p class="text-xl font-bold text-slate-800">Books</p>
+        </div>
+        <p class="text-4xl font-bold text-slate-800">
+          {{ bookService.books()?.length }}
+        </p>
+      </div>
+    </section>
+
+    <!-- Genres -->
+    <section>
+      <div
+        routerLink="/admin/genre"
+        class="mt-5 flex scale-100 cursor-pointer justify-between rounded-lg border-2 p-5 shadow-xl transition-all delay-100 ease-in-out hover:scale-110"
+      >
+        <div class="space-y-3">
+          <span
+            class="rounded-full bg-gradient-to-r from-blue-800 to-indigo-500 px-3 py-2 text-white"
+          >
+            <i class="fa-solid fa-book"></i>
+          </span>
+          <p class="text-xl font-bold text-slate-800">Genres</p>
+        </div>
+        <p class="text-4xl font-bold text-slate-800">
+          {{ genres()?.length }}
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Management Section -->
+  <div class="mt-8 flex flex-col">
+    <app-hero-header
+      title="Management Section"
+      subtitle="all the functionalities mentioned in the user and genre management also works here"
+    ></app-hero-header>
+    <div class="my-5 flex flex-col gap-5 overflow-auto rounded-2xl md:flex-row">
+      <div class="rounded-xl border-2 bg-slate-100 p-5">
+        <app-hero-header title="Users"></app-hero-header>
+        <app-user-dashboard-table></app-user-dashboard-table>
+      </div>
+      <div class="rounded-xl border-2 bg-blue-100 p-5">
+        <app-hero-header title="Genres"></app-hero-header>
+        <app-genre-dashboard-table></app-genre-dashboard-table>
+      </div>
     </div>
-  </section>
-</div>
+  </div>
+}

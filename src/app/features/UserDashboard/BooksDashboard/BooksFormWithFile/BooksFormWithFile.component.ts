@@ -49,7 +49,6 @@ import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
     LoadingSpinnerComponent,
     BrnSelectImports,
     HlmSelectModule,
-    NgOptimizedImage,
   ],
   templateUrl: './BooksFormWithFile.component.html',
   styleUrl: './BooksFormWithFile.component.css',
@@ -72,6 +71,7 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
   message = signal('');
   loading = signal(false);
   error = signal('');
+  bookCoverError = signal('');
 
   ngOnInit(): void {
     this.initializeForm();
@@ -211,8 +211,13 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
   onSubmit() {
     console.log(this.bookForm.value);
     if (this.bookForm.invalid || !this.selectedFile) {
+      this.bookCoverError.set(
+        'Please fill out all fields and upload a valid file.',
+      );
       alert('Please fill out all fields and upload a valid file.');
       return;
+    } else {
+      this.bookCoverError.set('');
     }
 
     // Create book data as JSON string

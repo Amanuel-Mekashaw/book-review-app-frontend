@@ -65,8 +65,6 @@ import { toast } from 'ngx-sonner';
     HlmCheckboxComponent,
     BrnSelectModule,
     HlmSelectModule,
-    LoadingStateComponent,
-    ErrorStateComponent,
     CommonModule,
     HlmToasterComponent,
   ],

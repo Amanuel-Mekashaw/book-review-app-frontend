@@ -20,7 +20,6 @@ import { HeroHeaderComponent } from '../../../shared/components/HeroHeader/HeroH
   selector: 'app-admin-profile-edit',
   standalone: true,
   imports: [
-    ProfileFormComponent,
     LoadingStateComponent,
     ErrorStateComponent,
     ProfileFormWithFileComponent,
