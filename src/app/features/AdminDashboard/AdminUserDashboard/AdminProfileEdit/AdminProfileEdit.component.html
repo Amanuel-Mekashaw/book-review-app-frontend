@@ -1,4 +1,8 @@
-<p>AdminProfileEdit works! and name is {{ author()?.data?.firstName }}</p>
+<app-hero-header
+  title="Admin Edit"
+  subtitle="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda eius, aperiam a repellat perspiciatis itaque.
+"
+></app-hero-header>
 
 @if (authorLoading() === true) {
   <app-loading-state
@@ -16,9 +20,9 @@
 }
 
 @if (!authorLoading() && !authorError()) {
-  <app-profile-form
+  <app-profile-form-with-file
     [userId]="userId()"
     [user]="author()"
     [admin]="true"
-  ></app-profile-form>
+  ></app-profile-form-with-file>
 }

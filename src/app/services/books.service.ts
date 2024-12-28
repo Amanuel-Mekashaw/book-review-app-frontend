@@ -18,6 +18,7 @@ import { toast } from 'ngx-sonner';
 })
 export class BooksService {
   book = signal<Book | null | undefined>(null);
+  books = signal<Book[] | null | undefined>(null);
   searchedBooks = signal<Book[] | null>(null);
   author = signal<AuthorDetailsResponse>(null);
   collections = signal<Collection[] | null>(null);
@@ -38,6 +39,22 @@ export class BooksService {
   authService = inject(AuthService);
   router = inject(Router);
   dialog = inject(HlmDialogService);
+
+  fetchBooks() {
+    this.http.get<BookResponse>(`${URL}/books`).subscribe({
+      next: (data: BookResponse) => {
+        this.loading.set(true);
+        this.books.set(data.content);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.loading.set(true);
+        this.error.set('Failed to load books.');
+        this.loading.set(false);
+        console.log(err.message);
+      },
+    });
+  }
 
   // ! Done
   searchBooks(searchTerm: string): void {

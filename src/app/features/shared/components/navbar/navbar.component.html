@@ -143,10 +143,14 @@
           <hlm-menu-separator />
           <hlm-menu-group>
             <a hlmMenuItem routerLink="/dashboard/profile">Profile</a>
+            <a hlmMenuItem routerLink="/dashboard/books">Books</a>
+            <a hlmMenuItem routerLink="/dashboard/collections">Collections</a>
             @if (
               authService.currentUserSignal()?.data?.user?.role === "ADMIN"
             ) {
-              <button hlmMenuItem routerLink="/admin">Admin Dashboard</button>
+              <button hlmMenuItem routerLink="/admin/dashboard">
+                Admin Dashboard
+              </button>
             }
 
             @if (

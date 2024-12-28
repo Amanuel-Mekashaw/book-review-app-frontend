@@ -7,12 +7,10 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-// import { ActivatedRoute } from '@angular/router';
 import { URL } from '../shared/constants';
 import { Book } from '../../book.interface';
 import { ApiError } from '../../book.interface';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
+import { CommonModule } from '@angular/common';
 import {
   HlmAvatarComponent,
   HlmAvatarFallbackDirective,
@@ -33,11 +31,10 @@ import {
 import { toast } from 'ngx-sonner';
 import { HlmToasterComponent } from '../../../lib/ui-sonner-helm/src/lib/hlm-toaster.component';
 import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
-import { StarRatingComponent } from '../shared/components/StarRating/StarRating.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommentComponent } from '../shared/components/Comment/Comment.component';
 import { Rating, RatingApiResponse } from '../../rating.interface';
-import { response } from 'express';
+
 import { CommentFormComponent } from '../shared/components/CommentForm/CommentForm.component';
 import { RatingDescriptionComponent } from '../shared/components/RatingDescription/RatingDescription.component';
 import { BooksService } from '../../services/books.service';

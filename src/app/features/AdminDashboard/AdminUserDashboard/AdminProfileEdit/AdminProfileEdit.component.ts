@@ -13,11 +13,19 @@ import { ProfileFormComponent } from '../../../UserDashboard/ProfileDashboard/Pr
 import { URL } from '../../../shared/constants';
 import { LoadingStateComponent } from '../../../shared/components/LoadingState/LoadingState.component';
 import { ErrorStateComponent } from '../../../shared/components/ErrorState/ErrorState.component';
+import { ProfileFormWithFileComponent } from '../../../UserDashboard/ProfileDashboard/ProfileFormWithFile/ProfileFormWithFile.component';
+import { HeroHeaderComponent } from '../../../shared/components/HeroHeader/HeroHeader.component';
 
 @Component({
   selector: 'app-admin-profile-edit',
   standalone: true,
-  imports: [ProfileFormComponent, LoadingStateComponent, ErrorStateComponent],
+  imports: [
+    ProfileFormComponent,
+    LoadingStateComponent,
+    ErrorStateComponent,
+    ProfileFormWithFileComponent,
+    HeroHeaderComponent,
+  ],
   templateUrl: './AdminProfileEdit.component.html',
   styleUrl: './AdminProfileEdit.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
