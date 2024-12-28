@@ -6,7 +6,7 @@
 ></app-loading-state>
 
 <!-- error state -->
-<app-error-state [error]="error()"></app-error-state>
+<app-error-state heightclass="h-screen" [error]="error()"></app-error-state>
 
 <div
   *ngIf="!loading() && !error()"
