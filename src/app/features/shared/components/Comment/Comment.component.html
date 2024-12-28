@@ -3,14 +3,10 @@
     (click)="toggleComments()"
     class="mb-3 flex cursor-pointer items-center justify-between gap-3 rounded-lg border-2 border-gray-200 bg-white p-3 hover:bg-gray-100"
   >
-    <p class="text-xl font-bold">Comments</p>
-    <i
-      class="fa-solid fa-chevron-down"
-      [ngClass]="{
-        'text-green-500': isCommentsOpen(),
-        'text-red-500': !isCommentsOpen(),
-      }"
-    ></i>
+    <p class="text-xl font-bold">
+      Comments <span class="text-gray-600">({{ ratings?.length }})</span>
+    </p>
+    <i class="fa-solid fa-chevron-down"></i>
   </div>
 }
 

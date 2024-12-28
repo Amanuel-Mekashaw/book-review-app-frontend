@@ -46,7 +46,7 @@ export type ItemProps = {
 export class BooksListsComponent implements OnInit, OnChanges {
   @Input() remove: boolean;
   @Input() collectionId: number;
-  inputBooks = input<Book[] | null | undefined>();
+  inputBooks = input<Book[] | null>();
   books = signal<Book[]>(null);
 
   http = inject(HttpClient);
@@ -69,11 +69,10 @@ export class BooksListsComponent implements OnInit, OnChanges {
   }
 
   fetchBooks() {
+    this.loading.set(true);
     this.http.get<BookResponse>(`${URL}/books`).subscribe({
       next: (data: BookResponse) => {
-        this.loading.set(true);
         this.books.set(data.content);
-        this.loading.set(false);
       },
       error: (err) => {
         this.loading.set(true);
@@ -81,6 +80,7 @@ export class BooksListsComponent implements OnInit, OnChanges {
         this.loading.set(false);
         console.log(err.message);
       },
+      complete: () => this.loading.set(false),
     });
   }
 }

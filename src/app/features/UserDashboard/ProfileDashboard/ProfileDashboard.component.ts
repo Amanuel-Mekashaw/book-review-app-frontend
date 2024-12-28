@@ -11,7 +11,7 @@ import { AuthService } from '../../Auth/auth.service';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 
 import { ProfileFormComponent } from './ProfileForm/ProfileForm.component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HeroHeaderComponent } from '../../shared/components/HeroHeader/HeroHeader.component';
 import { AuthorDetailsResponse } from '../../Auth/user.interface';
 import { HttpClient } from '@angular/common/http';
@@ -38,7 +38,7 @@ export interface UserProfile {
     CommonModule,
     HlmButtonModule,
     ProfileFormWithFileComponent,
-    NgOptimizedImage,
+    RouterLink,
   ],
   templateUrl: './ProfileDashboard.component.html',
   styleUrl: './ProfileDashboard.component.css',

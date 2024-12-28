@@ -45,16 +45,16 @@ export class GenreSingleComponent implements OnInit {
   ngOnInit(): void {
     this.http.get<Genre>(`${URL}/genre/${this.genreId()}`).subscribe({
       next: (response: Genre) => {
-        this.loading = signal(true);
+        this.loading.set(true);
         console.log(response);
         this.genre.set(response);
         this.fetchBooksByGenre();
-        this.loading = signal(false);
       },
       error: (error: ApiError) => {
         console.log(error);
         this.error.set(error.message);
       },
+      complete: () => this.loading.set(false),
     });
   }
 

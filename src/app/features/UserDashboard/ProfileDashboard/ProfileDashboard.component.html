@@ -45,14 +45,14 @@
       </blockquote>
 
       <p class="text-xl font-bold text-green-500">Socials</p>
-      <blockquote class="flex gap-3">
+      <div class="flex gap-3">
         @for (
           social of authService.currentUserDetail()?.data?.socialLinks;
           track $index
         ) {
           @if (social.includes("instagram")) {
             <a
-              [href]="social"
+              [href]="'https://' + social"
               target="_blank"
               [title]="social"
               class="size-16 self-center text-wrap rounded-full border-4 border-white bg-green-500 p-3 text-white transition-all delay-150 hover:border-green-500 hover:bg-transparent hover:text-green-700"
@@ -61,7 +61,7 @@
           }
           @if (social.includes("x.com")) {
             <a
-              [href]="social"
+              [href]="'https://' + social"
               target="_blank"
               class="size-16 self-center text-wrap rounded-full border-4 border-white bg-green-500 p-3 text-4xl text-white transition-all delay-150 hover:border-green-500 hover:bg-transparent hover:text-green-700"
               ><i class="fa-brands fa-x-twitter"></i>
@@ -69,7 +69,7 @@
           }
           @if (social.includes("telegram")) {
             <a
-              [href]="social"
+              [href]="'https://' + social"
               target="_blank"
               class="size-16 self-center text-wrap rounded-full border-4 border-white bg-green-500 p-3 text-4xl text-white transition-all delay-150 hover:border-green-500 hover:bg-transparent hover:text-green-700"
               ><i class="fa-brands fa-telegram"></i>
@@ -77,21 +77,17 @@
           }
           @if (social.includes("facebook")) {
             <a
-              [href]="social"
+              [href]="'https://' + social"
               target="_blank"
               class="size-16 self-center text-wrap rounded-full border-4 border-white bg-green-500 p-3 text-4xl text-white transition-all delay-150 hover:border-green-500 hover:bg-transparent hover:text-green-700"
               ><i class="fa-brands fa-facebook text-xl"></i>
             </a>
           }
         }
-      </blockquote>
+      </div>
     </div>
   </div>
 </div>
-
-<!-- <app-profile-form
-  *ngIf="authService.currentUserDetail() === null"
-></app-profile-form> -->
 
 <app-profile-form-with-file
   *ngIf="authService.currentUserDetail() === null"

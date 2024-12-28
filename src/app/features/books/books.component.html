@@ -1,5 +1,16 @@
+<app-loading-state
+  [loading]="loading()"
+  loadingText="Loading Books...."
+  heightclass="h-screen"
+></app-loading-state>
+
+<app-error-state [error]="error()" heightclass="h-screen"></app-error-state>
+
 <!-- Main page -->
-<main class="mx-5 my-[6rem] md:mx-[7rem] xl:mx-[10rem]">
+<main
+  *ngIf="!loading() && !error()"
+  class="mx-5 my-[6rem] md:mx-[7rem] xl:mx-[10rem]"
+>
   <!-- hero section text -->
   <app-hero-header
     title="Am Book Center"
