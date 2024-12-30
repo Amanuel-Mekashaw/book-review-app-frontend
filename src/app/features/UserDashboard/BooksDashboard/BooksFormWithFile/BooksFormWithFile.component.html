@@ -251,7 +251,7 @@
     </div>
 
     <!-- Add Genres -->
-    <div class="my-3 flex gap-3">
+    <!-- <div class="my-3 flex gap-3">
       @for (recievedGenre of this.bookRecieved?.genres; track $index) {
         <div
           class="flex w-full flex-wrap items-center justify-between rounded-lg border-2 border-slate-100 p-4 shadow-lg"
@@ -266,7 +266,7 @@
           </button>
         </div>
       }
-    </div>
+    </div> -->
     <div *ngFor="let link of genreIds.controls; let i = index">
       <!-- loading state -->
       <div class="w-full" *ngIf="loading()">
