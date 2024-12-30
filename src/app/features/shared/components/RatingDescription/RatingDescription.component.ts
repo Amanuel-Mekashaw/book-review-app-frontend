@@ -83,4 +83,8 @@ export class RatingDescriptionComponent implements OnInit, OnChanges {
   openWriteReview(): void {
     this.isWriteReview.set(true);
   }
+
+  displayByRatingValue(num: number) {
+    // logic here
+  }
 }

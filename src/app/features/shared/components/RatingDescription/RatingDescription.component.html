@@ -57,17 +57,12 @@
             <div
               class="h-8 w-full cursor-pointer rounded-full border-4 border-slate-100 bg-[#EFF4FF] transition-all delay-150 hover:ring-2 hover:ring-gray-300 hover:ring-offset-2"
             >
-              <!-- TODO get back and check if it works with every -->
-              @for (value of ratings; track $index) {
-                <!-- {{ ratings?.[value?.id]?.ratingValue }} -->
-                @if (value?.ratingValue === num) {
-                  <progress
-                    [value]="value?.ratingValue"
-                    [max]="10"
-                    class="h-6 w-full rounded-full [&::-moz-progress-bar]:bg-yellow-400 [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-[#E7EEFF] [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-yellow-400"
-                  ></progress>
-                }
-              }
+              <progress
+                (click)="displayByRatingValue(num)"
+                [value]="getRatingValue(num)"
+                [max]="ratings.length"
+                class="h-6 w-full rounded-full [&::-moz-progress-bar]:bg-yellow-400 [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-[#E7EEFF] [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-yellow-400"
+              ></progress>
             </div>
             <!-- percent text -->
             <p class="text-md min-w-10 font-medium text-blue-700">
