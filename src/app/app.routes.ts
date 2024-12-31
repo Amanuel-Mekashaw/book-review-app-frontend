@@ -1,13 +1,14 @@
 import { Routes } from '@angular/router';
+import { adminGuard, authGuard } from './services/guards/auth.guard';
 
 export const routes: Routes = [
+  // Auth Routes
   {
     path: '',
     redirectTo: 'books',
     pathMatch: 'full',
   },
 
-  // Auth Routes
   {
     path: 'login',
     loadComponent: () =>
@@ -146,6 +147,7 @@ export const routes: Routes = [
   // Admin dashboard routes
   {
     path: 'admin',
+    canActivate: [adminGuard],
     loadComponent: () =>
       import(
         '../app/features/shared/components/AdminDashboardLayout/AdminDashboardLayout.component'

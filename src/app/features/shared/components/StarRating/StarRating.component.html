@@ -12,15 +12,7 @@
       </span>
     </ng-container>
   </div>
-  <!-- <div>
-    @if (avgRating !== 0) {
-      <p class="text-xl font-bold text-black">
-        Rating:
-        <span class="text-green-500"
-          >{{ avgRating }} /
-          <span class="text-yellow-500">{{ max }}</span></span
-        >
-      </p>
-    }
-  </div> -->
+  <p class="text-center text-xl font-semibold text-yellow-500">
+    {{ value > 0 ? value + " Star out of 10" : "" }}
+  </p>
 </div>

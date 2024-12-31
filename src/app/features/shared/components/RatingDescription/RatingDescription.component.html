@@ -1,14 +1,14 @@
 <!-- Rating section -->
 @if (ratings !== null) {
   <section
-    class="flex flex-col items-center gap-8 rounded-xl border-4 p-5 md:mx-auto"
+    class="mx-auto flex max-w-[30rem] flex-col items-center gap-5 rounded-xl border-4 p-5"
   >
     <div class="flex w-full flex-col items-center gap-2">
       <!-- title -->
       <h2 class="text-3xl font-bold text-[#323357]">Book Ratings</h2>
       <!-- stars -->
       <div
-        class="flex flex-col items-center justify-between rounded-full bg-[#EFF4FF] px-4 py-2 md:w-[70%] md:px-8 md:py-4"
+        class="flex flex-col items-center justify-between rounded-full bg-[#EFF4FF] px-4 py-2 md:px-8 md:py-4"
       >
         <div class="flex">
           @for (
@@ -61,86 +61,83 @@
                 <!-- slider -->
                 <button
                   brnDialogTrigger
-                  class="h-8 w-full cursor-pointer rounded-full border-4 border-slate-100 bg-[#EFF4FF] transition-all delay-150 hover:ring-2 hover:ring-gray-300 hover:ring-offset-2"
+                  class="h-7 w-full cursor-pointer rounded-full border-4 border-slate-100 bg-[#EFF4FF] transition-all delay-150 hover:ring-2 hover:ring-gray-300 hover:ring-offset-2"
                 >
                   <progress
                     [value]="getRatingValue(num)"
                     [max]="ratings.length"
-                    class="h-6 w-full rounded-full [&::-moz-progress-bar]:bg-yellow-400 [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-[#E7EEFF] [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-yellow-400"
+                    class="h-4 w-full rounded-full [&::-moz-progress-bar]:bg-yellow-400 [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-[#E7EEFF] [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-yellow-400"
                   ></progress>
                 </button>
                 <hlm-dialog-content *brnDialogContent="let ctx">
                   <hlm-dialog-header>
                     <div class="mt-4 flex items-center justify-between">
                       <p class="text-2xl font-bold">Ratings</p>
-                      <p>{{ commentNumberOfStar() }} stars</p>
+                      <!-- <p>{{ commentNumberOfStar() }} stars</p> -->
                     </div>
 
                     <p hlmDialogDescription hlm>
                       Make changes to your profile here. Click save when you're
                       done.
                     </p>
+                  </hlm-dialog-header>
+                  <!-- average stars -->
+                  <div class="">
+                    <div
+                      class="max-h-10 w-fit rounded-full bg-blue-400 p-2 text-white"
+                    >
+                      <!-- stars rating -->
+                      @for (
+                        item of getArrayFromNumber(getAverageRating(ratings));
+                        track $index
+                      ) {
+                        <span>⭐</span>
+                      }
 
-                    <!-- average stars -->
-                    <div class="py-2">
-                      <div
-                        class="max-h-10 w-fit rounded-full bg-blue-400 p-2 text-white"
-                      >
-                        <!-- stars rating -->
-                        @for (
-                          item of getArrayFromNumber(getAverageRating(ratings));
-                          track $index
-                        ) {
-                          <span>⭐</span>
-                        }
-
-                        <!-- {{ getAverageRating(ratings) }} out of 10 -->
-                      </div>
+                      {{ getAverageRating(ratings) }} out of 10
                     </div>
+                  </div>
 
-                    <!-- comment body -->
-                    <section class="overflow-hidden bg-transparent">
-                      <div class="mt-5">
-                        <div>
-                          <p class="text-2xl font-bold">Comments</p>
-                          <div class="max-h-64 divide-y-2 overflow-y-scroll">
-                            <!-- comments -->
-                            @if (
-                              displayByRatingValue(num, ratings).length > 0
+                  <!-- comment body inside diablog box -->
+                  <section class="overflow-hidden bg-transparent">
+                    <div class="">
+                      <div>
+                        <p class="text-2xl font-bold">Comments</p>
+                        <div class="max-h-64 divide-y-2">
+                          <!-- comments -->
+                          @if (displayByRatingValue(num, ratings).length > 0) {
+                            @for (
+                              comment of displayByRatingValue(num, ratings);
+                              track $index
                             ) {
-                              @for (
-                                comment of displayByRatingValue(num, ratings);
-                                track $index
-                              ) {
-                                <div
-                                  class="flex flex-col gap-2 px-1 py-3 hover:bg-slate-100"
-                                >
-                                  <div>
-                                    <p class="font-bold">
-                                      {{ comment?.user?.email }}
-                                    </p>
-                                    @for (
-                                      stars of getArrayFromNumber(
-                                        comment?.ratingValue
-                                      );
-                                      track $index
-                                    ) {
-                                      <span>⭐</span>
-                                    }
-                                  </div>
-                                  <p>
-                                    {{ comment?.comment }}
+                              <div
+                                class="flex flex-col gap-2 px-1 py-3 hover:bg-slate-100"
+                              >
+                                <div>
+                                  <p class="font-bold">
+                                    {{ comment?.user?.email }}
                                   </p>
+                                  @for (
+                                    stars of getArrayFromNumber(
+                                      comment?.ratingValue
+                                    );
+                                    track $index
+                                  ) {
+                                    <span>⭐</span>
+                                  }
                                 </div>
-                              }
-                            } @else {
-                              <div>no comments found</div>
+                                <p>
+                                  {{ comment?.comment }}
+                                </p>
+                              </div>
                             }
-                          </div>
+                          } @else {
+                            <div>no comments found</div>
+                          }
                         </div>
                       </div>
-                    </section>
-                  </hlm-dialog-header>
+                    </div>
+                  </section>
                 </hlm-dialog-content>
               </hlm-dialog>
             </div>
@@ -159,11 +156,11 @@
       </div>
     </div>
 
-    <button
+    <!-- <button
       (click)="openWriteReview()"
-      class="mb-5 w-[10rem] rounded-full bg-[#323357] px-5 py-3 font-bold text-white"
+      class="mb-3 w-[10rem] rounded-full bg-[#323357] px-5 py-3 font-bold text-white"
     >
       Write a review
-    </button>
+    </button> -->
   </section>
 }

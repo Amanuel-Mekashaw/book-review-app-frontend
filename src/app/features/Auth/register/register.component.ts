@@ -107,7 +107,7 @@ export class RegisterComponent implements OnInit {
           console.log('response', response);
           this.message.set(response.message);
           localStorage.setItem('token', response.data.token);
-          this.authService.currentUserSignal.set(response);
+          // this.authService.currentUserSignal.set(response);
           this.showToastSuccess();
 
           this.router.navigateByUrl('/login');

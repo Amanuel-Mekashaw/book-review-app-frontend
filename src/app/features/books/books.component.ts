@@ -72,14 +72,13 @@ export class BooksComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.initializeUser();
+    this.authService.navigateBasedOnUserDetail();
 
     this.bookService.fetchAuthorDetail(
       this.authService.currentUserSignal()?.data?.user?.id,
     );
 
     this.fetchGenres();
-
-    this.authService.navigateBasedOnUserDetail();
   }
 
   // fetchAuthorDetail(id: number) {
