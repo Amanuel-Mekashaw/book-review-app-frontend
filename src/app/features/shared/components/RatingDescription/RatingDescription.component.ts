@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   Input,
   OnChanges,
   OnInit,
@@ -10,10 +11,33 @@ import {
 import { Rating } from '../../../../rating.interface';
 import { CommonModule } from '@angular/common';
 
+import {
+  BrnDialogContentDirective,
+  BrnDialogTriggerDirective,
+} from '@spartan-ng/ui-dialog-brain';
+import {
+  HlmDialogComponent,
+  HlmDialogContentComponent,
+  HlmDialogDescriptionDirective,
+  HlmDialogFooterComponent,
+  HlmDialogHeaderComponent,
+  HlmDialogTitleDirective,
+} from '@spartan-ng/ui-dialog-helm';
+
 @Component({
   selector: 'app-rating-description',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmDialogDescriptionDirective,
+    HlmDialogFooterComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogTitleDirective,
+    BrnDialogContentDirective,
+    BrnDialogTriggerDirective,
+  ],
   templateUrl: './RatingDescription.component.html',
   styleUrl: './RatingDescription.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,6 +47,8 @@ export class RatingDescriptionComponent implements OnInit, OnChanges {
 
   ratingInfo = signal<number[] | []>([]);
   numberOfStar = signal<number[] | []>([]);
+
+  commentNumberOfStar = signal<number>(0);
 
   isWriteReview = signal<boolean>(false);
 
@@ -53,7 +79,8 @@ export class RatingDescriptionComponent implements OnInit, OnChanges {
   getRatingCount(num: number): number {
     return this.ratings?.filter((rating) => rating?.ratingValue === num).length;
   }
-  getRatingValue(ratingValue: number): number {
+
+  getRatingValue(ratingValue) {
     return this.ratings?.filter((rating) => rating?.ratingValue === ratingValue)
       .length;
   }
@@ -84,7 +111,11 @@ export class RatingDescriptionComponent implements OnInit, OnChanges {
     this.isWriteReview.set(true);
   }
 
-  displayByRatingValue(num: number) {
+  displayByRatingValue(num: number, ratings: Rating[]): Rating[] {
     // logic here
+
+    const rating = ratings.filter((r) => Number(r?.ratingValue) === num);
+    console.log({ Rating: rating, Ratings: ratings, Num: num });
+    return rating;
   }
 }
