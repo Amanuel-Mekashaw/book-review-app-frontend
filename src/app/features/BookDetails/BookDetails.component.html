@@ -33,7 +33,7 @@
             width="400"
             class="h-[500px] max-h-min w-[400px] self-center overflow-hidden rounded-lg object-cover shadow-lg md:self-auto"
             [src]="
-              '/book_images/' + bookService.book()?.coverImage ||
+              'http://localhost:9191' + bookService.book()?.coverImageUrl ||
               'https://placehold.co/400x500'
             "
             [alt]="bookService.book()?.title + 'cover image'"
@@ -261,7 +261,7 @@
               <hlm-avatar variant="large">
                 <img
                   [src]="
-                    'profile_images/' +
+                    'http://localhost:9191' +
                       bookService.author()?.data?.profilePicture ||
                     '/assets/avatar.png'
                   "

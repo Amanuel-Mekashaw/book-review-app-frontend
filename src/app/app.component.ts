@@ -29,11 +29,7 @@ export class AppComponent implements OnInit {
   router = inject(Router);
 
   ngOnInit(): void {
-    console.log('from home page', this.authService.currentUserSignal());
-    if (this.authService.currentUserSignal() === null) {
-      this.authService.currentUserSignal.set(
-        JSON.parse(atob(localStorage.getItem('user'))),
-      );
-    }
+    this.authService.initializeUser();
+    this.authService.navigateBasedOnUserDetail();
   }
 }

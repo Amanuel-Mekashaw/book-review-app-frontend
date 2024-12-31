@@ -1,6 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { ApiError, Book, BookResponse } from '../book.interface';
+import {
+  ApiError,
+  Book,
+  BookResponse,
+  BookResponseByAuthor,
+} from '../book.interface';
 import { URL } from '../features/shared/constants';
 import { AuthorDetailsResponse } from '../features/Auth/user.interface';
 import { Rating, RatingApiResponse } from '../rating.interface';
@@ -19,6 +24,7 @@ import { toast } from 'ngx-sonner';
 export class BooksService {
   book = signal<Book | null | undefined>(null);
   books = signal<Book[] | null | undefined>(null);
+  booksByAuthor = signal<Book[] | null | undefined>(null);
   searchedBooks = signal<Book[] | null>(null);
   author = signal<AuthorDetailsResponse>(null);
   collections = signal<Collection[] | null>(null);
@@ -32,6 +38,7 @@ export class BooksService {
   error = signal('');
   authorError = signal('');
   collectionError = signal('');
+  booksByAuthorError = signal('');
   collectionAddError = signal('');
   ratingError = signal('');
 
@@ -73,6 +80,20 @@ export class BooksService {
           console.error('Search error:', error);
         },
         complete: () => this.loading.set(false),
+      });
+  }
+
+  fetchAllBooksByAuthor(id: number) {
+    this.http
+      .get<BookResponseByAuthor>(`${URL}/books/book-by-author/${id}`)
+      .subscribe({
+        next: (response: BookResponseByAuthor) => {
+          this.loading.set(true);
+          this.booksByAuthor.set(response.data);
+        },
+        error: (error: ApiError) => {
+          this.booksByAuthorError.set(error.message);
+        },
       });
   }
 

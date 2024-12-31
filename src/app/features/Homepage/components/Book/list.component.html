@@ -8,7 +8,8 @@
   <!-- TODO check the loading=eager -->
   <img
     [src]="
-      'book_images/' + book()?.coverImage || 'https://placehold.co/400x520'
+      'http://localhost:9191' + book()?.coverImageUrl ||
+      'https://placehold.co/400x520'
     "
     loading="eager"
     [alt]="book()?.title"

@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import {
@@ -44,7 +45,7 @@ import { AuthService } from '../auth.service';
   templateUrl: `./register.component.html`,
   styleUrl: './register.component.css',
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   http = inject(HttpClient);
   authService = inject(AuthService);
   router = inject(Router);
@@ -53,23 +54,13 @@ export class RegisterComponent {
   message = signal('');
   error = signal('');
 
-  passwordValidator(control: FormControl): ValidationErrors | null {
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    const valid = regex.test(control.value);
-
-    return valid
-      ? null
-      : {
-          passwordInvalid: {
-            value: control.value,
-            message:
-              'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
-          },
-        };
+  ngOnInit(): void {
+    this.authService.initializeUser();
+    this.authService.navigateBasedOnUserDetail();
+    this.initializeForm();
   }
 
-  constructor() {
+  private initializeForm() {
     this.registerForm = new FormGroup({
       username: new FormControl<string>('', [
         Validators.minLength(3),
@@ -88,6 +79,22 @@ export class RegisterComponent {
     });
   }
 
+  passwordValidator(control: FormControl): ValidationErrors | null {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const valid = regex.test(control.value);
+
+    return valid
+      ? null
+      : {
+          passwordInvalid: {
+            value: control.value,
+            message:
+              'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+          },
+        };
+  }
+
   onSubmit() {
     console.log(this.registerForm.value);
     this.http
@@ -103,7 +110,7 @@ export class RegisterComponent {
           this.authService.currentUserSignal.set(response);
           this.showToastSuccess();
 
-          // this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/login');
         },
         error: (error: AuthError) => {
           console.log('error', error);

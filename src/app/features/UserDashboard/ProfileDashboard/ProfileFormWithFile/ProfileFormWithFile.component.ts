@@ -53,6 +53,8 @@ export class ProfileFormWithFileComponent implements OnInit, OnChanges {
 
   profileForm: FormGroup;
   selectedFile: File | null = null;
+  imageUrl = signal<string | ArrayBuffer | null>(null);
+
   message = signal('');
   error = signal('');
   profileImageError = signal('');
@@ -72,6 +74,15 @@ export class ProfileFormWithFileComponent implements OnInit, OnChanges {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
+    }
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.imageUrl.set(e.target.result); // Set the image source to the reader's result
+      };
+
+      reader.readAsDataURL(file); // Read the file as a data URL
     }
   }
 

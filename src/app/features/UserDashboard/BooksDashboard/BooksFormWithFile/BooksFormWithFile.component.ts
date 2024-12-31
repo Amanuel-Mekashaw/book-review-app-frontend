@@ -68,6 +68,7 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
 
   bookForm: FormGroup;
   selectedFile: File | null = null;
+  imageUrl = signal<string | ArrayBuffer | null>(null);
   message = signal('');
   loading = signal(false);
   error = signal('');
@@ -95,6 +96,16 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
+    }
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.imageUrl.set(e.target.result); // Set the image source to the reader's result
+      };
+
+      reader.readAsDataURL(file); // Read the file as a data URL
     }
   }
 
@@ -233,38 +244,38 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
     // Make POST request
     // const headers = new HttpHeaders().set('Accept', 'application/json');
 
-    // if (this.bookForm.valid && this.bookRecieved) {
-    //   this.http
-    //     .put<AuthorDetailsResponse>(
-    //       `${URL}/books/bycover/${this.bookId()}`,
-    //       formData,
-    //     )
-    //     .subscribe({
-    //       next: (response: AuthorDetailsResponse) => {
-    //         this.nextResponse(response);
-    //       },
-    //       error: (error: AuthError) => {
-    //         this.errorResponse(error);
-    //       },
-    //     });
-    // }
+    if (this.bookForm.valid && this.bookRecieved) {
+      this.http
+        .put<AuthorDetailsResponse>(
+          `${URL}/books/bycover/${this.bookId()}`,
+          formData,
+        )
+        .subscribe({
+          next: (response: AuthorDetailsResponse) => {
+            this.nextResponse(response);
+          },
+          error: (error: AuthError) => {
+            this.errorResponse(error);
+          },
+        });
+    }
     console.log({
       'form data': formData.getAll('book'),
       image: formData.getAll('coverImage'),
     });
 
-    // if (this.bookForm.valid && !this.bookRecieved) {
-    //   this.http
-    //     .post<AuthorDetailsResponse>(`${URL}/books/bycover`, formData)
-    //     .subscribe({
-    //       next: (response: AuthorDetailsResponse) => {
-    //         this.nextResponse(response);
-    //       },
-    //       error: (error: AuthError) => {
-    //         this.errorResponse(error);
-    //       },
-    //     });
-    // }
+    if (this.bookForm.valid && !this.bookRecieved) {
+      this.http
+        .post<AuthorDetailsResponse>(`${URL}/books/bycover`, formData)
+        .subscribe({
+          next: (response: AuthorDetailsResponse) => {
+            this.nextResponse(response);
+          },
+          error: (error: AuthError) => {
+            this.errorResponse(error);
+          },
+        });
+    }
   }
 
   showToastSuccess() {

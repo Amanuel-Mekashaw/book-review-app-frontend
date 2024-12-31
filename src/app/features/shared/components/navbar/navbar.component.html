@@ -51,7 +51,7 @@
       <li>
         <a
           routerLink="/books"
-          routerLinkActive="bg-green-500 text-white"
+          routerLinkActive="bg-green-500 text-white font-bold"
           class="h-full rounded-full px-4 py-1 transition-all delay-100 hover:bg-slate-200"
           >Books</a
         >
@@ -59,7 +59,7 @@
       <li>
         <a
           routerLink="/genres"
-          routerLinkActive="bg-green-500 text-white"
+          routerLinkActive="bg-green-500 text-white font-bold"
           class="h-full rounded-full px-4 py-1 transition-all delay-100 hover:bg-slate-200"
           >Genre</a
         >
@@ -67,7 +67,7 @@
       <li>
         <a
           routerLink="/collections"
-          routerLinkActive="bg-green-500 text-white"
+          routerLinkActive="bg-green-500 text-white font-bold"
           class="h-full rounded-full px-4 py-1 transition-all delay-100 hover:bg-slate-200"
           >Collections</a
         >
@@ -104,7 +104,7 @@
       >
         <img
           [src]="
-            'profile_images/' +
+            'http://localhost:9191' +
               authService.currentUserDetail()?.data?.profilePicture ||
             'https://t3.ftcdn.net/jpg/06/33/54/78/360_F_633547842_AugYzexTpMJ9z1YcpTKUBoqBF0CUCk10.jpg'
           "

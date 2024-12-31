@@ -1,19 +1,19 @@
+<hlm-toaster richColors />
 <!-- card -->
-<div class="m-2 h-full rounded-md border-2 border-slate-200 p-2 shadow-lg">
+<div class="h-full rounded-lg border-2 bg-white p-2 shadow-lg">
   <div class="relative overflow-hidden" [title]="book()?.title">
     <!-- card image -->
-    <!-- TODO check the loading=eager -->
-
     <img
       [routerLink]="'/books/' + book()?.id"
       [src]="
-        'book_images/' + book()?.coverImage || 'https://placehold.co/430x520'
+        'http://localhost:9191' + book()?.coverImageUrl ||
+        'https://placehold.co/430x500'
       "
       loading="eager"
       [alt]="book()?.title"
-      class="h-full w-full cursor-pointer object-cover"
-      width="430"
-      height="500"
+      class="max-h-[400px] w-full cursor-pointer object-cover"
+      [width]="430 - 100"
+      [height]="500 - 100"
     />
     <!-- Edit button -->
     <button
@@ -39,15 +39,9 @@
       <p
         [routerLink]="'/books/' + book()?.id"
         target="_blank"
-        class="text-md cursor-pointer truncate text-wrap font-semibold hover:underline"
+        class="text-md cursor-pointer truncate text-wrap font-semibold text-gray-800 hover:underline"
       >
         {{ book()?.title | titlecase }}
-      </p>
-      <p
-        target="_blank"
-        class="truncate text-wrap text-xs font-semibold text-green-500"
-      >
-        {{ book()?.author?.username }}
       </p>
     </div>
   </div>

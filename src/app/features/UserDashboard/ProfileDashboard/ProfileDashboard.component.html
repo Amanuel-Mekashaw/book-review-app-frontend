@@ -11,7 +11,7 @@
       <img
         class="max-h-48 max-w-48 self-center overflow-hidden rounded-full object-cover shadow-2xl ring-4 ring-green-500 ring-offset-4 md:h-56 md:w-56"
         [src]="
-          'profile_images/' +
+          'http://localhost:9191' +
           authService.currentUserDetail()?.data?.profilePicture
         "
         alt=""

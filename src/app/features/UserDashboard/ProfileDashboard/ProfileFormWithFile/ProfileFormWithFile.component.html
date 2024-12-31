@@ -91,59 +91,66 @@
         class="rounded-lg shadow-xl shadow-green-200"
         width="200"
         height="300"
-        [src]="'profile_images/' + this.user?.data?.profilePicture"
+        [src]="'http://localhost:9191' + this.user?.data?.profilePicture"
       />
     }
     <!-- profile photo form control -->
-    <div class="h-full w-full">
-      <div class="flex w-full grow items-center justify-center">
-        <label
-          for="dropzone-file"
-          class="flex min-h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-green-500 bg-green-50 hover:bg-green-100"
-        >
-          <div class="flex flex-col items-center justify-center py-4">
-            <svg
-              class="mb-4 size-8"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 16"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-              />
-            </svg>
-            <p class="mb-2 text-wrap text-sm text-gray-500">
-              <span class="font-semibold">Click to upload</span> or drag and
-              drop
-            </p>
-            <p class="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 4MB)</p>
-          </div>
-          <input
-            id="dropzone-file"
-            type="file"
-            class="hidden"
-            (change)="onFileChange($event)"
-            accept="image/png, image/jpeg, image/webp"
-          />
-        </label>
+    <div class="flex h-full w-full flex-col gap-5">
+      <div class="h-full w-full">
+        <div class="flex w-full grow items-center justify-center">
+          <label
+            for="dropzone-file"
+            class="flex min-h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-green-500 bg-green-50 hover:bg-green-100"
+          >
+            <div class="flex flex-col items-center justify-center py-4">
+              <svg
+                class="mb-4 size-8"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 16"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                />
+              </svg>
+              <p class="mb-2 text-wrap text-sm text-gray-500">
+                <span class="font-semibold">Click to upload</span> or drag and
+                drop
+              </p>
+              <p class="text-xs text-gray-500">
+                SVG, PNG, JPG or GIF (MAX. 4MB)
+              </p>
+            </div>
+            <input
+              id="dropzone-file"
+              type="file"
+              class="hidden"
+              (change)="onFileChange($event)"
+              accept="image/png, image/jpeg, image/webp"
+            />
+          </label>
+        </div>
+        <small class="mt-3 text-red-500">{{
+          profileImageError() !== "" ? profileImageError() : null
+        }}</small>
       </div>
-      <small class="mt-3 text-red-500">{{
-        profileImageError() !== "" ? profileImageError() : null
-      }}</small>
+      @if (imageUrl()) {
+        <div class="flex w-fit gap-3 rounded-md bg-green-500 p-3">
+          <img
+            class="max-h-16 max-w-16 rounded-full object-cover ring-2 ring-white ring-offset-1"
+            [src]="imageUrl()"
+            [alt]="selectedFile?.name"
+          />
+          <p class="text-white">{{ selectedFile?.name }}</p>
+        </div>
+      }
     </div>
   </div>
-  @if (selectedFile) {
-    <img
-      class="max-w-52 rounded-md border-2 border-green-500 object-cover p-5"
-      [src]="selectedFile?.name"
-      [alt]="selectedFile?.name"
-    />
-  }
 
   <input hlmInput formControlName="userId" type="hidden" class="w-full" />
 

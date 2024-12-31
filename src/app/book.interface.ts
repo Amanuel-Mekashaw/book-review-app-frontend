@@ -13,6 +13,7 @@ export interface Book {
   author?: User;
   genres: Genre[];
   coverImage: string;
+  coverImageUrl: string;
   averageRating: number;
   ratingCount: number;
   createdAt: string;
@@ -92,6 +93,7 @@ export type BookByAuthor = {
   author: User;
   genres: Genre[];
   coverImage: string;
+  coverImageUrl: string;
   averageRating: number;
   ratingCount: number;
   createdAt: string;
