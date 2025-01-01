@@ -120,13 +120,13 @@ export const routes: Routes = [
             '../app/features/UserDashboard/BooksDashboard/BookEdit/BookEdit.component'
           ).then((c) => c.BookEditComponent),
       },
-      {
-        path: 'genres',
-        loadComponent: () =>
-          import(
-            '../app/features/UserDashboard/GenreDashboard/GenreDashboard.component'
-          ).then((c) => c.GenreDashboardComponent),
-      },
+      // {
+      //   path: 'genres',
+      //   loadComponent: () =>
+      //     import(
+      //       '../app/features/UserDashboard/GenreDashboard/GenreDashboard.component'
+      //     ).then((c) => c.GenreDashboardComponent),
+      // },
       {
         path: 'collections',
         loadComponent: () =>
@@ -169,6 +169,20 @@ export const routes: Routes = [
           ).then((c) => c.AdminUserDashboardComponent),
       },
       {
+        path: 'books',
+        loadComponent: () =>
+          import(
+            '../app/features/AdminDashboard/AdminBookDashboard/AdminBookDashboard.component'
+          ).then((c) => c.AdminBookDashboardComponent),
+      },
+      {
+        path: 'books/edit/:bookId',
+        loadComponent: () =>
+          import(
+            '../app/features/AdminDashboard/AdminBookDashboard/BookEdit/BookEdit.component'
+          ).then((c) => c.BookEditComponent),
+      },
+      {
         path: 'profile',
         loadComponent: () =>
           import(
@@ -188,6 +202,13 @@ export const routes: Routes = [
           import(
             '../app/features/AdminDashboard/AdminGenre/AdminGenre.component'
           ).then((c) => c.AdminGenreComponent),
+      },
+      {
+        path: 'genre/add',
+        loadComponent: () =>
+          import(
+            '../app/features/UserDashboard/GenreDashboard/GenreDashboard.component'
+          ).then((c) => c.GenreDashboardComponent),
       },
       {
         path: 'genre/edit/:genreId',

@@ -6,47 +6,47 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { BooksFormComponent } from '../BooksForm/BooksForm.component';
 import { HeroHeaderComponent } from '../../../shared/components/HeroHeader/HeroHeader.component';
-import { HttpClient } from '@angular/common/http';
+import { BooksFormWithFileComponent } from '../../../UserDashboard/BooksDashboard/BooksFormWithFile/BooksFormWithFile.component';
+import { BooksService } from '../../../../services/books.service';
 import { ApiError, Book } from '../../../../book.interface';
-import { URL } from '../../../shared/constants';
-import { CommonModule } from '@angular/common';
-import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { HttpClient } from '@angular/common/http';
 import { LoadingStateComponent } from '../../../shared/components/LoadingState/LoadingState.component';
 import { ErrorStateComponent } from '../../../shared/components/ErrorState/ErrorState.component';
-import { BooksFormWithFileComponent } from '../BooksFormWithFile/BooksFormWithFile.component';
+import { URL } from '../../../shared/constants';
 
 @Component({
   selector: 'app-book-edit',
   standalone: true,
   imports: [
     HeroHeaderComponent,
-    CommonModule,
+    BooksFormWithFileComponent,
     LoadingStateComponent,
     ErrorStateComponent,
-    BooksFormWithFileComponent,
   ],
   templateUrl: './BookEdit.component.html',
   styleUrl: './BookEdit.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookEditComponent implements OnInit {
-  bookId = input<number>();
+  bookId = input.required<number>();
 
+  bookService = inject(BooksService);
   http = inject(HttpClient);
 
   book = signal<Book | null>(null);
-  error = signal('');
   loading = signal(false);
+  error = signal('');
 
   ngOnInit(): void {
-    this.http.get<Book>(`${URL}/books/${+this.bookId()}`).subscribe({
+    this.fetchBook(this.bookId());
+  }
+
+  fetchBook(id: number) {
+    this.http.get<Book>(`${URL}/books/${id}`).subscribe({
       next: (response: Book) => {
-        // console.log('Books Edit Response', response);
         this.loading.set(true);
         this.book.set(response);
-        this.logShit();
         this.loading.set(false);
       },
       error: (error: ApiError) => {
@@ -54,15 +54,6 @@ export class BookEditComponent implements OnInit {
         this.error.set(error.message);
         this.loading.set(false);
       },
-    });
-  }
-
-  logShit() {
-    console.log({
-      'bookId id': this.bookId(),
-      'Book signal': this.book(),
-      'error text': this.error(),
-      'loading state': this.loading(),
     });
   }
 }

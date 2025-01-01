@@ -1,0 +1,21 @@
+<app-hero-header
+  title="Admin Edit Books"
+  subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, architecto."
+></app-hero-header>
+
+<app-loading-state
+  heightclass="h-screen"
+  [loading]="loading()"
+  loadingText="Loading books..."
+></app-loading-state>
+
+<app-error-state heightclass="h-screen" [error]="error()"></app-error-state>
+
+@if (!loading() && !error()) {
+  <section>
+    <app-book-form-with-file
+      [bookRecieved]="book()"
+      [bookId]="book()?.id"
+    ></app-book-form-with-file>
+  </section>
+}
