@@ -1,0 +1,243 @@
+<hlm-toaster richColors closeButton position="top-right" />
+
+<app-loading-state
+  [loading]="loading()"
+  loadingText="loading books..."
+></app-loading-state>
+
+<app-error-state [error]="error()" heightclass="h-screen"></app-error-state>
+
+<section *ngIf="!loading() && !error()">
+  <!-- search and filter -->
+  <div class="flex flex-col justify-between gap-4 sm:flex-row">
+    <input
+      hlmInput
+      class="w-full bg-white md:w-80"
+      placeholder="Filter by book title..."
+      [ngModel]="_bookFilter()"
+      (ngModelChange)="_rawFilterInput.set($event)"
+    />
+
+    <!-- Column Visibility Selector -->
+    <button
+      hlmBtn
+      variant="outline"
+      class="bg-white"
+      align="end"
+      [brnMenuTriggerFor]="menu"
+    >
+      Columns
+      <hlm-icon name="lucideChevronDown" class="ml-2" size="sm" />
+    </button>
+    <ng-template #menu>
+      <hlm-menu class="">
+        @for (column of _brnColumnManager.allColumns; track column.name) {
+          <button
+            hlmMenuItemCheckbox
+            [disabled]="_brnColumnManager.isColumnDisabled(column.name)"
+            [checked]="_brnColumnManager.isColumnVisible(column.name)"
+            (triggered)="_brnColumnManager.toggleVisibility(column.name)"
+          >
+            <hlm-menu-item-check />
+            <span>{{ column.label }}</span>
+          </button>
+        }
+      </hlm-menu>
+    </ng-template>
+  </div>
+
+  <!-- Table Defination and Column definations -->
+  <brn-table
+    hlm
+    stickyHeader
+    class="mt-4 block overflow-auto rounded-md border border-border"
+    [dataSource]="_filteredSortedPaginatedUsers()"
+    [displayedColumns]="_allDisplayedColumns()"
+    [trackBy]="_trackBy"
+  >
+    <!-- checkbox column def -->
+    <brn-column-def name="select" class="">
+      <hlm-th *brnHeaderDef>
+        <hlm-checkbox
+          [checked]="_checkboxState()"
+          (changed)="handleHeaderCheckboxChange()"
+        />
+      </hlm-th>
+      <hlm-td *brnCellDef="let element">
+        <hlm-checkbox
+          [checked]="_isUserSelected(element)"
+          (changed)="toggleGenre(element)"
+        />
+      </hlm-td>
+    </brn-column-def>
+
+    <!-- id col def -->
+    <brn-column-def name="id" class="w-14">
+      <hlm-th truncate *brnHeaderDef>ID</hlm-th>
+      <hlm-td truncate *brnCellDef="let element">
+        {{ element.id }}
+      </hlm-td>
+    </brn-column-def>
+
+    <!-- title col def -->
+    <brn-column-def name="title" class="w-40 lg:flex-1">
+      <hlm-th *brnHeaderDef>
+        <button
+          hlmBtn
+          size="sm"
+          variant="ghost"
+          (click)="handleBookSortChange()"
+        >
+          Book Name
+          <hlm-icon class="ml-3" size="sm" name="lucideArrowUpDown" />
+        </button>
+      </hlm-th>
+      <hlm-td *brnCellDef="let element">
+        {{ element.title }}
+      </hlm-td>
+    </brn-column-def>
+
+    <!-- ISBN col def -->
+    <brn-column-def name="isbn" class="w-32 sm:w-40">
+      <hlm-th *brnHeaderDef>ISBN</hlm-th>
+      <hlm-td class="font-medium tabular-nums" *brnCellDef="let element">
+        {{ element.isbn }}
+      </hlm-td>
+    </brn-column-def>
+
+    <!-- Description col def -->
+    <brn-column-def name="description" class="w-60">
+      <hlm-th *brnHeaderDef>Description</hlm-th>
+      <hlm-td class="font-medium" *brnCellDef="let element">
+        {{ element.description.substring(0, 50) + "..." }}
+      </hlm-td>
+    </brn-column-def>
+
+    <!-- Published Year col def -->
+    <brn-column-def name="publishedYear" class="w-32">
+      <hlm-th *brnHeaderDef>Published Year</hlm-th>
+      <hlm-td class="font-medium tabular-nums" *brnCellDef="let element">
+        {{ element.publishedYear }}
+      </hlm-td>
+    </brn-column-def>
+
+    <!-- Pages col def -->
+    <brn-column-def name="pages" class="w-20">
+      <hlm-th *brnHeaderDef>Pages</hlm-th>
+      <hlm-td class="font-medium tabular-nums" *brnCellDef="let element">
+        {{ element.pages }}
+      </hlm-td>
+    </brn-column-def>
+
+    <!-- Cover image col def -->
+    <!-- <brn-column-def name="coverImageUrl" class="w-20">
+      <hlm-th *brnHeaderDef>Cover Image</hlm-th>
+      <hlm-td class="font-medium tabular-nums" *brnCellDef="let element">
+        <img
+          class="size-10 rounded-full object-cover ring-2 ring-green-500"
+          [src]="'localhost:9191' + element.coverImageUrl"
+          alt=""
+        />
+      </hlm-td>
+    </brn-column-def> -->
+
+    <!-- Actions col def -->
+    <brn-column-def name="actions" class="w-20">
+      <hlm-th *brnHeaderDef>Actions</hlm-th>
+      <hlm-td *brnCellDef="let element">
+        <button
+          hlmBtn
+          variant="ghost"
+          class="h-6 w-6 p-1"
+          [brnMenuTriggerFor]="menu"
+        >
+          <hlm-icon class="h-4 w-4" name="lucideCircleEllipsis" />
+        </button>
+
+        <ng-template #menu>
+          <hlm-menu>
+            <hlm-menu-label>Actions</hlm-menu-label>
+            <hlm-menu-separator />
+            <hlm-menu-group>
+              <button hlmMenuItem (click)="onBookEdit(element.id)">
+                Edit Book
+              </button>
+            </hlm-menu-group>
+            <hlm-menu-separator />
+            <hlm-menu-group>
+              <button
+                class="cursor-pointer bg-red-500 text-white hover:bg-red-600 hover:text-white"
+                hlmMenuItem
+                (click)="onBookDelete(element.id)"
+              >
+                Delete Book
+              </button>
+            </hlm-menu-group>
+          </hlm-menu>
+        </ng-template>
+      </hlm-td>
+    </brn-column-def>
+
+    <!-- Displays if there is no data -->
+    <div
+      class="flex items-center justify-center p-20 text-muted-foreground"
+      brnNoDataRow
+    >
+      <app-no-element-found element="Book"></app-no-element-found>
+    </div>
+  </brn-table>
+
+  <!-- Table Pagination -->
+  <div
+    class="mt-4 flex flex-col justify-between sm:flex-row sm:items-center"
+    *brnPaginator="
+      let ctx;
+      totalElements: _totalElements();
+      pageSize: _pageSize();
+      onStateChange: _onStateChange
+    "
+  >
+    <span class="text-sm text-muted-foreground"
+      >{{ _selected()?.length }} of {{ _totalElements() }} row(s) selected</span
+    >
+    <div class="mt-2 flex sm:mt-0">
+      <brn-select
+        class="inline-block"
+        placeholder="{{ _availablePageSizes[0] }}"
+        [(ngModel)]="_pageSize"
+      >
+        <hlm-select-trigger class="w-15 mr-1 inline-flex h-9">
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content>
+          @for (size of _availablePageSizes; track size) {
+            <hlm-option [value]="size">
+              {{ size === 10000 ? "All" : size }}
+            </hlm-option>
+          }
+        </hlm-select-content>
+      </brn-select>
+
+      <div class="flex space-x-1">
+        <button
+          size="sm"
+          variant="outline"
+          hlmBtn
+          [disabled]="!ctx.decrementable()"
+          (click)="ctx.decrement()"
+        >
+          Previous
+        </button>
+        <button
+          size="sm"
+          variant="outline"
+          hlmBtn
+          [disabled]="!ctx.incrementable()"
+          (click)="ctx.increment()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
