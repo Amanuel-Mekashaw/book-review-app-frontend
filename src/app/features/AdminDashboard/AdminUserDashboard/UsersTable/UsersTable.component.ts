@@ -49,6 +49,7 @@ import { Router } from '@angular/router';
 import { URL } from '../../../shared/constants';
 import { HlmToasterComponent } from '../../../../../lib/ui-sonner-helm/src/lib/hlm-toaster.component';
 import { toast } from 'ngx-sonner';
+import { NoBooksFoundComponent } from '../../../shared/components/NoElementFound/NoElementFound.component';
 
 @Component({
   selector: 'app-user-dashboard-table',
@@ -67,6 +68,9 @@ import { toast } from 'ngx-sonner';
     HlmSelectModule,
     CommonModule,
     HlmToasterComponent,
+    LoadingStateComponent,
+    ErrorStateComponent,
+    NoBooksFoundComponent,
   ],
   providers: [
     provideIcons({

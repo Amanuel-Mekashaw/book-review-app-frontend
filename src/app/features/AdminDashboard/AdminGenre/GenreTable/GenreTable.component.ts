@@ -47,7 +47,9 @@ import { URL } from '../../../shared/constants';
 import { HlmToasterComponent } from '../../../../../lib/ui-sonner-helm/src/lib/hlm-toaster.component';
 import { toast } from 'ngx-sonner';
 import { Genre } from '../../../../genre.interface';
-import { GenreApiResponse } from '../../../Genre/genre.interface';
+import { NoBooksFoundComponent } from '../../../shared/components/NoElementFound/NoElementFound.component';
+import { LoadingStateComponent } from '../../../shared/components/LoadingState/LoadingState.component';
+import { ErrorStateComponent } from '../../../shared/components/ErrorState/ErrorState.component';
 
 @Component({
   selector: 'app-genre-dashboard-table',
@@ -66,6 +68,9 @@ import { GenreApiResponse } from '../../../Genre/genre.interface';
     HlmSelectModule,
     CommonModule,
     HlmToasterComponent,
+    NoBooksFoundComponent,
+    LoadingStateComponent,
+    ErrorStateComponent,
   ],
   providers: [
     provideIcons({

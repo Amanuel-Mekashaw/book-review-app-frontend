@@ -37,7 +37,11 @@ export class AdminDashboardLayoutComponent {
       icon: 'fal fa-solid fa-masks-theater',
       label: 'Users',
     },
-
+    {
+      routeLink: 'books',
+      icon: 'fal fa-solid fa-book',
+      label: 'Books',
+    },
     {
       routeLink: 'profile',
       icon: 'fal fa-regular fa-user ',

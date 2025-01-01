@@ -1,11 +1,13 @@
-<!-- <app-loading-state
+<hlm-toaster richColors closeButton position="top-right" />
+
+<app-loading-state
   [loading]="loading()"
   loadingText="loading users"
 ></app-loading-state>
 
-<app-error-state [error]="error()" heightclass="h-screen"></app-error-state> -->
-<hlm-toaster richColors closeButton position="top-right" />
-<section>
+<app-error-state [error]="error()"></app-error-state>
+
+<section *ngIf="!loading() && !error()">
   <!-- search and filter -->
   <div class="flex flex-col justify-between gap-4 sm:flex-row">
     <input
@@ -69,7 +71,7 @@
       </hlm-td>
     </brn-column-def>
     <!-- id col def -->
-    <brn-column-def name="id" class="">
+    <brn-column-def name="id" class="w-14">
       <hlm-th truncate *brnHeaderDef>ID</hlm-th>
       <hlm-td truncate *brnCellDef="let element">
         {{ element.id }}
@@ -77,7 +79,7 @@
     </brn-column-def>
 
     <!-- name col def -->
-    <brn-column-def name="name" class="w-44 lg:flex-1">
+    <brn-column-def name="name" class="w-44">
       <hlm-th *brnHeaderDef>
         <button
           hlmBtn
@@ -95,12 +97,13 @@
     </brn-column-def>
 
     <!-- Description col def -->
-    <brn-column-def name="description" class="text-left">
+    <brn-column-def name="description" class="w-60 lg:flex-1">
       <hlm-th *brnHeaderDef>Description</hlm-th>
       <hlm-td class="font-medium" *brnCellDef="let element">
         {{ element.description.substring(0, 50) + "..." }}
       </hlm-td>
     </brn-column-def>
+
     <!-- Created at col def -->
     <brn-column-def name="createdAt" class="">
       <hlm-th *brnHeaderDef>Created At</hlm-th>
@@ -159,7 +162,7 @@
       class="flex items-center justify-center p-20 text-muted-foreground"
       brnNoDataRow
     >
-      No data
+      <app-no-element-found element="Genre"></app-no-element-found>
     </div>
   </brn-table>
 

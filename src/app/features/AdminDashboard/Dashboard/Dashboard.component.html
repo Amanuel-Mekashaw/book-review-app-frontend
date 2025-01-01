@@ -8,14 +8,14 @@
   heightclass="h-screen"
 ></app-error-state>
 
-@if (!loading()) {
+@if (!loading() && !bookService.error()) {
   <app-hero-header title="Admin dashboard"></app-hero-header>
   <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
     <!-- users -->
     <section>
       <div
         routerLink="/admin/users"
-        class="mt-5 flex scale-100 cursor-pointer justify-between rounded-lg border-2 p-5 shadow-xl transition-all delay-200 ease-in-out hover:scale-110"
+        class="flex scale-100 cursor-pointer justify-between rounded-lg border-2 p-5 shadow-xl transition-all delay-200 ease-in-out hover:scale-110"
       >
         <div class="space-y-3">
           <span
@@ -34,7 +34,8 @@
     <!-- books -->
     <section>
       <div
-        class="mt-5 flex scale-100 cursor-pointer justify-between rounded-lg border-2 p-5 shadow-xl transition-all delay-200 ease-in-out hover:scale-110"
+        routerLink="/admin/books"
+        class="flex scale-100 cursor-pointer justify-between rounded-lg border-2 p-5 shadow-xl transition-all delay-200 ease-in-out hover:scale-110"
       >
         <div class="space-y-3">
           <span
@@ -54,7 +55,7 @@
     <section>
       <div
         routerLink="/admin/genre"
-        class="mt-5 flex scale-100 cursor-pointer justify-between rounded-lg border-2 p-5 shadow-xl transition-all delay-100 ease-in-out hover:scale-110"
+        class="flex scale-100 cursor-pointer justify-between rounded-lg border-2 p-5 shadow-xl transition-all delay-100 ease-in-out hover:scale-110"
       >
         <div class="space-y-3">
           <span
