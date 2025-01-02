@@ -87,6 +87,9 @@
       ],
       "@spartan-ng/ui-menu-helm": [
         ".\\src/lib/ui-menu-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-badge-helm": [
+        ".\\src/lib/ui-badge-helm/src/index.ts"
       ]
     }
   },
