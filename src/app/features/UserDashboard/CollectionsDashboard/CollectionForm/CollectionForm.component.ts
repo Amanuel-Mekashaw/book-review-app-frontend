@@ -31,6 +31,7 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { URL } from '../../../shared/constants';
+import { HlmCheckboxComponent } from '../../../../../lib/ui-checkbox-helm/src/lib/hlm-checkbox.component';
 
 @Component({
   selector: 'app-collection-form',
@@ -43,12 +44,13 @@ import { URL } from '../../../shared/constants';
     HlmButtonDirective,
     HlmLabelDirective,
     HlmInputDirective,
+    HlmCheckboxComponent,
   ],
   templateUrl: './CollectionForm.component.html',
   styleUrl: './CollectionForm.component.css',
 })
 export class CollectionFormComponent implements OnInit, OnChanges {
-  @Input() collectionRecived: Collection;
+  @Input() collectionRecieved: Collection;
   @Input() edit!: boolean;
   collectionId = input<number | null>();
 
@@ -62,45 +64,37 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   loading = signal(false);
 
   ngOnInit(): void {
-    this.collectionForm = this.formBuilder.group({
-      id: new FormControl(this.collectionRecived?.id || 0, Validators.required),
-      name: new FormControl(
-        this.collectionRecived?.name || '',
-        Validators.required,
-      ),
-      description: new FormControl(
-        this.collectionRecived?.description || '',
-        Validators.required,
-      ),
-      userId: [
-        this.authService.currentUserSignal().data.user.id,
-        Validators.required,
-      ],
-    });
-    console.log('Recieved', this.collectionRecived);
+    console.log('Recieved', this.collectionRecieved);
     this.initializeForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('Recieved changed', this.collectionRecived);
+    console.log('Recieved changed', this.collectionRecieved);
     this.initializeForm();
   }
 
   initializeForm() {
     this.collectionForm = this.formBuilder.group({
-      id: new FormControl(this.collectionRecived?.id || 0, Validators.required),
+      id: new FormControl(
+        this.collectionRecieved?.id || 0,
+        Validators.required,
+      ),
       name: new FormControl(
-        this.collectionRecived?.name || '',
+        this.collectionRecieved?.name || '',
         Validators.required,
       ),
       description: new FormControl(
-        this.collectionRecived?.description || '',
+        this.collectionRecieved?.description || '',
         Validators.required,
       ),
       userId: [
         this.authService.currentUserSignal().data.user.id,
         Validators.required,
       ],
+      isPrivate: new FormControl(
+        this.collectionRecieved?.private || false,
+        Validators.required,
+      ),
     });
   }
 
@@ -124,12 +118,12 @@ export class CollectionFormComponent implements OnInit, OnChanges {
       valid: this.collectionForm.valid,
     });
 
-    if (this.collectionForm.valid && this.collectionRecived) {
+    if (this.collectionForm.valid && this.collectionRecieved) {
       console.log(this.collectionForm.getRawValue());
 
       this.http
         .put<CollectionCreateApiResponse>(
-          `${URL}/collections/${this.collectionRecived?.id}`,
+          `${URL}/collections/${this.collectionRecieved?.id}`,
           this.collectionForm.getRawValue(),
         )
         .subscribe({
@@ -142,7 +136,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
         });
     }
 
-    if (this.collectionForm.valid && !this.collectionRecived) {
+    if (this.collectionForm.valid && !this.collectionRecieved) {
       this.http
         .post<CollectionCreateApiResponse>(
           `${URL}/collections`,

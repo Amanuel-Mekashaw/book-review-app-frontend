@@ -62,6 +62,11 @@
   <!-- <input hlmInput formControlName="createdAt" type="hidden" class="w-full" />
   <input hlmInput formControlName="updatedAt" type="hidden" class="w-full" /> -->
 
+  <label class="flex items-center" hlmLabel>
+    <hlm-checkbox formControlName="isPrivate" class="mr-2" />
+    Make Collection Private
+  </label>
+
   <!-- submit button -->
   <button
     [disabled]="collectionForm.invalid"
