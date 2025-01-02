@@ -50,6 +50,12 @@ export type Author = {
 export interface CollectionApiResponse {
   message: string;
   code: number;
+  data: Collection[];
+}
+
+export interface CollectionApiResponseAll {
+  message: string;
+  code: number;
   data: Data;
 }
 
@@ -72,6 +78,10 @@ export interface Collection {
   name: string;
   description: string;
   books: Book[];
+  user: {
+    id: number;
+  };
+  private: boolean;
   createdAt: string;
   updatedAt: string;
 }

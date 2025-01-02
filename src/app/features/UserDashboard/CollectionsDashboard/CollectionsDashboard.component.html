@@ -4,12 +4,15 @@
 ></app-hero-header>
 
 <app-loading-state
-  [loading]="loading()"
+  [loading]="privateLoading()"
   loadingText="Loading Collections..."
   heightclass="h-screen"
 ></app-loading-state>
 
-<app-error-state [error]="error()" heightclass="h-screen"></app-error-state>
+<app-error-state
+  [error]="privateError()"
+  heightclass="h-screen"
+></app-error-state>
 
 <section class="my-4">
   <button hlmBtn class="space-x-2" (click)="openCreateForm()">
@@ -20,12 +23,66 @@
   </button>
 </section>
 
-@if (collections() !== null && !isCreateFormOpen()) {
-  <app-collection-list
-    [collections]="collections()"
-    [delete]="true"
-    [edit]="true"
-  ></app-collection-list>
+@if (!isCreateFormOpen()) {
+  <!-- Tabs -->
+  <hlm-tabs tab="private" class="block max-w-2xl">
+    <hlm-tabs-list
+      [orientation]="tabOrientation()"
+      class="mb-3 h-full"
+      aria-label="Collection tabs"
+    >
+      <button hlmTabsTrigger="private" class="">Private Collections</button>
+      <button hlmTabsTrigger="public" class="">Public Collections</button>
+    </hlm-tabs-list>
+
+    <!-- private tab collection list -->
+    <div hlmTabsContent="private" class="mt-5">
+      <app-loading-state
+        [loading]="privateLoading()"
+        loadingText="Loading Collections..."
+        heightclass="h-screen"
+      ></app-loading-state>
+
+      <app-error-state
+        [error]="privateError()"
+        heightclass="h-screen"
+      ></app-error-state>
+
+      @if (privateCollections() !== null) {
+        <div>
+          <app-collection-list
+            [collections]="privateCollections()"
+            [delete]="true"
+            [edit]="true"
+          ></app-collection-list>
+        </div>
+      }
+    </div>
+
+    <!-- Public tab collection list -->
+    <div hlmTabsContent="public" class="mt-5">
+      <app-loading-state
+        [loading]="publicLoading()"
+        loadingText="Loading Collections..."
+        heightclass="h-screen"
+      ></app-loading-state>
+
+      <app-error-state
+        [error]="publicError()"
+        heightclass="h-screen"
+      ></app-error-state>
+
+      @if (publicCollections() !== null) {
+        <div>
+          <app-collection-list
+            [collections]="publicCollections()"
+            [delete]="false"
+            [edit]="false"
+          ></app-collection-list>
+        </div>
+      }
+    </div>
+  </hlm-tabs>
 }
 
 @if (isCreateFormOpen()) {

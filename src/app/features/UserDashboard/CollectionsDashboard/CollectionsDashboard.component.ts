@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  HostListener,
   inject,
   OnInit,
   signal,
@@ -20,6 +21,13 @@ import { LoadingStateComponent } from '../../shared/components/LoadingState/Load
 import { ErrorStateComponent } from '../../shared/components/ErrorState/ErrorState.component';
 import { CollectionListComponent } from '../../Collection/CollectionList/CollectionList.component';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { AuthService } from '../../Auth/auth.service';
+import {
+  HlmTabsComponent,
+  HlmTabsContentDirective,
+  HlmTabsListComponent,
+  HlmTabsTriggerDirective,
+} from '@spartan-ng/ui-tabs-helm';
 
 @Component({
   selector: 'app-collections-dashboard',
@@ -34,6 +42,11 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
     ErrorStateComponent,
     CollectionListComponent,
     HlmButtonDirective,
+
+    HlmTabsComponent,
+    HlmTabsContentDirective,
+    HlmTabsListComponent,
+    HlmTabsTriggerDirective,
   ],
   templateUrl: './CollectionsDashboard.component.html',
   styleUrl: './CollectionsDashboard.component.css',
@@ -41,29 +54,69 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 })
 export class CollectionsDashboardComponent implements OnInit {
   http = inject(HttpClient);
+  authService = inject(AuthService);
 
   isCreateFormOpen = signal(false);
-  collections = signal<Collection[] | null>(null);
-  loading = signal(false);
-  error = signal('');
+  publicCollections = signal<Collection[] | null>(null);
+  publicLoading = signal(false);
+  publicError = signal('');
 
-  ngOnInit(): void {
-    this.fetchCollections();
+  privateCollections = signal<Collection[] | null>(null);
+  privateLoading = signal(false);
+  privateError = signal('');
+
+  userId = signal(this.authService.currentUserSignal().data.user.id);
+  tabOrientation = signal<'horizontal' | 'vertical'>('horizontal');
+
+  screenWidth = signal<number>(window.innerWidth);
+
+  @HostListener('window:resize')
+  onResize() {
+    this.screenWidth.set(window.innerWidth);
+    if (this.screenWidth() < 768) {
+      this.tabOrientation.set('vertical');
+    } else {
+      this.tabOrientation.set('horizontal');
+    }
   }
 
-  fetchCollections() {
-    this.http.get<CollectionApiResponse>(`${URL}/collections`).subscribe({
-      next: (response: CollectionApiResponse) => {
-        this.loading.set(true);
-        console.log('collections', response.data.content);
-        this.collections.set(response.data.content);
-        this.loading.set(false);
-      },
-      error: (error: ApiError) => {
-        console.log('collections error', error);
-        this.error.set(error.message);
-      },
-    });
+  ngOnInit(): void {
+    this.fetchPublicCollections();
+    this.fetchPrivateCollections();
+  }
+
+  fetchPublicCollections() {
+    this.http
+      .get<CollectionApiResponse>(`${URL}/collections/public`)
+      .subscribe({
+        next: (response: CollectionApiResponse) => {
+          this.publicLoading.set(true);
+          console.log('collections', response.data);
+          this.publicCollections.set(response.data);
+          this.publicLoading.set(false);
+        },
+        error: (error: ApiError) => {
+          console.log('collections error', error);
+          this.publicError.set(error.message);
+        },
+      });
+  }
+
+  fetchPrivateCollections() {
+    this.http
+      .get<CollectionApiResponse>(`${URL}/collections/private/${this.userId()}`)
+      .subscribe({
+        next: (response: CollectionApiResponse) => {
+          this.privateLoading.set(true);
+          console.log('collections', response.data);
+          this.privateCollections.set(response.data);
+          this.privateLoading.set(false);
+        },
+        error: (error: ApiError) => {
+          console.log('collections error', error);
+          this.privateError.set(error.message);
+        },
+      });
   }
 
   openCreateForm() {
