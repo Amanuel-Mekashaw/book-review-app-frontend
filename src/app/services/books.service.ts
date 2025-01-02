@@ -12,6 +12,7 @@ import { Rating, RatingApiResponse } from '../rating.interface';
 import {
   Collection,
   CollectionApiResponse,
+  CollectionApiResponseAll,
 } from '../features/Collection/collection.interface';
 import { AuthService } from '../features/Auth/auth.service';
 import { Router } from '@angular/router';
@@ -131,8 +132,11 @@ export class BooksService {
   // !Done
   fetchCollections(): void {
     this.collectionLoading.set(true);
-    this.http.get<CollectionApiResponse>(`${URL}/collections`).subscribe({
-      next: (response) => this.collections.set(response.data.content),
+    this.http.get<CollectionApiResponseAll>(`${URL}/collections`).subscribe({
+      next: (response) => {
+        this.collections.set(response.data.content);
+        console.log('Collection fetched', response.data.content);
+      },
       error: (error: ApiError) => this.collectionError.set(error.message),
       complete: () => this.collectionLoading.set(false),
     });
@@ -151,18 +155,20 @@ export class BooksService {
   }
 
   // !Done
-  addToCollection(bookId: number, collectionId: number): void {
-    this.http
-      .post(`${URL}/collections/${collectionId}/books/${bookId}`, {})
-      .subscribe({
-        next: (response: CollectionApiResponse) => {
-          toast.success('Success', { description: response.message });
-        },
-        error: (error: ApiError) => {
-          this.collectionAddError.set(error.message);
-          toast.error('Unsuccessful', { description: error.message });
-        },
-      });
+  addToCollection(bookId: number, collectionId: number, userId: number): void {
+    if (this.authService.currentUserSignal()?.data?.user?.id === userId) {
+      this.http
+        .post(`${URL}/collections/${collectionId}/books/${bookId}`, {})
+        .subscribe({
+          next: (response: CollectionApiResponse) => {
+            toast.success('Success', { description: response.message });
+          },
+          error: (error: ApiError) => {
+            this.collectionAddError.set(error.message);
+            toast.error('Unsuccessful', { description: error.message });
+          },
+        });
+    }
   }
 
   // submitRating(userId: number, bookId: number, ratingValue: number): void {

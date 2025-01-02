@@ -36,17 +36,19 @@ export class CollectionComponent implements OnInit {
   }
 
   fetchCollections() {
-    this.http.get<CollectionApiResponse>(`${URL}/collections`).subscribe({
-      next: (response: CollectionApiResponse) => {
-        this.loading.set(true);
-        console.log('collections', response.data.content);
-        this.collections.set(response.data.content);
-        this.loading.set(false);
-      },
-      error: (error: ApiError) => {
-        console.log('collections error', error);
-        this.error.set(error.message);
-      },
-    });
+    this.http
+      .get<CollectionApiResponse>(`${URL}/collections/public`)
+      .subscribe({
+        next: (response: CollectionApiResponse) => {
+          this.loading.set(true);
+          console.log('collections metu', response.data);
+          this.collections.set(response.data);
+          this.loading.set(false);
+        },
+        error: (error: ApiError) => {
+          console.log('collections error', error);
+          this.error.set(error.message);
+        },
+      });
   }
 }
