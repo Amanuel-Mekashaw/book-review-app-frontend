@@ -38,6 +38,7 @@ import { Rating, RatingApiResponse } from '../../rating.interface';
 import { CommentFormComponent } from '../shared/components/CommentForm/CommentForm.component';
 import { RatingDescriptionComponent } from '../shared/components/RatingDescription/RatingDescription.component';
 import { BooksService } from '../../services/books.service';
+import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
 
 @Component({
   selector: 'app-book-details',
@@ -48,6 +49,7 @@ import { BooksService } from '../../services/books.service';
     HlmAvatarFallbackDirective,
     HlmAvatarImageDirective,
     HlmButtonDirective,
+    HlmBadgeDirective,
     RouterLink,
     LoadingStateComponent,
     ErrorStateComponent,

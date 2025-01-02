@@ -43,7 +43,7 @@
           <button
             hlmBtn
             (click)="bookService.fetchCollections()"
-            class="peer mt-5 flex items-center gap-2 md:hidden"
+            class="peer mt-2 flex w-full items-center gap-2"
           >
             <i class="fa-solid fa-bookmark"></i> Add to collection
           </button>
@@ -57,31 +57,56 @@
           </button>
           <!-- list of collection pop up on click -->
           <div
-            class="absolute right-10 top-5 rounded-md bg-white p-5 opacity-0 shadow-xl peer-focus:opacity-100"
+            class="absolute right-10 top-5 flex flex-col gap-2 rounded-md bg-white p-5 opacity-0 shadow-xl peer-focus:opacity-100"
           >
+            <button
+              routerLink="/dashboard/collections"
+              class="w-full border-b-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-5"
+            >
+              <i class="fa-solid fa-plus text-green-500"></i> Add new collection
+            </button>
             @if (
               bookService?.collections() !== null &&
               bookService?.collections().length > 0
             ) {
               @for (collection of bookService?.collections(); track $index) {
                 <button
+                  [disabled]="
+                    collection?.user?.id !==
+                      authService.currentUserSignal()?.data?.user?.id &&
+                    collection?.private === true
+                  "
                   (click)="
                     bookService?.addToCollection(
                       bookService.book()?.id,
-                      collection?.id
+                      collection?.id,
+                      collection?.user?.id
                     )
                   "
-                  class="w-full border-b-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-5"
+                  class="flex w-full items-center justify-between gap-2 rounded-md border-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-2 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:hover:bg-gray-200"
                 >
+                  <!-- collection name -->
                   {{ collection?.name }}
+
+                  <!-- Badges -->
+                  <div class="flex items-center gap-1">
+                    @if (collection?.private) {
+                      <span hlmBadge variant="default">private</span>
+                    }
+                    @if (
+                      collection?.user?.id !==
+                        authService.currentUserSignal()?.data?.user?.id &&
+                      collection?.private === true
+                    ) {
+                      <span hlmBadge variant="destructive">not yours</span>
+                    }
+                    <!-- lock icon -->
+                    <!-- @if (collection?.private === true) {
+                      <i class="fa-solid fa-lock text-green-500"></i>
+                    } -->
+                  </div>
                 </button>
               }
-            } @else {
-              <button
-                class="w-full border-b-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-5"
-              >
-                Add new collection
-              </button>
             }
           </div>
         </div>
