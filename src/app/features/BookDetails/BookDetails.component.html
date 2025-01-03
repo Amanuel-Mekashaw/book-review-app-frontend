@@ -172,19 +172,19 @@
           <!-- Publisher information -->
           <div class="flex flex-col gap-5">
             <p class="flex flex-col">
-              <span class="text-green-500">ISBN</span
+              <span class="font-bold text-green-500">ISBN</span
               ><span class="text-lg">{{ bookService.book()?.isbn }}</span>
             </p>
             <p class="flex flex-col">
-              <span class="text-green-500">Language</span
+              <span class="font-bold text-green-500">Language</span
               ><span class="text-lg">{{ bookService.book()?.language }}</span>
             </p>
             <p class="flex flex-col">
-              <span class="text-green-500">Publisher</span
+              <span class="font-bold text-green-500">Publisher</span
               ><span class="text-lg">{{ bookService.book()?.publisher }}</span>
             </p>
             <p class="flex flex-col">
-              <span class="text-green-500">Published Year</span
+              <span class="font-bold text-green-500">Published Year</span
               ><span class="text-lg">{{
                 bookService.book()?.publishedYear
               }}</span>
@@ -192,9 +192,9 @@
           </div>
 
           <!-- Genre section -->
-          <div class="flex flex-col gap-5">
+          <div class="flex flex-col">
             <!-- title -->
-            <h2 class="text-2xl font-bold text-green-500">Genre</h2>
+            <h2 class="text-lg font-bold text-green-500">Genre</h2>
             <!-- genre list -->
             <div class="flex flex-wrap items-start gap-3">
               <!-- add genre button with text if there is no genre -->
