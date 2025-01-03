@@ -35,7 +35,7 @@
         [(ngModel)]="searchTerm"
         class="w-full"
         hlmInput
-        placeholder="enter book name"
+        placeholder="Search book by name"
         type="text"
       />
 
@@ -44,7 +44,13 @@
         hlmBtn
         variant="default"
         class="rounded-full"
-        (click)="this.bookService.searchBooks(searchTerm())"
+        (click)="
+          this.bookService.searchBooks(
+            searchTerm(),
+            booksByPublishedYear,
+            books
+          )
+        "
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -63,8 +69,8 @@
       </button>
     </div>
 
-    <!-- select elements -->
-    <div class="grid w-full grid-cols-3 gap-2 md:gap-5 lg:gap-5">
+    <!-- select filter elements -->
+    <div class="grid w-full grid-cols-1 gap-2 md:grid-cols-3 md:gap-5 lg:gap-5">
       <!-- genre selector -->
       <brn-select class="inline-block" placeholder="Select genres">
         <hlm-select-trigger class="w-full">
@@ -81,53 +87,48 @@
           }
         </hlm-select-content>
       </brn-select>
-
-      <brn-select class="inline-block" placeholder="Select published date">
+      <!-- language selector -->
+      <brn-select class="inline-block" placeholder="Select Language">
         <hlm-select-trigger class="w-full">
           <hlm-select-value />
         </hlm-select-trigger>
         <hlm-select-content class="w-full">
-          <hlm-option value="Publisher">Publisher</hlm-option>
-          <hlm-option value="Settings">Settings</hlm-option>
-          <hlm-option value="Help">Help</hlm-option>
+          @for (language of languages(); track $index) {
+            <button
+              class="w-full cursor-pointer"
+              (click)="fetchLanguage(language.value)"
+            >
+              <hlm-option [value]="language.label">{{
+                language.value
+              }}</hlm-option>
+            </button>
+          }
         </hlm-select-content>
       </brn-select>
-
-      <brn-select class="inline-block" placeholder="Select published date">
+      <!-- published year selector -->
+      <brn-select class="inline-block" placeholder="Select published year">
         <hlm-select-trigger class="w-full">
           <hlm-select-value />
         </hlm-select-trigger>
-        <hlm-select-content class="w-full">
-          <hlm-option value="Publisher">Publisher</hlm-option>
-          <hlm-option value="Settings">Settings</hlm-option>
-          <hlm-option value="Help">Help</hlm-option>
+        <hlm-select-content class="grid w-fit grid-cols-5 gap-2">
+          @for (year of years; track $index) {
+            <button class="cursor-pointer" (click)="fetchPublishedYear(year)">
+              <hlm-option class="w-full" [value]="year">{{ year }}</hlm-option>
+            </button>
+          }
         </hlm-select-content>
       </brn-select>
     </div>
   </div>
 
-  <!-- list of books -->
-  @if (bookService.searchedBooks() == null) {
-    <app-books></app-books>
-  } @else {
-    <app-loading-state
-      [loading]="loading()"
-      loadingText="Loading Books...."
-    ></app-loading-state>
+  <!-- Display Books -->
+  <ng-container *ngIf="currentBooks()">
+    <app-books [inputBooks]="currentBooks()"></app-books>
+  </ng-container>
 
-    <app-error-state [error]="error()"></app-error-state>
-
-    @if (!loading() && !error() && bookService.searchedBooks().length > 0) {
-      <section>
-        <app-hero-header title="Search result"></app-hero-header>
-        <app-books [inputBooks]="bookService.searchedBooks()"></app-books>
-      </section>
-    } @else {
-      <!-- No book info section -->
-      <app-no-element-found
-        [amountOfBooks]="0"
-        [element]="'Books searched with title ' + searchTerm() + ' '"
-      ></app-no-element-found>
-    }
-  }
+  <pre>{{ searchTerm() }}</pre>
+  <!-- No Books Found -->
+  <ng-container *ngIf="currentBooks()?.length === 0">
+    <app-no-element-found element="Books"></app-no-element-found>
+  </ng-container>
 </main>

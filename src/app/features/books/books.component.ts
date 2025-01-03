@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnInit,
   signal,
+  WritableSignal,
 } from '@angular/core';
 
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
@@ -18,17 +20,25 @@ import { AuthService } from '../Auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ApiError, Book, BookResponse } from '../../book.interface';
+import {
+  ApiError,
+  Book,
+  BookRequest,
+  BookResponse,
+  BookResponseByPublishedYear,
+} from '../../book.interface';
 import { URL } from '../shared/constants';
 import { HeroHeaderComponent } from '../shared/components/HeroHeader/HeroHeader.component';
 import { CommonModule } from '@angular/common';
 import { LoadingStateComponent } from '../shared/components/LoadingState/LoadingState.component';
 import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
-import { AuthorDetailsResponse } from '../Auth/user.interface';
 import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
 import { BooksService } from '../../services/books.service';
 import { GenreService } from '../../services/genre.service';
 import { Genre } from '../../genre.interface';
+
+import { languages } from '../shared/constants';
+import { BookComponent } from '../Homepage/components/Book/list.component';
 
 @Component({
   imports: [
@@ -46,7 +56,7 @@ import { Genre } from '../../genre.interface';
     ErrorStateComponent,
     NoBooksFoundComponent,
   ],
-  providers: [BooksComponent],
+  providers: [],
   standalone: true,
   templateUrl: './books.component.html',
   styleUrl: './books.component.css',
@@ -59,10 +69,26 @@ export class BooksComponent implements OnInit {
   router = inject(Router);
   route = inject(ActivatedRoute);
 
-  books = signal<Book[] | null>(null);
+  languages = signal(languages);
+  years = Array.from({ length: 2030 - 2000 + 1 }, (_, index) => 2000 + index);
+
   genres = signal<Genre[] | null>(null);
   loading = signal(false);
   error = signal<string>('');
+
+  books = signal<Book[] | null>(null);
+  booksByPublishedYear = signal<Book[] | null>(null);
+  bookByLanguage = signal<Book[] | null>(null);
+
+  // Computed signal for the current books to display
+  currentBooks = computed(() => {
+    if (this.books()) return this.books();
+    if (this.booksByPublishedYear()) return this.booksByPublishedYear();
+    if (this.bookService.searchedBooks())
+      return this.bookService.searchedBooks();
+    if (this.bookByLanguage()) return this.bookByLanguage();
+    return null;
+  });
 
   author = signal(null);
   authorLoading = signal(false);
@@ -79,55 +105,27 @@ export class BooksComponent implements OnInit {
     );
 
     this.fetchGenres();
+    // this.fetchPublishedYear();
+    this.fetchBooks(this.booksByPublishedYear);
   }
 
-  // fetchAuthorDetail(id: number) {
-  //   this.http
-  //     .get<AuthorDetailsResponse>(`${URL}/userdetail/by-authordetail/${id}`)
-  //     .subscribe({
-  //       next: (response: AuthorDetailsResponse) => {
-  //         this.authorLoading.set(true);
-  //         console.log('authordetail', response);
-  //         this.author.set(response);
-  //         localStorage.setItem('userDetail', btoa(JSON.stringify(response)));
-  //         this.authService.currentUserDetail.set(response);
-  //         this.authorLoading.set(false);
-  //       },
-  //       error: (error: ApiError) => {
-  //         console.log('error', error);
-  //         this.authorError.set(error.message);
-  //         this.authorLoading.set(false);
-  //       },
-  //     });
-  // }
-
-  // searchBooks() {
-  //   if (this.searchTerm) {
-  //     // Navigate to the URL with the search parameter
-  //     this.router.navigate([], {
-  //       relativeTo: this.route,
-  //       queryParams: { title: this.searchTerm },
-  //       queryParamsHandling: 'merge',
-  //     });
-
-  //     // Fetch the data from the backend
-  //     this.http
-  //       .get<BookResponse>(`${URL}/books/by-title?title=${this.searchTerm}`)
-  //       .subscribe({
-  //         next: (response: BookResponse) => {
-  //           this.loading.set(true);
-  //           this.books.set(response.content);
-  //           console.log(response);
-
-  //           this.loading.set(false);
-  //         },
-  //         error: (error: ApiError) => {
-  //           this.error.set(error?.message);
-  //           console.log(error);
-  //         },
-  //       });
-  //   }
-  // }
+  fetchBooks(booksByPublishedYear: WritableSignal<Book[] | null>) {
+    this.loading.set(true);
+    this.http.get<BookResponse>(`${URL}/books`).subscribe({
+      next: (data: BookResponse) => {
+        this.books.set(data.content);
+        booksByPublishedYear.set(null);
+        this.bookByLanguage.set(null);
+      },
+      error: (err) => {
+        this.loading.set(true);
+        this.error.set('Failed to load books.');
+        this.loading.set(false);
+        console.log(err.message);
+      },
+      complete: () => this.loading.set(false),
+    });
+  }
 
   fetchGenres() {
     this.http.get<Genre[]>(`${URL}/genre`).subscribe({
@@ -142,6 +140,51 @@ export class BooksComponent implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  fetchPublishedYear(year: number) {
+    this.http
+      .get<BookResponseByPublishedYear>(
+        `${URL}/books/by-publishedyear?publishedYear=${year}`,
+      )
+      .subscribe({
+        next: (response: BookResponseByPublishedYear) => {
+          console.log('response', response.data);
+          this.booksByPublishedYear.set(response.data);
+          this.books.set(null);
+          this.bookByLanguage.set(null);
+          this.searchTerm.set(null);
+          this.loading.set(false);
+        },
+        error: (error: ApiError) => {
+          console.log('error', error);
+          this.error.set(error.message);
+          this.loading.set(false);
+        },
+      });
+  }
+
+  fetchLanguage(language: string) {
+    this.http
+      .get<BookResponseByPublishedYear>(
+        `${URL}/books/by-language?language=${language}`,
+      )
+      .subscribe({
+        next: (response: BookResponseByPublishedYear) => {
+          console.log('response', response.data);
+          this.bookByLanguage.set(response.data);
+          this.books.set(null);
+          this.bookService.searchedBooks.set(null);
+          this.booksByPublishedYear.set(null);
+          this.searchTerm.set(null);
+          this.loading.set(false);
+        },
+        error: (error: ApiError) => {
+          console.log('error', error);
+          this.error.set(error.message);
+          this.loading.set(false);
+        },
+      });
   }
 
   searchByGenre(id: number) {
