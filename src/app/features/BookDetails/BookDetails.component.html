@@ -27,87 +27,86 @@
     <section class="flex flex-col gap-8">
       <section class="flex flex-col gap-5 md:flex-row">
         <div class="group relative">
-          <!-- book cover image -->
-          <img
-            height="500"
-            width="400"
-            class="h-[500px] max-h-min w-[400px] self-center overflow-hidden rounded-lg object-cover shadow-lg md:self-auto"
-            [src]="
-              'http://localhost:9191' + bookService.book()?.coverImageUrl ||
-              'https://placehold.co/400x500'
-            "
-            [alt]="bookService.book()?.title + 'cover image'"
-          />
+          <!-- Book cover image and collection button -->
+          <div class="sticky top-[6rem]">
+            <!-- book cover image -->
+            <img
+              class="h-[500px] max-h-min w-[400px] self-center overflow-hidden rounded-lg object-cover shadow-lg md:self-auto"
+              [src]="
+                'http://localhost:9191' + bookService.book()?.coverImageUrl ||
+                'https://placehold.co/400x500'
+              "
+              [alt]="bookService.book()?.title + 'cover image'"
+            />
 
-          <!-- Bookmark button add to collection (mobile) -->
-          <button
-            hlmBtn
-            (click)="bookService.fetchCollections()"
-            class="peer mt-2 flex w-full items-center gap-2"
-          >
-            <i class="fa-solid fa-bookmark"></i> Add to collection
-          </button>
-
-          <!-- Bookmark button add to collection (desktop) -->
-          <button
-            (click)="bookService.fetchCollections()"
-            class="peer absolute right-5 top-5 hidden size-10 rounded-full bg-green-500 text-xl text-white opacity-0 ring-green-500 ring-offset-1 hover:ring-4 group-hover:opacity-100 md:block"
-          >
-            <i class="fa-solid fa-bookmark"></i>
-          </button>
-          <!-- list of collection pop up on click -->
-          <div
-            class="absolute right-10 top-5 flex flex-col gap-2 rounded-md bg-white p-5 opacity-0 shadow-xl peer-focus:opacity-100"
-          >
+            <!-- Bookmark button add to collection (mobile) -->
             <button
-              routerLink="/dashboard/collections"
-              class="w-full border-b-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-5"
+              hlmBtn
+              (click)="bookService.fetchCollections()"
+              class="peer mt-2 flex w-full items-center gap-2"
             >
-              <i class="fa-solid fa-plus text-green-500"></i> Add new collection
+              <i class="fa-solid fa-bookmark"></i> Add to collection
             </button>
-            @if (
-              bookService?.collections() !== null &&
-              bookService?.collections().length > 0
-            ) {
-              @for (collection of bookService?.collections(); track $index) {
-                <button
-                  [disabled]="
-                    collection?.user?.id !==
-                      authService.currentUserSignal()?.data?.user?.id &&
-                    collection?.private === true
-                  "
-                  (click)="
-                    bookService?.addToCollection(
-                      bookService.book()?.id,
-                      collection?.id,
-                      collection?.user?.id
-                    )
-                  "
-                  class="flex w-full items-center justify-between gap-2 rounded-md border-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-2 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:hover:bg-gray-200"
-                >
-                  <!-- collection name -->
-                  {{ collection?.name }}
 
-                  <!-- Badges -->
-                  <div class="flex items-center gap-1">
-                    @if (collection?.private) {
-                      <span hlmBadge variant="default">private</span>
-                    }
-                    @if (
-                      collection?.user?.id !==
-                        authService.currentUserSignal()?.data?.user?.id &&
-                      collection?.private === true
-                    ) {
-                      <span hlmBadge variant="destructive">not yours</span>
-                    }
-                    <!-- lock icon -->
-                    <!-- @if (collection?.private === true) {
-                      <i class="fa-solid fa-lock text-green-500"></i>
-                    } -->
-                  </div>
-                </button>
+            <!-- list of collection pop up on click -->
+            <div
+              class="absolute left-0 top-0 flex flex-col gap-2 rounded-md border-2 bg-white p-5 opacity-0 shadow-xl peer-focus:opacity-100"
+            >
+              <button
+                routerLink="/dashboard/collections"
+                class="w-full border-b-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-5"
+              >
+                <i class="fa-solid fa-plus w-fit text-green-500"></i> Add new
+                collection
+              </button>
+              @if (
+                bookService?.collections() !== null &&
+                bookService?.collections().length > 0
+              ) {
+                @for (collection of bookService?.collections(); track $index) {
+                  @if (
+                    collection?.user?.id ===
+                    authService.currentUserSignal()?.data?.user?.id
+                  ) {
+                    <button
+                      (click)="
+                        bookService?.addToCollection(
+                          bookService.book()?.id,
+                          collection?.id,
+                          collection?.user?.id
+                        )
+                      "
+                      class="flex w-full items-center justify-between gap-2 rounded-md border-2 bg-transparent p-3 font-medium transition-all delay-100 hover:bg-slate-100 hover:px-2 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:hover:bg-gray-200"
+                    >
+                      <!-- collection name -->
+                      {{ collection?.name }}
+
+                      <!-- Badges -->
+                      <div class="flex w-fit items-center gap-1">
+                        <!-- private collections -->
+                        <span
+                          *ngIf="collection?.private"
+                          hlmBadge
+                          variant="default"
+                          >private</span
+                        >
+                        <!-- Private and not yours badge -->
+                        <span
+                          *ngIf="
+                            collection?.user?.id !==
+                              authService.currentUserSignal()?.data?.user?.id &&
+                            collection?.private === true
+                          "
+                          hlmBadge
+                          variant="destructive"
+                          >not yours</span
+                        >
+                      </div>
+                    </button>
+                  }
+                }
               }
-            }
+            </div>
           </div>
         </div>
 
@@ -161,22 +160,10 @@
             </div>
             <!-- read more and readless button -->
             <button
-              class="flex items-center gap-2 rounded-md border-4 border-green-500/10 p-2 tracking-wide text-green-500"
+              class="text-md self-end text-blue-500"
               (click)="openReadMe()"
             >
               {{ isReadMe() === true ? "Read less" : "Read More..." }}
-              <span [ngClass]="{ 'text-sm': true, 'rotate-180': !isReadMe() }">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="14"
-                  width="14"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"
-                  />
-                </svg>
-              </span>
             </button>
           </div>
 
@@ -240,25 +227,6 @@
               }
             </div>
           </div>
-
-          <!-- Rating section -->
-          <!-- <div class="flex flex-col gap-2">
-            <h2 class="text-2xl font-bold text-green-500">
-              Rating (<span class="text-yellow-500">{{
-                bookService.book()?.averageRating
-              }}</span>
-              / {{ maxRating() }})
-            </h2>
-            <app-star-rating
-              formControlName="rating"
-              [min]="1"
-              [max]="maxRating()"
-              [value]="bookService.book()?.averageRating > 0 ? bookService.book()?.averageRating : 0"
-              [avgRating]="bookService.book()?.averageRating"
-              (ratingChange)="onRatingChange($event, bookId())"
-            >
-            </app-star-rating>
-          </div> -->
         </section>
       </section>
 
@@ -272,7 +240,7 @@
       <!-- author error state -->
       <app-error-state [error]="bookService.authorError()"></app-error-state>
       <!-- author section loaded -->
-      <section>
+      <section class="isolate">
         <section
           class="flex flex-col gap-5"
           *ngIf="!bookService.authorLoading() && !bookService.authorError()"
@@ -325,6 +293,8 @@
       <button hlmBtn (click)="bookService.fetchRatings(bookId())">
         load rating
       </button>
+
+      <!-- Rating sections -->
       <section class="flex flex-col gap-5">
         <app-rating-description
           [ratings]="bookService?.ratings()"

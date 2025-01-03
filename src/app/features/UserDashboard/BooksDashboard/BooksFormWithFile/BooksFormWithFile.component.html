@@ -215,7 +215,7 @@
     </div>
   </label>
 
-  <label hlmLabel class="w-full"
+  <!-- <label hlmLabel class="w-full"
     >Language
     <input
       hlmInput
@@ -224,6 +224,39 @@
       placeholder="in what language is the book written"
       class="w-full"
     />
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        bookForm.get('language')?.invalid && bookForm.get('language')?.touched
+      "
+    >
+      <small *ngIf="bookForm.get('language')?.errors"
+        >Language is required</small
+      >
+    </div>
+  </label> -->
+
+  <label hlmLabel class="">
+    Language
+    <!-- genre selector -->
+    <brn-select
+      formControlName="language"
+      class="w-full"
+      placeholder="Select language"
+    >
+      <hlm-select-trigger class="w-full">
+        <hlm-select-value />
+      </hlm-select-trigger>
+      <hlm-select-content class="w-full">
+        @for (language of languages(); track $index) {
+          <button class="w-full cursor-pointer">
+            <hlm-option [value]="language.label">{{
+              language.value
+            }}</hlm-option>
+          </button>
+        }
+      </hlm-select-content>
+    </brn-select>
     <div
       class="flex flex-col font-normal text-red-500"
       *ngIf="

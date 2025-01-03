@@ -47,7 +47,7 @@ export class BooksListsComponent implements OnInit, OnChanges {
   @Input() remove: boolean;
   @Input() collectionId: number;
   inputBooks = input<Book[] | null>();
-  books = signal<Book[]>(null);
+  books = signal<Book[]>(this.inputBooks());
 
   http = inject(HttpClient);
 

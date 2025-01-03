@@ -81,6 +81,12 @@ export type BookResponseByAuthor = {
   data: BookByAuthor[];
 };
 
+export type BookResponseByPublishedYear = {
+  message: string;
+  code: number;
+  data: Book[];
+};
+
 export type BookByAuthor = {
   id: number;
   title: string;

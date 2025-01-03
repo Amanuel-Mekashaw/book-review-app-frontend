@@ -29,13 +29,23 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HlmToasterComponent } from '../../../../../lib/ui-sonner-helm/src/lib/hlm-toaster.component';
 import { URL } from '../../../shared/constants';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
-import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
+import {
+  HlmButtonDirective,
+  HlmButtonModule,
+} from '@spartan-ng/ui-button-helm';
 import { Book } from '../../../../book.interface';
 import { GenreApiResponse } from '../../../Genre/genre.interface';
 import { Genre } from '../../../../genre.interface';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
-import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
+import {
+  HlmSelectImports,
+  HlmSelectModule,
+  HlmSelectTriggerComponent,
+} from '@spartan-ng/ui-select-helm';
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
+
+import { languages } from '../../../shared/constants';
+
 @Component({
   selector: 'app-book-form-with-file',
   standalone: true,
@@ -49,6 +59,10 @@ import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
     LoadingSpinnerComponent,
     BrnSelectImports,
     HlmSelectModule,
+    HlmSelectImports,
+    HlmSelectModule,
+    HlmSelectTriggerComponent,
+    BrnSelectImports,
   ],
   templateUrl: './BooksFormWithFile.component.html',
   styleUrl: './BooksFormWithFile.component.css',
@@ -58,6 +72,8 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
   @Input() bookRecieved: Book;
 
   bookId = input<number | null>();
+
+  languages = signal(languages);
 
   formBuilder = inject(FormBuilder);
   authService = inject(AuthService);

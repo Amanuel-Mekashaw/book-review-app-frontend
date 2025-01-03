@@ -1,5 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import {
+  inject,
+  Injectable,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import {
   ApiError,
   Book,
@@ -64,8 +70,19 @@ export class BooksService {
     });
   }
 
+  resetSignal(
+    bookByPublisher: WritableSignal<Book[] | null>,
+    books: WritableSignal<Book[] | null>,
+  ): void {
+    bookByPublisher.set(null);
+    books.set(null);
+  }
   // ! Done
-  searchBooks(searchTerm: string): void {
+  searchBooks(
+    searchTerm: string,
+    booksByPublishedYear: WritableSignal<Book[] | null>,
+    books: WritableSignal<Book[] | null>,
+  ): void {
     if (!searchTerm) return;
 
     this.loading.set(true);
@@ -74,6 +91,8 @@ export class BooksService {
       .subscribe({
         next: (response: BookResponse) => {
           this.searchedBooks.set(response.content);
+          this.resetSignal(booksByPublishedYear, books);
+
           console.log('Search results:', response);
         },
         error: (error: ApiError) => {
@@ -148,7 +167,7 @@ export class BooksService {
     this.http
       .get<RatingApiResponse>(`${URL}/bookrating/getratings/${bookId}`)
       .subscribe({
-        next: (response) => this.ratings.set(response.data),
+        next: (response: RatingApiResponse) => this.ratings.set(response.data),
         error: (error: ApiError) => this.ratingError.set(error.message),
         complete: () => this.ratingLoading.set(false),
       });

@@ -8,7 +8,7 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
   if (typeof window !== 'undefined' && window.localStorage) {
     const token = localStorage.getItem('token') ?? '';
 
-    console.log('Token', token);
+    // console.log('Token', token);
     if (token && !isTokenExpired(token)) {
       request = request.clone({
         setHeaders: {
@@ -35,11 +35,11 @@ export function isTokenExpired(token: string): boolean {
     }
 
     // Token is still valid
-    console.log({
-      'Expiration time': new Date(decoded.exp * 1000).toISOString(),
-      'Current time': new Date(currentTime * 1000).toISOString(),
-      'Expired flag': decoded.exp < currentTime,
-    });
+    // console.log({
+    //   'Expiration time': new Date(decoded.exp * 1000).toISOString(),
+    //   'Current time': new Date(currentTime * 1000).toISOString(),
+    //   'Expired flag': decoded.exp < currentTime,
+    // });
 
     return false;
   } catch (err) {
