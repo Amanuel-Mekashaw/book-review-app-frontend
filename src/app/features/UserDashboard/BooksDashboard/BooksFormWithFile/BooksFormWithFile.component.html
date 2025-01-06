@@ -250,9 +250,7 @@
       <hlm-select-content class="w-full">
         @for (language of languages(); track $index) {
           <button class="w-full cursor-pointer">
-            <hlm-option [value]="language.label">{{
-              language.value
-            }}</hlm-option>
+            <hlm-option [value]="language">{{ language }}</hlm-option>
           </button>
         }
       </hlm-select-content>

@@ -43,14 +43,14 @@ export class AdminDashboardLayoutComponent {
       label: 'Books',
     },
     {
-      routeLink: 'profile',
-      icon: 'fal fa-regular fa-user ',
-      label: 'Profile',
-    },
-    {
       routeLink: 'genre',
       icon: 'fal fa-solid fa-masks-theater',
       label: 'Genre',
+    },
+    {
+      routeLink: 'profile',
+      icon: 'fal fa-regular fa-user ',
+      label: 'Profile',
     },
   ];
 

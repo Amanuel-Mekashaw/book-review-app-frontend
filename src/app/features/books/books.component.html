@@ -87,6 +87,7 @@
           }
         </hlm-select-content>
       </brn-select>
+
       <!-- language selector -->
       <brn-select class="inline-block" placeholder="Select Language">
         <hlm-select-trigger class="w-full">
@@ -96,15 +97,14 @@
           @for (language of languages(); track $index) {
             <button
               class="w-full cursor-pointer"
-              (click)="fetchLanguage(language.value)"
+              (click)="fetchLanguage(language)"
             >
-              <hlm-option [value]="language.label">{{
-                language.value
-              }}</hlm-option>
+              <hlm-option [value]="language">{{ language }}</hlm-option>
             </button>
           }
         </hlm-select-content>
       </brn-select>
+
       <!-- published year selector -->
       <brn-select class="inline-block" placeholder="Select published year">
         <hlm-select-trigger class="w-full">

@@ -28,7 +28,7 @@ export class CommentComponent implements OnInit {
   authService = inject(AuthService);
 
   nums = signal<number[] | []>([]);
-  isCommentsOpen = signal<boolean>(false);
+  isCommentsOpen = signal<boolean>(true);
 
   ngOnInit(): void {
     console.log('Ratings recieved to comments', this.ratings);

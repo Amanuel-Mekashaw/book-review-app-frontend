@@ -44,7 +44,7 @@ import {
 } from '@spartan-ng/ui-select-helm';
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 
-import { languages } from '../../../shared/constants';
+import { language } from '../../../shared/constants';
 
 @Component({
   selector: 'app-book-form-with-file',
@@ -73,7 +73,7 @@ export class BooksFormWithFileComponent implements OnInit, OnChanges {
 
   bookId = input<number | null>();
 
-  languages = signal(languages);
+  languages = signal(language);
 
   formBuilder = inject(FormBuilder);
   authService = inject(AuthService);

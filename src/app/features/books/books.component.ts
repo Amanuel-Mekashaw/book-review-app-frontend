@@ -11,11 +11,11 @@ import {
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
+import { HlmSelectModule } from '../../../lib/ui-select-helm/src/index';
+import { HlmSelectTriggerComponent } from '../../../lib/ui-select-helm/src/lib/hlm-select-trigger.component';
 import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { BooksListsComponent } from '../Homepage/components/BooksList/lists.component';
-import { HlmSelectModule } from '../../../lib/ui-select-helm/src/index';
-import { HlmSelectTriggerComponent } from '../../../lib/ui-select-helm/src/lib/hlm-select-trigger.component';
 import { AuthService } from '../Auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -34,11 +34,9 @@ import { LoadingStateComponent } from '../shared/components/LoadingState/Loading
 import { ErrorStateComponent } from '../shared/components/ErrorState/ErrorState.component';
 import { NoBooksFoundComponent } from '../shared/components/NoElementFound/NoElementFound.component';
 import { BooksService } from '../../services/books.service';
-import { GenreService } from '../../services/genre.service';
 import { Genre } from '../../genre.interface';
 
-import { languages } from '../shared/constants';
-import { BookComponent } from '../Homepage/components/Book/list.component';
+import { language } from '../shared/constants';
 
 @Component({
   imports: [
@@ -69,8 +67,8 @@ export class BooksComponent implements OnInit {
   router = inject(Router);
   route = inject(ActivatedRoute);
 
-  languages = signal(languages);
-  years = Array.from({ length: 2030 - 2000 + 1 }, (_, index) => 2000 + index);
+  languages = signal(language);
+  years = Array.from({ length: 2030 - 1920 + 1 }, (_, index) => 1920 + index);
 
   genres = signal<Genre[] | null>(null);
   loading = signal(false);
@@ -105,7 +103,6 @@ export class BooksComponent implements OnInit {
     );
 
     this.fetchGenres();
-    // this.fetchPublishedYear();
     this.fetchBooks(this.booksByPublishedYear);
   }
 
