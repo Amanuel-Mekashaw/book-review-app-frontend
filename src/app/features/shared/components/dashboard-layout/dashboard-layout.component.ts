@@ -34,16 +34,15 @@ export class DashboardLayoutComponent implements OnInit {
       icon: 'fal fa-solid fa-book',
       label: 'Books',
     },
-
-    // {
-    //   routeLink: 'genres',
-    //   icon: 'fal fa-solid fa-masks-theater',
-    //   label: 'Genres',
-    // },
     {
       routeLink: 'collections',
       icon: 'fal fa-solid fa-rectangle-list',
       label: 'Collections',
+    },
+    {
+      routeLink: 'ratings',
+      icon: 'fal fa-solid fa-star',
+      label: 'Ratings',
     },
     {
       routeLink: 'profile',

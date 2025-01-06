@@ -120,13 +120,13 @@ export const routes: Routes = [
             '../app/features/UserDashboard/BooksDashboard/BookEdit/BookEdit.component'
           ).then((c) => c.BookEditComponent),
       },
-      // {
-      //   path: 'genres',
-      //   loadComponent: () =>
-      //     import(
-      //       '../app/features/UserDashboard/GenreDashboard/GenreDashboard.component'
-      //     ).then((c) => c.GenreDashboardComponent),
-      // },
+      {
+        path: 'ratings',
+        loadComponent: () =>
+          import(
+            '../app/features/UserDashboard/RatingsDashboard/RatingsDashboard.component'
+          ).then((c) => c.RatingsDashboardComponent),
+      },
       {
         path: 'collections',
         loadComponent: () =>

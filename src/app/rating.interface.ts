@@ -1,3 +1,4 @@
+import { Book } from './book.interface';
 import { User } from './features/Auth/user.interface';
 
 export interface Rating {
@@ -5,6 +6,7 @@ export interface Rating {
   ratingValue: number;
   comment: string;
   user: User;
+  book: Book;
   createdAt: string;
   updatedAt: string;
 }

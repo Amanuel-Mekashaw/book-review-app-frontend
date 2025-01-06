@@ -1,0 +1,69 @@
+<app-hero-header
+  title="Rating"
+  subtitle="you can find all the ratings that you gave to the books"
+></app-hero-header>
+
+<app-loading-state
+  [loading]="loading()"
+  heightclass="h-screen"
+></app-loading-state>
+
+<app-error-state [error]="error()" heightclass="h-screen"></app-error-state>
+
+<section *ngIf="!loading() && !error()">
+  <p class="text-lg font-bold">Filter By Star amount</p>
+  <section class="">
+    <select
+      class="my-3 rounded-lg border-2 border-slate-200 px-3 py-2"
+      (change)="onChangeRating($event)"
+    >
+      <option value="11">All</option>
+      @for (starFilter of stars; track $index) {
+        <option [value]="starFilter">{{ starFilter }} Star</option>
+      }
+    </select>
+  </section>
+
+  @if (filteredRating() && filteredRating()?.length > 0) {
+    <div class="grid grid-cols-1 gap-3 xl:grid-cols-2">
+      @for (rating of filteredRating(); track $index) {
+        <div
+          [routerLink]="'/books/' + rating?.book?.id"
+          class="flex w-full scale-100 cursor-pointer flex-col gap-3 rounded-lg border-2 border-slate-200 p-3 shadow-md transition-all hover:scale-105 hover:shadow-xl hover:delay-150 md:flex-row"
+        >
+          <div class="mx-auto md:mx-0">
+            <img
+              [ngSrc]="'http://localhost:9191' + rating?.book?.coverImageUrl"
+              [alt]="rating?.book?.coverImageUrl"
+              class="h-full self-center overflow-hidden rounded-md object-cover shadow-lg md:self-start"
+              width="100"
+              height="200"
+            />
+          </div>
+          <div class="flex flex-col items-start justify-between">
+            <div>
+              <p class="text-wrap font-bold">{{ rating?.user?.email }}</p>
+              <div>
+                @for (
+                  star of getArrayFromNumber(rating?.ratingValue);
+                  track $index
+                ) {
+                  <span class="text-lg">⭐</span>
+                }
+                ({{ rating?.ratingValue }} / 10)
+              </div>
+
+              <p>{{ rating?.comment }}</p>
+            </div>
+
+            <p class="items-end font-bold text-green-500">
+              {{ rating?.book?.title }}
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <app-no-element-found element="book by rating"></app-no-element-found>
+  }
+</section>
