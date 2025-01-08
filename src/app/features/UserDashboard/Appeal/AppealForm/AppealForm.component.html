@@ -1,0 +1,74 @@
+<form
+  class="mt-8 flex flex-col gap-5"
+  *ngIf="appealForm"
+  [formGroup]="appealForm"
+  (ngSubmit)="onSubmit()"
+>
+  <!-- id -->
+  <input type="hidden" formControlName="id" />
+
+  <!-- email -->
+  <label hlmLabel class="w-full"
+    >Email
+    <input
+      hlmInput
+      formControlName="email"
+      type="email"
+      placeholder="Enter your email for the appeal"
+      class="w-full"
+    />
+
+    <div
+      class="flex flex-col font-normal text-red-500"
+      *ngIf="
+        appealForm.get('email')?.invalid && appealForm.get('email')?.touched
+      "
+    >
+      <small *ngIf="appealForm.get('email')?.errors">email is required</small>
+    </div>
+  </label>
+
+  <!-- message -->
+  <label hlmLabel class="w-full"
+    >Reason
+    <textarea
+      hlmInput
+      formControlName="message"
+      type="text"
+      placeholder="Enter reason for the appeal"
+      class="min-h-[80px] w-full"
+      maxlength="700"
+    ></textarea>
+
+    <p
+      [ngClass]="{
+        'mt-3 text-right text-green-500': true,
+        'text-red-500': appealForm.getRawValue()?.description?.length > 700,
+      }"
+    >
+      {{ appealForm.getRawValue()?.message?.length }} / 1000
+    </p>
+
+    <small *ngIf="appealForm.get('description')?.errors">
+      <ul class="flex flex-col gap-1">
+        <li
+          *ngFor="let error of appealForm.get('description').errors | keyvalue"
+        >
+          {{ error.value?.message }}
+        </li>
+      </ul>
+    </small>
+  </label>
+
+  <button
+    [disabled]="appealForm.invalid"
+    type="submit"
+    hlmBtn
+    variant="default"
+  >
+    @if (loading()) {
+      <app-loading-spinner></app-loading-spinner>
+    }
+    Submit Appeal
+  </button>
+</form>

@@ -141,6 +141,14 @@ export const routes: Routes = [
             '../app/features/UserDashboard/CollectionsDashboard/CollectionEdit/CollectionEdit.component'
           ).then((c) => c.CollectionEditComponent),
       },
+      {
+        path: 'appeal',
+        title: 'Submit your appeal',
+        loadComponent: () =>
+          import('../app/features/UserDashboard/Appeal/Appeal.component').then(
+            (c) => c.AppealComponent,
+          ),
+      },
     ],
   },
 

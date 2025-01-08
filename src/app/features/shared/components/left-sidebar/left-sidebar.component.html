@@ -18,7 +18,7 @@
   </div>
   <div class="sidenav-nav">
     @for (item of links(); track $index) {
-      <li class="sidenav-nav-item">
+      <li class="sidenav-nav-item" [ngClass]="item?.class">
         <a
           class="sidenav-nav-link font-bold"
           [routerLink]="item.routeLink"

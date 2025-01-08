@@ -49,6 +49,15 @@ export class DashboardLayoutComponent implements OnInit {
       icon: 'fal fa-regular fa-user ',
       label: 'Profile',
     },
+    this.authService.currentUserSignal()?.data?.user?.status === 'INACTIVE' && {
+      routeLink: 'appeal',
+      icon: 'fal fa-solid fa-face-sad-tear',
+      label: 'Submit Appeal',
+      class:
+        this.authService.currentUserSignal()?.data?.user?.status === 'INACTIVE'
+          ? ''
+          : 'hidden',
+    },
   ];
 
   isLeftSidebarCollapsed = signal<boolean>(false);

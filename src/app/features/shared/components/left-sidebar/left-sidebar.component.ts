@@ -6,6 +6,7 @@ export interface Links {
   routeLink: string;
   icon: string;
   label: string;
+  class?: string;
 }
 
 @Component({
