@@ -275,6 +275,29 @@ export class UsersTable implements OnInit, OnChanges {
       });
   }
 
+  onUserAssignStatus(email: string, status: string, id: number) {
+    console.log({
+      email: email,
+      status: status,
+    });
+    this.http
+      .post<UsersApiResponse>(`${URL}/auth/assign-status`, {
+        email: email,
+        status: status,
+      })
+      .subscribe({
+        next: (response) => {
+          this.message.set(response.message);
+          this.showToastSuccess();
+          this.fetchUsers();
+        },
+        error: (error: ApiError) => {
+          this.error.set(error.message);
+          this.showToastDanger();
+        },
+      });
+  }
+
   onUserEdit(id: number) {
     console.log('edited user with id ', id);
     this.router.navigateByUrl(`admin/profile/edit/${id}`);

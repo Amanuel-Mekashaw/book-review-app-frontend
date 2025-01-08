@@ -81,6 +81,12 @@ export type BookResponseByAuthor = {
   data: BookByAuthor[];
 };
 
+export type GenericResponse = {
+  message: string;
+  code: number;
+  data: string;
+};
+
 export type BookResponseByPublishedYear = {
   message: string;
   code: number;

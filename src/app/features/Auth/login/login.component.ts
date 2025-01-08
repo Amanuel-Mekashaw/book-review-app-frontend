@@ -4,6 +4,7 @@ import {
   inject,
   OnInit,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
@@ -84,11 +85,8 @@ export class LoginComponent implements OnInit {
           console.log('Login response', response);
           this.message.set(response.message);
           this.authService.currentUserSignal.set(response);
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem(
-            'user',
-            btoa(JSON.stringify(this.authService.currentUserSignal())),
-          );
+
+          this.storeOnStorage(response, this.authService.currentUserSignal());
 
           this.showToastSuccess();
           this.router.navigateByUrl('/books');
@@ -99,6 +97,13 @@ export class LoginComponent implements OnInit {
           this.showToastDanger();
         },
       });
+  }
+
+  storeOnStorage(response: AuthResponse, userSignal: AuthResponse) {
+    localStorage.setItem('token', response.data.token);
+    localStorage.setItem('user', btoa(JSON.stringify(userSignal)));
+    sessionStorage.setItem('token', response.data.token);
+    sessionStorage.setItem('user', btoa(JSON.stringify(userSignal)));
   }
 
   showToastSuccess() {

@@ -34,7 +34,7 @@ export class AdminDashboardLayoutComponent {
     },
     {
       routeLink: 'users',
-      icon: 'fal fa-solid fa-masks-theater',
+      icon: 'fal fa-solid fa-user',
       label: 'Users',
     },
     {

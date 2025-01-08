@@ -362,4 +362,8 @@
   <button [disabled]="bookForm.invalid" type="submit" hlmBtn variant="default">
     Submit
   </button>
+
+  @if (message()) {
+    <p class="w-full rounded-lg bg-red-200 p-5 text-red-500">{{ message() }}</p>
+  }
 </form>

@@ -25,7 +25,7 @@
   </section>
 
   @if (filteredRating() && filteredRating()?.length > 0) {
-    <div class="grid grid-cols-1 gap-3 xl:grid-cols-2">
+    <div class="grid grid-cols-1 gap-3">
       @for (rating of filteredRating(); track $index) {
         <div
           [routerLink]="'/books/' + rating?.book?.id"
@@ -35,7 +35,7 @@
             <img
               [ngSrc]="'http://localhost:9191' + rating?.book?.coverImageUrl"
               [alt]="rating?.book?.coverImageUrl"
-              class="h-full self-center overflow-hidden rounded-md object-cover shadow-lg md:self-start"
+              class="h-full self-center overflow-hidden rounded-md shadow-lg md:self-start"
               width="100"
               height="200"
             />

@@ -76,4 +76,8 @@
   >
     {{ edit ? "Edit Collection" : "Create Collection" }}
   </button>
+
+  @if (message()) {
+    <p class="w-full rounded-lg bg-red-200 p-5 text-red-500">{{ message() }}</p>
+  }
 </form>

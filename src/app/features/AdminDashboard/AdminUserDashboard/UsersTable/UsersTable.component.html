@@ -149,6 +149,7 @@
           <hlm-menu>
             <hlm-menu-label>Actions</hlm-menu-label>
             <hlm-menu-separator />
+            <!-- Assign ROLE of ADMIN,USER,AUTHOR -->
             <hlm-menu-group>
               <button
                 hlmMenuItem
@@ -171,6 +172,26 @@
                 "
               >
                 Assign Author
+              </button>
+            </hlm-menu-group>
+            <hlm-menu-separator />
+            <!-- ACTIVE and INACTIVE -->
+            <hlm-menu-group>
+              <button
+                hlmMenuItem
+                (click)="
+                  onUserAssignStatus(element.username, 'ACTIVE', element.id)
+                "
+              >
+                Active account
+              </button>
+              <button
+                hlmMenuItem
+                (click)="
+                  onUserAssignStatus(element.username, 'INACTIVE', element.id)
+                "
+              >
+                In active account
               </button>
             </hlm-menu-group>
             <hlm-menu-separator />
